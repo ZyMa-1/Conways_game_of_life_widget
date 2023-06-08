@@ -20,4 +20,7 @@ if __name__ == '__main__':
 
     window = MainWindow()
     window.show()
+    # app.exec()
+    # pixmap = window.grab()
+    # pixmap.save(str("readme_images/1.png"))
     sys.exit(app.exec())
