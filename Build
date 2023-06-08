@@ -1,1 +1,8 @@
-nuitka --standalone --plugin-enable=pyside6 .\main.py
+Build standalone:
+
+nuitka --standalone --follow-imports --quiet --disable-console --plugin-enable=pyside6 --output-filename=conways_game_of_life.exe .\main.py
+
+
+Build one file:
+
+nuitka --onefile --follow-imports --quiet --disable-console --plugin-enable=pyside6 --output-filename=conways_game_of_life.exe .\main.py

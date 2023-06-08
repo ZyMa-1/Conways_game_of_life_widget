@@ -10,7 +10,7 @@ import sys
 from PySide6.QtWidgets import QApplication
 
 if __name__ == '__main__':
-    os.environ['PROJECT_ROOT'] = str(pathlib.Path(__file__).parent)
+    os.environ['PROJECT_ROOT'] = str(pathlib.Path(__file__).absolute().parent)
     os.makedirs('configs', exist_ok=True)
     os.makedirs('exports', exist_ok=True)
 
