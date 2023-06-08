@@ -2,6 +2,7 @@
 Author: ZyMa-1
 """
 
+import importlib
 import os
 import pathlib
 import sys
@@ -10,7 +11,10 @@ from PySide6.QtWidgets import QApplication
 
 if __name__ == '__main__':
     os.environ['PROJECT_ROOT'] = str(pathlib.Path(__file__).parent)
-    from src.widgets.MainWindow import MainWindow
+    os.makedirs('configs', exist_ok=True)
+    os.makedirs('exports', exist_ok=True)
+
+    MainWindow = getattr(importlib.import_module('src.widgets.MainWindow'), 'MainWindow')
 
     app = QApplication(sys.argv)
 
@@ -20,7 +24,4 @@ if __name__ == '__main__':
 
     window = MainWindow()
     window.show()
-    # app.exec()
-    # pixmap = window.grab()
-    # pixmap.save(str("readme_images/1.png"))
     sys.exit(app.exec())

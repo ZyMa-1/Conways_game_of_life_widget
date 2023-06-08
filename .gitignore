@@ -4,3 +4,5 @@ venv/
 exports/
 configs/
 **/__pycache__/
+main.build/
+main.dist/

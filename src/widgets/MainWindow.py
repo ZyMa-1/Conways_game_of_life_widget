@@ -71,6 +71,12 @@ class MainWindow(QMainWindow):
             warning.exec()
 
     @Slot()
+    def handle_reset_to_default_button_clicked(self):
+        self.ui.conways_game_of_life_widget.reset_to_default()
+        self._game_properties_to_widgets_values()
+        self.ui.conways_game_of_life_widget.setFocus()
+
+    @Slot()
     def handle_action_about_triggered(self):
         dialog = AboutDialog(self)
         dialog.setModal(True)
@@ -108,12 +114,6 @@ class MainWindow(QMainWindow):
             self.ui.dockWidget.show()
         else:
             self.ui.dockWidget.hide()
-
-    @Slot()
-    def handle_reset_to_default_button_clicked(self):
-        self.ui.conways_game_of_life_widget.reset_to_default()
-        self._widgets_values_to_game_properties()
-        self.ui.conways_game_of_life_widget.setFocus()
 
     # :Annoying functions that my eyes are afraid of:
     # Get away
