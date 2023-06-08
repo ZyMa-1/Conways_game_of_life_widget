@@ -3,3 +3,4 @@
 venv/
 exports/
 configs/
+**/__pycache__/
