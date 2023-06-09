@@ -40,12 +40,18 @@ class MainWindow(QMainWindow):
         # Setup UI
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
-        self.init_ui()
+
         self._create_all_annoying_stuff()
+        self.init_ui()
 
         self._connect_signals_to_slots()
 
     def init_ui(self):
+        lang = self.settings.value("Language", type=str)
+        if lang == "ru":
+            self.ui.action_russian_RU.setChecked(True)
+        elif lang == "en":
+            self.ui.action_english_US.setChecked(True)
         self._game_properties_to_widgets_values()
         self.ui.conways_game_of_life_widget.setFocus()
 
