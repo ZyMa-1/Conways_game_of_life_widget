@@ -245,10 +245,18 @@
     </property>
     <addaction name="action_view_dock_widget"/>
    </widget>
+   <widget class="QMenu" name="menuLanguage">
+    <property name="title">
+     <string>Language</string>
+    </property>
+    <addaction name="action_english_US"/>
+    <addaction name="action_russian_RU"/>
+   </widget>
    <addaction name="menuSave"/>
    <addaction name="menuLoad"/>
    <addaction name="menuView"/>
    <addaction name="menuExport"/>
+   <addaction name="menuLanguage"/>
    <addaction name="menuHelp"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
@@ -562,6 +570,25 @@
    </property>
    <property name="text">
     <string>Game of life settings</string>
+   </property>
+  </action>
+  <action name="action_english_US">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>English (US)</string>
+   </property>
+  </action>
+  <action name="action_russian_RU">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Russian (RU)</string>
    </property>
   </action>
  </widget>

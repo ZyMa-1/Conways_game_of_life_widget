@@ -8,14 +8,18 @@ import json
 import pathlib
 
 from PySide6.QtCore import QObject
+from PySide6.QtGui import QColor
 from PySide6.QtWidgets import QFileDialog
 
 from src.backend.PathManager import PathManager
+from src.conways_game_of_life.ConwaysGameOfLife import ConwaysGameOfLife
 
 
 class ConwaysGameOfLifeConfigManager(QObject):
-    def __init__(self, conwaysGameOfLifeWidget, parent=None):
+    """Class for saving and loading widget properties."""
+    def __init__(self, conwaysGameOfLifeWidget: ConwaysGameOfLife, parent=None):
         super().__init__(parent)
+
         self.conways_game_of_life_widget = conwaysGameOfLifeWidget
         self.PROJECT_ROOT = PathManager.get_project_root()
         self.CONFIGS_DIR = self.PROJECT_ROOT / "configs"
@@ -23,6 +27,7 @@ class ConwaysGameOfLifeConfigManager(QObject):
         self._object_dict = {}
 
     def save_config(self, parent=None) -> None | str:
+        """Saves widget properties to '.json' file. Returns filename is operation was completed, None otherwise."""
         file_dialog = QFileDialog(parent)
         file_dialog.setDefaultSuffix('json')
         file_dialog.setDirectory(str(self.CONFIGS_DIR))
@@ -43,6 +48,7 @@ class ConwaysGameOfLifeConfigManager(QObject):
         return None
 
     def load_config(self, parent=None) -> None | str:
+        """Loads widget properties from a '.json' file. Returns filename is operation was completed, None otherwise."""
         file_dialog = QFileDialog(parent)
         file_dialog.setDefaultSuffix('json')
         file_dialog.setFileMode(QFileDialog.FileMode.ExistingFile)
@@ -64,10 +70,18 @@ class ConwaysGameOfLifeConfigManager(QObject):
     def _save_properties(self):
         self._object_dict.clear()
         for name in self.conways_game_of_life_widget.properties_name_list():
-            self._object_dict[name] = getattr(self.conways_game_of_life_widget, name)
+            property_obj = getattr(self.conways_game_of_life_widget, name)
+            if isinstance(property_obj, QColor):
+                property_obj = (property_obj.red(), property_obj.green(), property_obj.blue())
+
+            self._object_dict[name] = property_obj
         # print(self._object_dict)
 
     def _load_properties(self):
         # print(self._object_dict)
         for name in self._object_dict:
-            setattr(self.conways_game_of_life_widget, name, self._object_dict[name])
+            property_obj = self._object_dict[name]
+            if isinstance(property_obj, QColor):
+                property_obj = QColor(property_obj[0], property_obj[1], property_obj[2])
+
+            setattr(self.conways_game_of_life_widget, name, property_obj)

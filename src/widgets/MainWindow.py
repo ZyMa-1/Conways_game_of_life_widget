@@ -2,8 +2,8 @@
 Author: ZyMa-1
 """
 
-from PySide6.QtCore import Slot, QObject
-from PySide6.QtGui import QColor
+from PySide6.QtCore import Slot, QObject, QSettings, QLocale
+from PySide6.QtGui import QColor, QActionGroup
 from PySide6.QtWidgets import QMainWindow, QLabel, QColorDialog, QPushButton
 
 from src.backend.ImageSaver import ImageSaver
@@ -11,6 +11,7 @@ from src.backend.MessageBoxFactory import MessageBoxFactory
 from src.backend.SignalCollector import SignalCollector
 from src.backend.WarningDialogGenerator import WarningDialogGenerator
 from src.conways_game_of_life.ConwaysGameOfLifeConfigManager import ConwaysGameOfLifeConfigManager
+from src.conways_game_of_life.ConwaysGameOfLifePropertiesManager import ConwaysGameOfLifePropertiesManager
 from src.ui.Ui_MainWindow import Ui_MainWindow
 from src.widgets.AboutDialog import AboutDialog
 
@@ -115,6 +116,24 @@ class MainWindow(QMainWindow):
         else:
             self.ui.dockWidget.hide()
 
+    @Slot()
+    def handle_language_changed(self):
+        sender = self.sender()
+        is_checked = sender.isChecked()
+        if not is_checked:
+            return
+
+        if "ru" in sender.objectName().lower():
+            self.settings.setValue("Language", "ru")
+            message_box = MessageBoxFactory.create_language_changed_info_box(parent=self,
+                                                                             lang="ru")
+            message_box.exec()
+        elif "en" in sender.objectName().lower():
+            self.settings.setValue("Language", "en")
+            message_box = MessageBoxFactory.create_language_changed_info_box(parent=self,
+                                                                             lang="en")
+            message_box.exec()
+
     # :Annoying functions that my eyes are afraid of:
     # Get away
     # Get away
@@ -158,16 +177,25 @@ class MainWindow(QMainWindow):
         return label.palette().color(label.backgroundRole())
 
     def _create_all_annoying_stuff(self):
-        # Add game widget handlers
-        self.ui.conways_game_of_life_widget.add_turn_number_handler(self.ui.turn_number_label)
-        self.ui.conways_game_of_life_widget.add_is_game_running_handler(self.ui.is_game_running_label)
+        # Create action group
+        self.action_group = QActionGroup(self)
+        self.action_group.setExclusive(True)
+        self.action_group.addAction(self.ui.action_english_US)
+        self.action_group.addAction(self.ui.action_russian_RU)
 
         # Create Warning dialog generator with 'SignalCollector' of 'property_setter_error_signal'
         self.warning_dialog_generator = WarningDialogGenerator(
-            SignalCollector(self.ui.conways_game_of_life_widget.property_setter_error_signal, parent=self), parent=self)
+            SignalCollector(self.ui.conways_game_of_life_widget.property_setter_error_signal, parent=self),
+            parent=self)
 
         # Create ConfigManager
         self.game_config_manager = ConwaysGameOfLifeConfigManager(self.ui.conways_game_of_life_widget, parent=self)
+
+        # Create PropertiesHandler
+        self.game_properties_manager = ConwaysGameOfLifePropertiesManager(self.ui.conways_game_of_life_widget,
+                                                                          parent=self)
+        self.game_properties_manager.add_is_game_running_handler(self.ui.is_game_running_label)
+        self.game_properties_manager.add_turn_number_handler(self.ui.turn_number_label)
 
         # Create ImageSaver
         self.image_saver = ImageSaver(parent=self)
@@ -183,6 +211,9 @@ class MainWindow(QMainWindow):
                                                          self.ui.cell_dead_color_label,
                                                          parent=self)
 
+        # Create settings
+        self.settings = QSettings()
+
     def _connect_signals_to_slots(self):
         self.ui.action_about.triggered.connect(self.handle_action_about_triggered)
         self.ui.start_button.clicked.connect(self.handle_start_button_clicked)
@@ -196,3 +227,6 @@ class MainWindow(QMainWindow):
         self.ui.reset_to_default_button.clicked.connect(self.handle_reset_to_default_button_clicked)
         self.ui.dockWidget.visibilityChanged.connect(
             lambda is_visible: self.ui.action_view_dock_widget.setChecked(is_visible))
+        self.ui.action_english_US.changed.connect(self.handle_language_changed)
+        self.ui.action_russian_RU.changed.connect(self.handle_language_changed)
+

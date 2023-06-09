@@ -4,11 +4,11 @@ Conway's game of life.
 Author: ZyMa-1
 """
 
-from typing import List, Tuple
+from typing import List
 
 from PySide6.QtCore import QPoint, QRect, QSize, QTimer, Qt, Signal, Slot, Property
 from PySide6.QtGui import QPainter
-from PySide6.QtWidgets import QWidget, QLabel
+from PySide6.QtWidgets import QWidget
 
 from .utils import *
 
@@ -33,10 +33,9 @@ CELL_OFF = '.'  # (used)
 
 
 class ConwaysGameOfLife(QWidget):
-    turn_number_changed_signal = Signal(int)  # turn_number changed
-    is_game_running_changed_signal = Signal(bool)  # is_game_running changed
-    layout_changed_signal = Signal()  # rows or cols changed
-    property_setter_error_signal = Signal(str, str)  # invalid value in property setter
+    # Inner signals:
+    _layout_changed = Signal()  # number of rows or cols changed
+    property_setter_error_signal = Signal(str, str)  # invalid value passed in property setter
 
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -60,9 +59,9 @@ class ConwaysGameOfLife(QWidget):
 
         # Connect signals to slots
         self._timer.timeout.connect(self._make_turn)
-        self.layout_changed_signal.connect(self._handle_layout_changed)
+        self._layout_changed.connect(self._handle_layout_changed)
 
-    def _assign_default_properties(self):
+    def _assign_default_attribute_values(self):
         self._turn_number = 0
         self._border_thickness = DEFAULT_BORDER_THICKNESS
         self._border_color = ColorProperty(DEFAULT_BORDER_COLOR)
@@ -77,12 +76,17 @@ class ConwaysGameOfLife(QWidget):
         self._state = [''.join(CELL_OFF for j in range(self._cols)) for i in range(self._rows)]
 
     # Properties :[
+    def get_turn_number(self):
+        return self._turn_number
+
+    def get_is_game_running(self):
+        return self._is_game_running
 
     def get_state(self):
         return self._state
 
     @property_setter_error_handle
-    def set_state(self, value: List[str] | str):
+    def set_state(self, value: List[str]):
         if isinstance(value, list) and len(value) == self._rows and all(
                 isinstance(elem, str) and (
                         len(elem) == self._cols and elem.count(CELL_OFF) + elem.count(CELL_ON) == len(elem)) for elem in
@@ -90,7 +94,7 @@ class ConwaysGameOfLife(QWidget):
             self._state = value
             self.update()
         else:
-            raise ValueError
+            raise ValueError("State value is not correct")
 
     def get_cols(self):
         return self._cols
@@ -98,9 +102,9 @@ class ConwaysGameOfLife(QWidget):
     @property_setter_error_handle
     def set_cols(self, value: int):
         if value <= 0:
-            raise ValueError("Column count must be positive")
+            raise ValueError("Columns value must be positive")
         self._cols = value
-        self.layout_changed_signal.emit()
+        self._layout_changed.emit()
 
     def get_rows(self):
         return self._rows
@@ -108,9 +112,9 @@ class ConwaysGameOfLife(QWidget):
     @property_setter_error_handle
     def set_rows(self, value: int):
         if value <= 0:
-            raise ValueError("Rows count must be positive")
+            raise ValueError("Rows value must be positive")
         self._rows = value
-        self.layout_changed_signal.emit()
+        self._layout_changed.emit()
 
     def get_turn_duration(self):
         return self._turn_duration
@@ -135,7 +139,7 @@ class ConwaysGameOfLife(QWidget):
         return self._border_color.color
 
     @property_setter_error_handle
-    def set_border_color(self, value):
+    def set_border_color(self, value: QColor | Tuple[int, int, int]):
         self._border_color.set_color(value)
         self.update()
 
@@ -143,7 +147,7 @@ class ConwaysGameOfLife(QWidget):
         return self._cell_dead_color.color
 
     @property_setter_error_handle
-    def set_cell_dead_color(self, value):
+    def set_cell_dead_color(self, value: QColor | Tuple[int, int, int]):
         self._cell_dead_color.set_color(value)
         self.update()
 
@@ -151,14 +155,14 @@ class ConwaysGameOfLife(QWidget):
         return self._cell_alive_color.color
 
     @property_setter_error_handle
-    def set_cell_alive_color(self, value):
+    def set_cell_alive_color(self, value: QColor | Tuple[int, int, int]):
         self._cell_alive_color.set_color(value)
         self.update()
 
     # :Some functions:
 
     def _adjust_state(self):
-        """Adjusts state according to new rows or cols count"""
+        """Adjusts state according to new rows or cols count."""
         rows = len(self._state)
         cols = len(self._state[0])
         if rows != self._rows or cols != self._cols:
@@ -212,7 +216,8 @@ class ConwaysGameOfLife(QWidget):
             new_state.append(new_row)
 
         self._state = new_state
-        self.turn_number_changed_signal.emit(self._turn_number)
+
+        self.turn_duration_changed.emit(self._turn_number)
         self.update()
 
     # !Game control functions!
@@ -225,7 +230,8 @@ class ConwaysGameOfLife(QWidget):
         self._active_cell = None
         self._timer.setInterval(self._turn_duration)
         self._timer.start()
-        self.is_game_running_changed_signal.emit(self._is_game_running)
+
+        self.is_game_running_changed.emit(self._is_game_running)
         self.update()
 
     def stop_game(self):
@@ -235,7 +241,8 @@ class ConwaysGameOfLife(QWidget):
         self._is_game_running = False
         self._active_cell = (0, 0)
         self._timer.stop()
-        self.is_game_running_changed_signal.emit(self._is_game_running)
+
+        self.is_game_running_changed.emit(self._is_game_running)
         self.update()
 
     def clear_state(self):
@@ -244,7 +251,7 @@ class ConwaysGameOfLife(QWidget):
 
     def reset_to_default(self):
         self.stop_game()
-        self._assign_default_properties()
+        self._assign_default_attribute_values()
         self.update()
 
     # ?Some interaction stuff?
@@ -346,24 +353,13 @@ class ConwaysGameOfLife(QWidget):
 
     @Slot()
     def _handle_layout_changed(self):
+        """Handles changes in a widget layout, that is number of 'rows' or 'cols' have changed."""
         self._adjust_state()
         if self._active_cell is not None and self._active_cell[0] >= self._rows:
             self._active_cell = (self._rows - 1, self._active_cell[1])
         if self._active_cell is not None and self._active_cell[1] >= self._cols:
             self._active_cell = (self._active_cell[0], self._cols - 1)
         self.update()
-
-    # ?.Outside signals handlers.?
-
-    def add_turn_number_handler(self, widget):
-        if isinstance(widget, QLabel):
-            self.turn_number_changed_signal.connect(lambda num: widget.setText(str(num)))
-            widget.setText(str(self._turn_number))
-
-    def add_is_game_running_handler(self, widget):
-        if isinstance(widget, QLabel):
-            self.is_game_running_changed_signal.connect(lambda b: widget.setText(":)" if b else ":("))
-            widget.setText(":)" if self._is_game_running else ":(")
 
     # .Other overriden functions.
 
@@ -384,17 +380,33 @@ class ConwaysGameOfLife(QWidget):
         # Consider grabKeyboard func.
         self.setFocus()
 
+    # Properties signals
+    state_changed = Signal(list)
+    cols_changed = Signal(int)
+    rows_changed = Signal(int)
+    turn_duration_changed = Signal(int)
+    border_thickness_changed = Signal(int)
+    border_color_changed = Signal(QColor)
+    cell_dead_color_changed = Signal(QColor)
+    cell_alive_color_changed = Signal(QColor)
+    is_game_running_changed = Signal(bool)
+    turn_number_changed = Signal(int)
+
     # Pyqt properties:
-    state = Property(list, get_state, set_state)
-    cols = Property(int, get_cols, set_cols)
-    rows = Property(int, get_rows, set_rows)
-    turn_duration = Property(int, get_turn_duration, set_turn_duration)
-    border_thickness = Property(int, get_border_thickness, set_border_thickness)
-    border_color = Property(QColor, get_border_color, set_border_color)
-    cell_dead_color = Property(QColor, get_cell_dead_color, set_cell_dead_color)
-    cell_alive_color = Property(QColor, get_cell_alive_color, set_cell_alive_color)
+    state = Property(list, get_state, set_state, notify=state_changed)  # Does not work
+    cols = Property(int, get_cols, set_cols, notify=cols_changed)
+    rows = Property(int, get_rows, set_rows, notify=rows_changed)
+    turn_duration = Property(int, get_turn_duration, set_turn_duration, notify=turn_duration_changed)
+    border_thickness = Property(int, get_border_thickness, set_border_thickness, notify=border_thickness_changed)
+    border_color = Property(QColor, get_border_color, set_border_color, notify=border_color_changed)
+    cell_dead_color = Property(QColor, get_cell_dead_color, set_cell_dead_color, notify=cell_dead_color_changed)
+    cell_alive_color = Property(QColor, get_cell_alive_color, set_cell_alive_color, notify=cell_alive_color_changed)
+    # read_only
+    is_game_running = Property(bool, fget=get_is_game_running, constant=True)
+    turn_number = Property(int, fget=get_turn_number, constant=True)
 
     @staticmethod
     def properties_name_list() -> List[str]:
+        """Returns list of ACCESSIBLE properties associated specifically with this widget."""
         return ["state", "cols", "rows", "turn_duration", "border_thickness", "border_color", "cell_dead_color",
                 "cell_alive_color"]

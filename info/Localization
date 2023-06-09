@@ -1,0 +1,16 @@
+Localization:
+
+Create ".ts" file:
+
+pyside6-lupdate main.py .\src\ .\src\backend\ImageSaver.py .\src\backend\MessageBoxFactory.py .\src\backend\WarningDialogGenerator.py -ts .\localization\translations\main_gui_ru.ts
+
+Open Qt Linguist tool and do translations there:
+
+pyside6-linguist
+
+Convert .ts files to .qm files using lrelease tool:
+
+pyside6-lrelease .\localization\translations\main_gui_ru.ts -qm .\localization\translates\main_gui_ru.qm
+pyside6-lrelease .\localization\translations\main_gui_ru.ts -qm .\src\resources\translations\main_gui_ru.qm
+
+Don't forget to do 'Resources' next

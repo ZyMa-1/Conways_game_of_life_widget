@@ -2,7 +2,11 @@ Build standalone:
 
 nuitka --standalone --follow-imports --quiet --disable-console --plugin-enable=pyside6 --output-filename=conways_game_of_life.exe .\main.py
 
+This will create main.build/ and main.dist/ directory. '.exe' file locates in a dist directory.
+
 
 Build one file:
 
 nuitka --onefile --follow-imports --quiet --disable-console --plugin-enable=pyside6 --output-filename=conways_game_of_life.exe .\main.py
+
+This will create main.onefile-build/ and '.exe' file in a project root directory.

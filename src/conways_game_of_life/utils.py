@@ -5,6 +5,7 @@ Author: ZyMa-1
 """
 
 from functools import wraps
+from typing import Tuple
 
 from PySide6.QtGui import QColor
 
@@ -43,10 +44,10 @@ class ColorProperty:
         return self._color
 
     @staticmethod
-    def _check_rgb_boundaries(rgb):
+    def _check_rgb_boundaries(rgb: Tuple[int, int, int]):
         return 0 <= rgb[0] <= 255 and 0 <= rgb[1] <= 255 and 0 <= rgb[2] <= 255
 
-    def set_color(self, value):
+    def set_color(self, value: QColor | Tuple[int, int, int]):
         if isinstance(value, QColor):
             self._color = value
         elif isinstance(value, tuple) and len(value) == 3 and self._check_rgb_boundaries(value):

@@ -38,6 +38,8 @@
    <container>1</container>
   </customwidget>
  </customwidgets>
- <resources/>
+ <resources>
+  <include location="../resources_qrc/resources.qrc"/>
+ </resources>
  <connections/>
 </ui>

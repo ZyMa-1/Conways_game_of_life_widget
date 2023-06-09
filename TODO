@@ -3,3 +3,7 @@ Why StringList property doesnt work??
 Notify properties methods (lazy)
 Status bar hints (lazy)
 Try to write documentation (lazy)
+Qt linguist stuff
+QML (late late late)
+
+Remove _game_properties_to_widgets_values function, replace it with PropertiesManager

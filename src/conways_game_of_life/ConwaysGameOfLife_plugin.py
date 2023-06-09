@@ -82,6 +82,7 @@ class ConwaysGameOfLifePlugin(QDesignerCustomWidgetInterface):
         return QIcon()
 
     def includeFile(self):
+        """Relative path to the custom widget file."""
         return 'src/conways_game_of_life/ConwaysGameOfLife'
 
     def initialize(self, form_editor):
