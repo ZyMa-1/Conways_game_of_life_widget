@@ -13,4 +13,4 @@ Convert .ts files to .qm files using lrelease tool:
 pyside6-lrelease .\localization\translations\main_gui_ru.ts -qm .\localization\translates\main_gui_ru.qm
 pyside6-lrelease .\localization\translations\main_gui_ru.ts -qm .\src\resources\translations\main_gui_ru.qm
 
-Don't forget to do 'Resources' next
+Don't forget to do 'Resources' next, as documentation recommends to hold .qm files in qt-resource system.
