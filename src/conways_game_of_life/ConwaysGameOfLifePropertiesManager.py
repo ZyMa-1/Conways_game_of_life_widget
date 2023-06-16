@@ -1,10 +1,11 @@
 """
-"Idk if this thing work" - Probably me.
+Properties manager. Made to ease communication between widgets and properties.
 
 Author: ZyMa-1
 """
+from types import MappingProxyType
 
-from PySide6.QtCore import QObject, Property, Signal, Slot
+from PySide6.QtCore import QObject, Signal, Slot
 from PySide6.QtGui import QColor
 from PySide6.QtWidgets import QLabel, QSpinBox
 
@@ -29,80 +30,88 @@ class _SlotFactory(QObject):
 
         return slot
 
+    @staticmethod
+    def create_turn_number_handler_slot(label: QLabel):
+        @Slot(int)
+        def slot(value: int):
+            label.setText(str(value))
+
+        return slot
+
+    @staticmethod
+    def create_is_game_running_handler_slot(label: QLabel):
+        @Slot(bool)
+        def slot(value: bool):
+            label.setText(":)" if value else ":(")
+
+        return slot
+
+    @classmethod
+    def create_slot_by_property_name(cls, *, property_name: str, widget):
+        if property_name not in cls.PROPERTY_NAME_TO_SLOT:
+            return None
+
+        slot_factory_func = cls.PROPERTY_NAME_TO_SLOT[property_name]
+        return slot_factory_func(widget)
+
+    PROPERTY_NAME_TO_SLOT = MappingProxyType({
+        "turn_number": create_turn_number_handler_slot,
+        "is_game_running": create_is_game_running_handler_slot,
+        "cols": create_spin_box_int_handler_slot,
+        "rows": create_spin_box_int_handler_slot,
+        "turn_duration": create_spin_box_int_handler_slot,
+        "border_thickness": create_spin_box_int_handler_slot,
+        "border_color": create_label_bg_color_handler_slot,
+        "cell_dead_color": create_label_bg_color_handler_slot,
+        "cell_alive_color": create_label_bg_color_handler_slot
+    })
+
 
 class ConwaysGameOfLifePropertiesManager(QObject):
     """
     Class for changing widget value on 'some property' changed signal.
     ASSUMING PROPERTY CHANGED SIGNAL HAVE '{property_name}_{PROPERTY_CHANGED_SIGNAL_SUFFIX}' NAME!!!
     """
-    PROPERTY_CHANGED_SIGNAL_SUFFIX = "changed"  # like turn_number -> turn_number_changed
+    PROPERTY_CHANGED_SIGNAL_SUFFIX = "changed"  # for example: turn_number -> turn_number_changed
+    notify_all = Signal()
 
     def __init__(self, conwaysGameOfLifeWidget: ConwaysGameOfLife, parent=None):
         super().__init__(parent)
 
         self.conways_game_of_life_widget = conwaysGameOfLifeWidget
+        self._slot_factory = _SlotFactory(parent=self)
 
-    # Only one way handlers (widget_property -> widget_value)
+        self._slot_dict = {}
 
-    def add_turn_number_handler(self, widget):
-        if isinstance(widget, QLabel):
-            self.conways_game_of_life_widget.turn_number_changed.connect(lambda num: widget.setText(str(num)))
-            widget.setText(str(self.conways_game_of_life_widget.turn_number))
-        else:
-            raise TypeError("Handler for this type of widget is not supported")
+    def sync(self):
+        """Sync widget values with properties values."""
+        self.notify_all.emit()
 
-    def add_is_game_running_handler(self, widget):
-        if isinstance(widget, QLabel):
-            self.conways_game_of_life_widget.is_game_running_changed.connect(
-                lambda b: widget.setText(":)" if b else ":("))
-            widget.setText(":)" if self.conways_game_of_life_widget.is_game_running else ":(")
-        else:
-            raise TypeError("Handler for this type of widget is not supported")
+    def add_handler_by_property_name(self, *, widget, property_name: str):
+        if property_name in self._slot_dict:
+            return
 
-    # Idk if things below even work :P
+        property_changed_signal = self._get_property_changed_signal(property_name)
+        value = self._get_property_value(property_name)
+        slot = self._slot_factory.create_slot_by_property_name(property_name=property_name,
+                                                               widget=widget)
 
-    def add_handler(self, widget, *, property_name: str):
-        property_obj = getattr(self.conways_game_of_life_widget, property_name, None)
-        if property_obj is None:
-            raise AttributeError("Property name is not valid")
+        # Add slot to dict and to notify_all signal
+        self._slot_dict[property_name] = slot
+        self.notify_all.connect(lambda: slot(value))
+        slot(value)
+        property_changed_signal.connect(slot)
 
-        if not isinstance(property_obj, Property):
-            raise AttributeError("Property is not a property")
-
-        property_type = property_obj.fget.__annotations__['return']  # Uhhhhhh, gets TYPE ANNOTATION for return type
-        if isinstance(property_type, QColor):
-            if isinstance(widget, QLabel):
-                self._add_label_bg_color_handler(widget, property_name)
-            else:
-                raise AttributeError("Property is not supported")
-        elif isinstance(property_type, int):
-            if isinstance(widget, QSpinBox):
-                self._add_spin_box_int_handler(widget, property_name)
-            else:
-                raise AttributeError("Property is not supported")
-        else:
-            raise AttributeError("Property is not supported")
-
-    def _add_label_bg_color_handler(self, widget: QLabel, property_name: str):
+    def _get_property_changed_signal(self, property_name: str) -> Signal:
         property_changed_signal = getattr(self.conways_game_of_life_widget,
                                           property_name + "_" + self.PROPERTY_CHANGED_SIGNAL_SUFFIX, None)
         if property_changed_signal is None:
             raise AttributeError("Property changed signal does not exists")
 
         if not isinstance(property_changed_signal, Signal):
-            raise AttributeError("Property signal is not a signal")
+            raise AttributeError(f"Property signal is not a signal. Property signal is {type(property_changed_signal)}")
 
-        slot = _SlotFactory.create_label_bg_color_handler_slot(widget)
-        property_changed_signal.connect(slot)
+        return property_changed_signal
 
-    def _add_spin_box_int_handler(self, widget: QSpinBox, property_name: str):
-        property_changed_signal = getattr(self.conways_game_of_life_widget,
-                                          property_name + "_" + self.PROPERTY_CHANGED_SIGNAL_SUFFIX, None)
-        if property_changed_signal is None:
-            raise AttributeError("Property changed signal does not exists")
-
-        if not isinstance(property_changed_signal, Signal):
-            raise AttributeError("Property signal is not a signal")
-
-        slot = _SlotFactory.create_spin_box_int_handler_slot(widget)
-        property_changed_signal.connect(slot)
+    def _get_property_value(self, property_name: str):
+        return getattr(self.conways_game_of_life_widget, property_name, None)

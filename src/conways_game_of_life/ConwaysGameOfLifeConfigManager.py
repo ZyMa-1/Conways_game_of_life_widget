@@ -1,5 +1,5 @@
 """
-Config manager for game widget (saving properties and loading them).
+Config manager for saving properties and loading them from the widget.
 
 Author: ZyMa-1
 """
@@ -17,17 +17,18 @@ from src.conways_game_of_life.ConwaysGameOfLife import ConwaysGameOfLife
 
 class ConwaysGameOfLifeConfigManager(QObject):
     """Class for saving and loading widget properties."""
+
     def __init__(self, conwaysGameOfLifeWidget: ConwaysGameOfLife, parent=None):
         super().__init__(parent)
 
         self.conways_game_of_life_widget = conwaysGameOfLifeWidget
-        self.PROJECT_ROOT = PathManager.get_project_root()
-        self.CONFIGS_DIR = self.PROJECT_ROOT / "configs"
+        self.PROJECT_ROOT = PathManager.PROJECT_ROOT
+        self.CONFIGS_DIR = PathManager.CONFIGS_DIR
 
         self._object_dict = {}
 
     def save_config(self, parent=None) -> None | str:
-        """Saves widget properties to '.json' file. Returns filename is operation was completed, None otherwise."""
+        """Saves widget properties to '.json' file. Returns filename if operation was completed, None otherwise."""
         file_dialog = QFileDialog(parent)
         file_dialog.setDefaultSuffix('json')
         file_dialog.setDirectory(str(self.CONFIGS_DIR))
@@ -48,7 +49,7 @@ class ConwaysGameOfLifeConfigManager(QObject):
         return None
 
     def load_config(self, parent=None) -> None | str:
-        """Loads widget properties from a '.json' file. Returns filename is operation was completed, None otherwise."""
+        """Loads widget properties from a '.json' file. Returns filename if operation was completed, None otherwise."""
         file_dialog = QFileDialog(parent)
         file_dialog.setDefaultSuffix('json')
         file_dialog.setFileMode(QFileDialog.FileMode.ExistingFile)
@@ -69,19 +70,31 @@ class ConwaysGameOfLifeConfigManager(QObject):
 
     def _save_properties(self):
         self._object_dict.clear()
-        for name in self.conways_game_of_life_widget.properties_name_list():
-            property_obj = getattr(self.conways_game_of_life_widget, name)
-            if isinstance(property_obj, QColor):
-                property_obj = (property_obj.red(), property_obj.green(), property_obj.blue())
+        for name in self.conways_game_of_life_widget.savable_properties_name_list():
+            value = getattr(self.conways_game_of_life_widget, name)
+            value = self._convert_value_to_json(value)
 
-            self._object_dict[name] = property_obj
+            self._object_dict[name] = value
         # print(self._object_dict)
 
     def _load_properties(self):
         # print(self._object_dict)
         for name in self._object_dict:
-            property_obj = self._object_dict[name]
-            if isinstance(property_obj, QColor):
-                property_obj = QColor(property_obj[0], property_obj[1], property_obj[2])
+            value = getattr(self.conways_game_of_life_widget, name)
+            value = self._convert_value_from_json(value)
 
-            setattr(self.conways_game_of_life_widget, name, property_obj)
+            setattr(self.conways_game_of_life_widget, name, value)
+
+    @staticmethod
+    def _convert_value_from_json(value):
+        if isinstance(value, QColor):
+            value = QColor(value[0], value[1], value[2])
+
+        return value
+
+    @staticmethod
+    def _convert_value_to_json(value):
+        if isinstance(value, QColor):
+            value = (value.red(), value.green(), value.blue())
+
+        return value

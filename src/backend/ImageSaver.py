@@ -14,8 +14,8 @@ class ImageSaver(QObject):
     def __init__(self, parent=None):
         super().__init__(parent)
 
-        self.PROJECT_ROOT = PathManager.get_project_root()
-        self.EXPORTS_DIR = self.PROJECT_ROOT / "exports"
+        self.PROJECT_ROOT = PathManager.PROJECT_ROOT
+        self.EXPORTS_DIR = PathManager.EXPORTS_DIR
 
     def save_widget_to_image(self, widget, *, file_type: str = "png", parent=None) -> None | str:
         """Saves widget to an image. Returns 'None' if operation was not completed, 'filename' otherwise."""

@@ -7,13 +7,14 @@ import pathlib
 
 
 class PathManager:
-    try:
-        PROJECT_ROOT = pathlib.Path(os.getenv('PROJECT_ROOT'))
-    except TypeError:
-        PROJECT_ROOT = None
+    PROJECT_ROOT = None
+    CONFIGS_DIR = None
+    EXPORTS_DIR = None
+    SETTINGS_INI = None
 
     @classmethod
-    def get_project_root(cls):
-        if cls.PROJECT_ROOT is None:
-            raise FileNotFoundError
-        return cls.PROJECT_ROOT
+    def set_project_root(cls, path: pathlib.Path):
+        cls.PROJECT_ROOT = path
+        cls.CONFIGS_DIR = cls.PROJECT_ROOT / "configs"
+        cls.EXPORTS_DIR = cls.PROJECT_ROOT / "exports"
+        cls.SETTINGS_INI = cls.PROJECT_ROOT / "settings.ini"

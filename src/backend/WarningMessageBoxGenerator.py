@@ -5,13 +5,15 @@ Author: ZyMa-1
 from PySide6.QtCore import QObject, QCoreApplication
 from PySide6.QtWidgets import QMessageBox
 
+from src.backend.SignalCollector import SignalCollector
 
-class WarningDialogGenerator(QObject):
-    def __init__(self, signal_collector, parent=None):
+
+class WarningMessageBoxGenerator(QObject):
+    def __init__(self, signal_collector: SignalCollector, parent=None):
         super().__init__(parent)
         self.signal_collector = signal_collector
 
-    def generate_warning_dialog(self, parent=None) -> None | QMessageBox:
+    def generate_warning_message_box(self, parent=None) -> None | QMessageBox:
         """Returns 'QMessageBox' object if signal_collector data is not None, None otherwise."""
         signal_data = self.signal_collector.collect_signal_data()
         if signal_data:

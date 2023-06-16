@@ -35,7 +35,7 @@ CELL_OFF = '.'  # (used)
 class ConwaysGameOfLife(QWidget):
     # Inner signals:
     _layout_changed = Signal()  # number of rows or cols changed
-    property_setter_error_signal = Signal(str, str)  # invalid value passed in property setter
+    property_setter_error_signal = Signal(str, str)  # invalid value passed to property setter
 
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -406,7 +406,13 @@ class ConwaysGameOfLife(QWidget):
     turn_number = Property(int, fget=get_turn_number, constant=True)
 
     @staticmethod
-    def properties_name_list() -> List[str]:
-        """Returns list of ACCESSIBLE properties associated specifically with this widget."""
+    def savable_properties_name_list() -> List[str]:
+        """Returns list of savable properties associated specifically with this widget."""
         return ["state", "cols", "rows", "turn_duration", "border_thickness", "border_color", "cell_dead_color",
                 "cell_alive_color"]
+
+    @staticmethod
+    def all_properties_name_list() -> List[str]:
+        """Returns list of all properties associated specifically with this widget."""
+        return ["state", "cols", "rows", "turn_duration", "border_thickness", "border_color", "cell_dead_color",
+                "cell_alive_color", "is_game_running", "turn_number"]

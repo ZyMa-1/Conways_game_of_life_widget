@@ -4,11 +4,11 @@ Author: ZyMa-1
 
 from copy import copy
 
-from PySide6.QtCore import QObject
+from PySide6.QtCore import QObject, Signal
 
 
 class SignalCollector(QObject):
-    def __init__(self, signal, parent=None):
+    def __init__(self, signal: Signal, parent=None):
         super().__init__(parent)
         self.signal_cumulative_data = []
 

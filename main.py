@@ -7,20 +7,26 @@ import os
 import pathlib
 import sys
 
-from PySide6.QtCore import QCoreApplication, QTranslator, QLocale, QSettings
+from PySide6.QtCore import QCoreApplication, QTranslator, QLocale
 from PySide6.QtWidgets import QApplication
 
 import src.resources_py.rc_resources
+from src.backend.PathManager import PathManager
+from src.backend.SettingsManager import SettingsManager
 
 
 def __keep_alive():
     _ = src.resources_py.rc_resources
 
 
-if __name__ == '__main__':
-    os.environ['PROJECT_ROOT'] = str(pathlib.Path(__file__).absolute().parent)
+def ensure_if_ok_to_run():
+    PathManager.set_project_root(pathlib.Path(__file__).absolute().parent)
     os.makedirs('configs', exist_ok=True)
     os.makedirs('exports', exist_ok=True)
+
+
+if __name__ == '__main__':
+    ensure_if_ok_to_run()
 
     MainWindow = getattr(importlib.import_module('src.widgets.MainWindow'), 'MainWindow')
 
@@ -31,8 +37,9 @@ if __name__ == '__main__':
     app.setApplicationVersion("0.1")
 
     # Retrieving language value from settings
-    settings = QSettings()
-    lang = settings.value("Language", QLocale.Language.English, type=str)
+    settings = SettingsManager().settings_instance()
+    settings.sync()
+    lang = settings.value("Language", "en", type=str)
     if lang == "ru":
         lang = QLocale.Language.Russian
     elif lang == "en":
