@@ -3,12 +3,12 @@ Qt linguist stuff (yea)
 Notify properties methods (yea)
 Remove _game_properties_to_widgets_values function, replace it with PropertiesManager (yes done)
 
-Good old settings manager
+Good old settings manager (yes)
 Make separate color handler widget to separate its inner logic (button click, color dialog itself and stuff,
-    and outside logic (maybe idk))
-Auto convert widget to properties func in PropertiesManager.
+    and outside logic (maybe idk)) (nah, no need)
+Auto convert widget to properties func in PropertiesManager. (y)
 I am thinking of some config file which literally would define all handlers stuff and it is even better to do
-    that for settings
+    that for settings (good thing, but hard to create customizable thing)
 
 Why StringList property doesnt work?? (why)
 Status bar hints (lazy)

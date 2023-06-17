@@ -8,8 +8,6 @@ from PySide6.QtWidgets import QMainWindow, QLabel, QColorDialog, QPushButton
 
 from src.backend.ImageSaver import ImageSaver
 from src.backend.MessageBoxFactory import MessageBoxFactory
-
-from src.backend.PathManager import PathManager
 from src.backend.SettingsManager import SettingsManager
 from src.backend.SignalCollector import SignalCollector
 from src.backend.WarningMessageBoxGenerator import WarningMessageBoxGenerator
@@ -45,15 +43,15 @@ class MainWindow(QMainWindow):
         self.ui.setupUi(self)
 
         # Create expected attributes
-        self.color_dialog_handler_1 = None
-        self.color_dialog_handler_2 = None
-        self.color_dialog_handler_3 = None
-        self.action_group = None
-        self.config_manager = None
-        self.properties_manager = None
-        self.settings = None
-        self.image_saver = None
-        self.warning_generator = None
+        self.color_dialog_handler_1: ColorDialogHandler | None = None
+        self.color_dialog_handler_2: ColorDialogHandler | None = None
+        self.color_dialog_handler_3: ColorDialogHandler | None = None
+        self.action_group: QActionGroup | None = None
+        self.config_manager: ConwaysGameOfLifeConfigManager | None = None
+        self.properties_manager: ConwaysGameOfLifePropertiesManager | None = None
+        self.settings: QSettings | None = None
+        self.image_saver: ImageSaver | None = None
+        self.warning_generator: WarningMessageBoxGenerator | None = None
 
         # Init UI
         self.create_all_annoying_stuff()
@@ -86,10 +84,6 @@ class MainWindow(QMainWindow):
                                                          label=self.ui.cell_dead_color_label,
                                                          parent=self)
 
-    @staticmethod
-    def _get_label_bg_color(label: QLabel) -> QColor:
-        return label.palette().color(label.backgroundRole())
-
     @Slot()
     def handle_start_button_clicked(self):
         self.ui.conways_game_of_life_widget.start_game()
@@ -106,7 +100,7 @@ class MainWindow(QMainWindow):
 
     @Slot()
     def handle_apply_button_clicked(self):
-        self._widgets_values_to_game_properties()
+        self.properties_manager.assign_all_widget_values_to_properties()
 
         warning = self.warning_generator.generate_warning_message_box(parent=self)
         if warning is not None:
@@ -175,43 +169,6 @@ class MainWindow(QMainWindow):
             message_box.exec()
 
     # :Annoying functions that my eyes are afraid of:
-    # Get away
-    # Get away
-    # Get away
-    # Get away
-    # Get away
-    # Get away
-    # Get away
-    # Get away
-    # Get away
-    # Get away
-    # Get away
-    # Get away
-
-    def _widgets_values_to_game_properties(self):
-        self.ui.conways_game_of_life_widget.rows = int(self.ui.rows_spin_box.value())
-        self.ui.conways_game_of_life_widget.cols = int(self.ui.cols_spin_box.value())
-        self.ui.conways_game_of_life_widget.turn_duration = int(self.ui.turn_duration_spin_box.value())
-        self.ui.conways_game_of_life_widget.border_thickness = int(self.ui.border_thickness_spin_box.value())
-        self.ui.conways_game_of_life_widget.border_color = self._get_label_bg_color(self.ui.border_color_label)
-        self.ui.conways_game_of_life_widget.cell_dead_color = self._get_label_bg_color(self.ui.cell_dead_color_label)
-        self.ui.conways_game_of_life_widget.cell_alive_color = self._get_label_bg_color(self.ui.cell_alive_color_label)
-
-    #
-    # def _game_properties_to_widgets_values(self):
-    #     self.ui.rows_spin_box.setValue(self.ui.conways_game_of_life_widget.rows)
-    #     self.ui.cols_spin_box.setValue(self.ui.conways_game_of_life_widget.cols)
-    #     self.ui.turn_duration_spin_box.setValue(self.ui.conways_game_of_life_widget.turn_duration)
-    #     self.ui.border_thickness_spin_box.setValue(self.ui.conways_game_of_life_widget.border_thickness)
-    #     color = self.ui.conways_game_of_life_widget.border_color
-    #     r, g, b = color.red(), color.green(), color.blue()
-    #     self.ui.border_color_label.setStyleSheet(f"background-color: rgb({r},{g},{b});")
-    #     color = self.ui.conways_game_of_life_widget.cell_dead_color
-    #     r, g, b = color.red(), color.green(), color.blue()
-    #     self.ui.cell_dead_color_label.setStyleSheet(f"background-color: rgb({r},{g},{b});")
-    #     color = self.ui.conways_game_of_life_widget.cell_alive_color
-    #     r, g, b = color.red(), color.green(), color.blue()
-    #     self.ui.cell_alive_color_label.setStyleSheet(f"background-color: rgb({r},{g},{b});")
 
     def create_all_annoying_stuff(self):
         # Create ConfigManager
@@ -226,9 +183,11 @@ class MainWindow(QMainWindow):
 
         # Create handlers for widgets using property manager
         self.properties_manager.add_handler_by_property_name(widget=self.ui.is_game_running_label,
-                                                             property_name="is_game_running")
+                                                             property_name="is_game_running",
+                                                             is_two_way=False)
         self.properties_manager.add_handler_by_property_name(widget=self.ui.turn_number_label,
-                                                             property_name="turn_number")
+                                                             property_name="turn_number",
+                                                             is_two_way=False)
         self.properties_manager.add_handler_by_property_name(widget=self.ui.rows_spin_box,
                                                              property_name="rows")
         self.properties_manager.add_handler_by_property_name(widget=self.ui.cols_spin_box,

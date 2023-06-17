@@ -37,8 +37,7 @@ if __name__ == '__main__':
     app.setApplicationVersion("0.1")
 
     # Retrieving language value from settings
-    settings = SettingsManager().settings_instance()
-    settings.sync()
+    settings = SettingsManager(parent=app).settings_instance()
     lang = settings.value("Language", "en", type=str)
     if lang == "ru":
         lang = QLocale.Language.Russian

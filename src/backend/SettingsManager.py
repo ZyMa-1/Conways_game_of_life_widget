@@ -20,9 +20,7 @@ class _SingletonMeta(type(QObject), type):
 class SettingsManager(QObject, metaclass=_SingletonMeta):
     def __init__(self, parent=None):
         super().__init__(parent)
-        self.settings = QSettings()
-        self.settings.setDefaultFormat(QSettings.Format.IniFormat)
-        self.settings.setPath(QSettings.Format.IniFormat, QSettings.Scope.UserScope, str(PathManager.SETTINGS_INI))
+        self.settings = QSettings(str(PathManager.SETTINGS_INI), QSettings.Format.IniFormat)
 
     def settings_instance(self) -> QSettings:
         return self.settings

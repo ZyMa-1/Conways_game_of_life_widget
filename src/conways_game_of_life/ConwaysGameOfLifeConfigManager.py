@@ -25,7 +25,7 @@ class ConwaysGameOfLifeConfigManager(QObject):
         self.PROJECT_ROOT = PathManager.PROJECT_ROOT
         self.CONFIGS_DIR = PathManager.CONFIGS_DIR
 
-        self._object_dict = {}
+        self._property_dict = {}
 
     def save_config(self, parent=None) -> None | str:
         """Saves widget properties to '.json' file. Returns filename if operation was completed, None otherwise."""
@@ -42,7 +42,7 @@ class ConwaysGameOfLifeConfigManager(QObject):
 
             file_path = pathlib.Path(file_dialog.selectedFiles()[0])
             with open(file_path, 'w') as file:
-                json.dump(self._object_dict, file, indent=4)
+                json.dump(self._property_dict, file, indent=4)
 
             return file_path.name
 
@@ -60,7 +60,7 @@ class ConwaysGameOfLifeConfigManager(QObject):
         if file_dialog.exec() == QFileDialog.DialogCode.Accepted:
             file_path = pathlib.Path(file_dialog.selectedFiles()[0])
             with open(file_path, 'r') as file:
-                self._object_dict = json.load(file)
+                self._property_dict = json.load(file)
 
             self._load_properties()
 
@@ -69,21 +69,21 @@ class ConwaysGameOfLifeConfigManager(QObject):
         return None
 
     def _save_properties(self):
-        self._object_dict.clear()
-        for name in self.conways_game_of_life_widget.savable_properties_name_list():
-            value = getattr(self.conways_game_of_life_widget, name)
+        self._property_dict.clear()
+        for property_name in self.conways_game_of_life_widget.savable_properties_name_list():
+            value = self.conways_game_of_life_widget.property(property_name)
             value = self._convert_value_to_json(value)
 
-            self._object_dict[name] = value
+            self._property_dict[property_name] = value
         # print(self._object_dict)
 
     def _load_properties(self):
         # print(self._object_dict)
-        for name in self._object_dict:
-            value = getattr(self.conways_game_of_life_widget, name)
+        for property_name in self._property_dict:
+            value = self.conways_game_of_life_widget.property(property_name)
             value = self._convert_value_from_json(value)
 
-            setattr(self.conways_game_of_life_widget, name, value)
+            setattr(self.conways_game_of_life_widget, property_name, value)
 
     @staticmethod
     def _convert_value_from_json(value):

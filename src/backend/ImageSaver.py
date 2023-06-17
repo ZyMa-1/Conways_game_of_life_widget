@@ -5,7 +5,7 @@ Author: ZyMa-1
 import pathlib
 
 from PySide6.QtCore import QObject, QCoreApplication
-from PySide6.QtWidgets import QFileDialog, QWidget
+from PySide6.QtWidgets import QFileDialog
 
 from .PathManager import PathManager
 
