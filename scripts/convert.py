@@ -7,7 +7,7 @@ Author: ZyMa-1
 import pathlib
 import subprocess as sp
 
-PROJECT_ROOT = pathlib.Path("C:/Users/ponom/PycharmProjects/Conways_game_of_life_widget")
+PROJECT_ROOT = pathlib.Path(__file__).absolute().parent.parent
 
 
 def convert(input_path: pathlib.Path, output_path: pathlib.Path):

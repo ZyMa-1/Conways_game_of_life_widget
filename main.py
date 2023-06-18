@@ -7,7 +7,7 @@ import os
 import pathlib
 import sys
 
-from PySide6.QtCore import QCoreApplication, QTranslator, QLocale
+from PySide6.QtCore import QTranslator, QLocale
 from PySide6.QtWidgets import QApplication
 
 import src.resources_py.rc_resources
@@ -32,8 +32,8 @@ if __name__ == '__main__':
 
     app = QApplication(sys.argv)
 
-    app.setOrganizationName(QCoreApplication.translate("Application", "ZyMa-1"))
-    app.setApplicationName(QCoreApplication.translate("Application", "Conway's Game Of Life Widget"))
+    app.setOrganizationName("ZyMa-1")
+    app.setApplicationName("Conway's Game Of Life Widget")
     app.setApplicationVersion("0.1")
 
     # Retrieving language value from settings

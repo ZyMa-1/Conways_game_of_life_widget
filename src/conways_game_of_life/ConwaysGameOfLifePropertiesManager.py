@@ -122,7 +122,7 @@ class ConwaysGameOfLifePropertiesManager(QObject):
             return
 
         property_changed_signal = self._get_property_changed_signal(property_name)
-        value = self.conways_game_of_life_widget.property(property_name)
+        value = getattr(self.conways_game_of_life_widget, property_name)
         slot = self._slot_factory.create_slot_by_property_name(property_name=property_name,
                                                                widget=widget)
 
@@ -150,6 +150,3 @@ class ConwaysGameOfLifePropertiesManager(QObject):
             raise AttributeError(f"Property signal is not a signal. Property signal is {type(property_changed_signal)}")
 
         return property_changed_signal
-
-    def _get_property_value(self, property_name: str):
-        return self.conways_game_of_life_widget.property(property_name)

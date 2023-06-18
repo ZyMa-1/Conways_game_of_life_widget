@@ -6,6 +6,7 @@ import pathlib
 
 
 class PathManager:
+    """Class for storing paths."""
     PROJECT_ROOT = None
     CONFIGS_DIR = None
     EXPORTS_DIR = None

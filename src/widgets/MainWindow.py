@@ -46,7 +46,7 @@ class MainWindow(QMainWindow):
         self.color_dialog_handler_1: ColorDialogHandler | None = None
         self.color_dialog_handler_2: ColorDialogHandler | None = None
         self.color_dialog_handler_3: ColorDialogHandler | None = None
-        self.action_group: QActionGroup | None = None
+        self.lang_action_group: QActionGroup | None = None
         self.config_manager: ConwaysGameOfLifeConfigManager | None = None
         self.properties_manager: ConwaysGameOfLifePropertiesManager | None = None
         self.settings: QSettings | None = None
@@ -57,14 +57,14 @@ class MainWindow(QMainWindow):
         self.create_all_annoying_stuff()
         self.init_ui()
 
-        self._connect_signals_to_slots()
+        self.connect_signals_to_slots()
 
     def init_ui(self):
         # Create action group
-        self.action_group = QActionGroup(self)
-        self.action_group.setExclusive(True)
-        self.action_group.addAction(self.ui.action_english_US)
-        self.action_group.addAction(self.ui.action_russian_RU)
+        self.lang_action_group = QActionGroup(self)
+        self.lang_action_group.setExclusive(True)
+        self.lang_action_group.addAction(self.ui.action_english_US)
+        self.lang_action_group.addAction(self.ui.action_russian_RU)
 
         # Change language check box
         lang = self.settings.value("Language", "en", type=str)
@@ -168,7 +168,7 @@ class MainWindow(QMainWindow):
                                                                              lang="en")
             message_box.exec()
 
-    # :Annoying functions that my eyes are afraid of:
+    # Init functions
 
     def create_all_annoying_stuff(self):
         # Create ConfigManager
@@ -214,7 +214,7 @@ class MainWindow(QMainWindow):
             SignalCollector(self.ui.conways_game_of_life_widget.property_setter_error_signal, parent=self),
             parent=self)
 
-    def _connect_signals_to_slots(self):
+    def connect_signals_to_slots(self):
         self.ui.action_about.triggered.connect(self.handle_action_about_triggered)
         self.ui.start_button.clicked.connect(self.handle_start_button_clicked)
         self.ui.stop_button.clicked.connect(self.handle_stop_button_clicked)

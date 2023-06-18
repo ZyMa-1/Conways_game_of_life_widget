@@ -1,5 +1,5 @@
 """
-Config manager for saving properties and loading them from the widget.
+Config manager for saving properties to json file and loading them from the widget.
 
 Author: ZyMa-1
 """
@@ -13,6 +13,22 @@ from PySide6.QtWidgets import QFileDialog
 
 from src.backend.PathManager import PathManager
 from src.conways_game_of_life.ConwaysGameOfLife import ConwaysGameOfLife
+
+
+class _ValueConverter:
+    @staticmethod
+    def convert_value_from_json(value):
+        if isinstance(value, QColor):
+            value = QColor(value[0], value[1], value[2])
+
+        return value
+
+    @staticmethod
+    def convert_value_to_json(value):
+        if isinstance(value, QColor):
+            value = (value.red(), value.green(), value.blue())
+
+        return value
 
 
 class ConwaysGameOfLifeConfigManager(QObject):
@@ -71,8 +87,8 @@ class ConwaysGameOfLifeConfigManager(QObject):
     def _save_properties(self):
         self._property_dict.clear()
         for property_name in self.conways_game_of_life_widget.savable_properties_name_list():
-            value = self.conways_game_of_life_widget.property(property_name)
-            value = self._convert_value_to_json(value)
+            value = getattr(self.conways_game_of_life_widget, property_name)
+            value = _ValueConverter.convert_value_to_json(value)
 
             self._property_dict[property_name] = value
         # print(self._object_dict)
@@ -80,21 +96,7 @@ class ConwaysGameOfLifeConfigManager(QObject):
     def _load_properties(self):
         # print(self._object_dict)
         for property_name in self._property_dict:
-            value = self.conways_game_of_life_widget.property(property_name)
-            value = self._convert_value_from_json(value)
+            value = getattr(self.conways_game_of_life_widget, property_name)
+            value = _ValueConverter.convert_value_from_json(value)
 
             setattr(self.conways_game_of_life_widget, property_name, value)
-
-    @staticmethod
-    def _convert_value_from_json(value):
-        if isinstance(value, QColor):
-            value = QColor(value[0], value[1], value[2])
-
-        return value
-
-    @staticmethod
-    def _convert_value_to_json(value):
-        if isinstance(value, QColor):
-            value = (value.red(), value.green(), value.blue())
-
-        return value
