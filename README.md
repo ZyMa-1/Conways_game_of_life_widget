@@ -1,7 +1,6 @@
 # Conways_game_of_life_widget
 [![Python Version](https://img.shields.io/badge/python-3.10-blue.svg)](https://www.python.org/downloads/release/python-310/)
-[![Tests](https://img.shields.io/badge/tests-$\{{tests-passed\}\}-brightgreen.svg)](https://github.com/ZyMa-1/Conways_game_of_life_widget/actions)
-
+![Test Status](https://github.com/ZyMa-1/Conways_game_of_life_widget/actions/workflows/tets.yml/badge.svg?branch=main)
 
 Custom widget using PySide6 and Python 3.10 version.  
 Integratable with Qt Designer.  
