@@ -22,6 +22,7 @@ jobs:
 
       - name: Install dependencies
         run: pip install -r requirements.txt
+
       - name: Ensure PySide6 is installed correctly
         run: pip install PySide6==6.5.1
 
