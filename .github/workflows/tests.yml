@@ -34,6 +34,7 @@ jobs:
         with:
           name: Test Results - ${{ matrix.os }}
           path: test-reports
+
       - name: Set test status
         if: steps.tests.outcome == 'success'
         run: echo "::set-output name=tests-passed::true"
