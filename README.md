@@ -32,13 +32,9 @@ nuitka --onefile --follow-imports --quiet --disable-console --plugin-enable=pysi
 ```
 This will create `main.oneilfe-build/` directory. Executable file contains in a project root directory.
 
-# Screenshots  
+# Showcase  
   
-![MainWindow screeshot](/readme_images/1.png)  
-  
-![Qt Designer screenshot 1](/readme_images/2.png)  
-  
-![Qt Designer screenshot 1](/readme_images/3.png)
+Screnshoots of the 'MainWindow' and QtDesigner interface, showcasing the loaded plugin, contains in [/readme_images](/readme_images) directory.
 
 # Thanks to qtforpython-6 documentation:
  1. https://doc.qt.io/qt-6/designer-using-custom-widgets.html
