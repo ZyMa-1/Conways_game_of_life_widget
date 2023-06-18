@@ -4,7 +4,8 @@
 
 Custom widget using PySide6 and Python 3.10 version.  
 Integratable with Qt Designer.  
-Has ConfigManager, which can save properties in a json file and then load them back to widget.  
+The project includes a ConfigManager that enables the saving of game widget properties to a JSON file and subsequently loading them back into a widget.
+The project also includes a PropertiesManager that facilitates communication between widgets and game widget properties, ensuring that any changes made to one are appropriately reflected in the other.
 
 # Building with Nuitka
 Install nuitka in your venv:
