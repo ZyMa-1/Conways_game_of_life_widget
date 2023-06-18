@@ -19,7 +19,7 @@ Run following command:
 nuitka --standalone --follow-imports --quiet --disable-console --plugin-enable=pyside6 --output-filename=conways_game_of_life.exe .\main.py
 ```
 This will create `main.build/` and `main.dist/` directory. Executable file contains in a dist directory.
-</br>
+</br>  
 **Building one file:**  
 </br>
 Run following command:
