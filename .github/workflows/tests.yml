@@ -28,13 +28,3 @@ jobs:
 
       - name: Run tests
         run: python -m unittest discover -s tests -p "test_*.py"
-
-      - name: Upload test results
-        uses: actions/upload-artifact@v3
-        with:
-          name: Test Results - ${{ matrix.os }}
-          path: test-reports
-
-      - name: Set test status
-        if: steps.tests.outcome == 'success'
-        run: echo "::set-output name=tests-passed::true"
