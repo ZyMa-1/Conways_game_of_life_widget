@@ -1,9 +1,7 @@
 name: Count Lines of Code
 
 on:
-  push:
-    branches:
-      - main
+  workflow_dispatch:
 
 jobs:
   count-loc:
