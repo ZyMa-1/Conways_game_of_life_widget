@@ -1,10 +1,16 @@
 # Conways_game_of_life_widget
 [![Python Version](https://img.shields.io/badge/python-3.10-blue.svg)](https://www.python.org/downloads/release/python-310/)
-![Test Status](https://github.com/ZyMa-1/Conways_game_of_life_widget/actions/workflows/tests.yml/badge.svg?branch=main)
+[![Licence MIT](https://img.shields.io/badge/License-MIT-purple.svg)](/LICENCE)
+![Lines of Code](https://img.shields.io/badge/Lines%20of%20Code-{{LOCCOUNT}}-blue)
+![Test Status](https://github.com/ZyMa-1/Conways_game_of_life_widget/actions/workflows/tests.yml/badge.svg?branch=master)
 
 Custom widget using PySide6 and Python 3.10 version.  
 Integratable with Qt Designer.  
-Has ConfigManager, which can save properties in a json file and then load them back to widget.  
+  
+The project includes a ConfigManager that enables the saving of game widget properties to a JSON file and subsequently loading them back into a widget.  
+  
+The project also includes a PropertiesManager that facilitates communication between widgets and game widget properties, ensuring that any changes made to one are appropriately reflected in the other.
+  
 
 # Building with Nuitka
 Install nuitka in your venv:
@@ -19,7 +25,7 @@ Run following command:
 nuitka --standalone --follow-imports --quiet --disable-console --plugin-enable=pyside6 --output-filename=conways_game_of_life.exe .\main.py
 ```
 This will create `main.build/` and `main.dist/` directory. Executable file contains in a dist directory.
-</br>
+</br>  
 **Building one file:**  
 </br>
 Run following command:
@@ -28,13 +34,9 @@ nuitka --onefile --follow-imports --quiet --disable-console --plugin-enable=pysi
 ```
 This will create `main.oneilfe-build/` directory. Executable file contains in a project root directory.
 
-# Screenshots  
+# Showcase  
   
-![MainWindow screeshot](/readme_images/1.png)  
-  
-![Qt Designer screenshot 1](/readme_images/2.png)  
-  
-![Qt Designer screenshot 1](/readme_images/3.png)
+Screnshoots of the 'MainWindow' and QtDesigner interface, showcasing the loaded plugin, contains in [/readme_images](/readme_images) directory.
 
 # Thanks to qtforpython-6 documentation:
  1. https://doc.qt.io/qt-6/designer-using-custom-widgets.html
