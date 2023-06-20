@@ -1,0 +1,18 @@
+name: Count Lines of Code
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  count-loc:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Count Lines of Code
+        run: |
+          LOC=$(find . -name '*.py' | xargs cat | wc -l)
+          echo "Lines of Code: $LOC" >> $GITHUB_ENV
