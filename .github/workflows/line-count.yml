@@ -11,6 +11,11 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Count Lines of Code
+        id: loc
         run: |
           LOC=$(find . -name '*.py' | xargs cat | wc -l)
-          echo "Lines of Code: $LOC" >> $GITHUB_ENV
+          echo "::set-output name=lines_of_code::$LOC"
+
+      - name: Replace Line Count Placeholder
+        run: |
+          sed -i "s/{{LOCCOUNT}}/${{ steps.loc.outputs.lines_of_code }}/g" README.md
