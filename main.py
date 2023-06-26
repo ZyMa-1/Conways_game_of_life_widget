@@ -36,6 +36,13 @@ if __name__ == '__main__':
     app.setApplicationName("Conway's Game Of Life Widget")
     app.setApplicationVersion("0.1")
 
+    # DEBUG (to receive dumpObjectInfo output)
+    # def message_handler(mode, context, message):
+    #     print(message)
+    #
+    #
+    # qInstallMessageHandler(message_handler)
+
     # Retrieving language value from settings
     settings = SettingsManager(parent=app).settings_instance()
     lang = settings.value("Language", "en", type=str)

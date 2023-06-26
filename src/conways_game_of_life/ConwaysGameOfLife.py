@@ -93,6 +93,7 @@ class ConwaysGameOfLife(QWidget):
                 value):
             self._state = value
             self.update()
+            self.state_changed.emit(self._state)
         else:
             raise ValueError("State value is not correct")
 
@@ -105,6 +106,7 @@ class ConwaysGameOfLife(QWidget):
             raise ValueError("Columns value must be positive")
         self._cols = value
         self._layout_changed.emit()
+        self.cols_changed.emit(self._cols)
 
     def get_rows(self):
         return self._rows
@@ -115,6 +117,7 @@ class ConwaysGameOfLife(QWidget):
             raise ValueError("Rows value must be positive")
         self._rows = value
         self._layout_changed.emit()
+        self.rows_changed.emit(self._rows)
 
     def get_turn_duration(self):
         return self._turn_duration
@@ -124,6 +127,7 @@ class ConwaysGameOfLife(QWidget):
         if value <= 100:
             raise ValueError("Turn duration must be greater than 100")
         self._turn_duration = value
+        self.turn_duration_changed.emit(self._turn_duration)
 
     def get_border_thickness(self):
         return self._border_thickness
@@ -134,6 +138,7 @@ class ConwaysGameOfLife(QWidget):
             raise ValueError("Border thickness must be a non negative and not very big integer")
         self._border_thickness = value
         self.update()
+        self.border_thickness_changed.emit(self._border_thickness)
 
     def get_border_color(self):
         return self._border_color.color
@@ -142,6 +147,7 @@ class ConwaysGameOfLife(QWidget):
     def set_border_color(self, value: QColor | Tuple[int, int, int]):
         self._border_color.set_color(value)
         self.update()
+        self.border_color_changed.emit(self._border_color.color)
 
     def get_cell_dead_color(self):
         return self._cell_dead_color.color
@@ -150,6 +156,7 @@ class ConwaysGameOfLife(QWidget):
     def set_cell_dead_color(self, value: QColor | Tuple[int, int, int]):
         self._cell_dead_color.set_color(value)
         self.update()
+        self.cell_dead_color_changed.emit(self._cell_dead_color.color)
 
     def get_cell_alive_color(self):
         return self._cell_alive_color.color
@@ -158,6 +165,7 @@ class ConwaysGameOfLife(QWidget):
     def set_cell_alive_color(self, value: QColor | Tuple[int, int, int]):
         self._cell_alive_color.set_color(value)
         self.update()
+        self.cell_alive_color_changed.emit(self._cell_alive_color.color)
 
     # :Some functions:
 
@@ -217,7 +225,7 @@ class ConwaysGameOfLife(QWidget):
 
         self._state = new_state
 
-        self.turn_duration_changed.emit(self._turn_number)
+        self.turn_number_changed.emit(self._turn_number)
         self.update()
 
     # !Game control functions!
@@ -397,7 +405,7 @@ class ConwaysGameOfLife(QWidget):
     cols = Property(int, get_cols, set_cols, notify=cols_changed)
     rows = Property(int, get_rows, set_rows, notify=rows_changed)
     turn_duration = Property(int, get_turn_duration, set_turn_duration, notify=turn_duration_changed)
-    border_thickness = Property(int, get_border_thickness, set_border_thickness, notify=border_thickness_changed)
+    border_thickness = Property(int, get_border_thickness, set_border_thickness, notify=state_changed)
     border_color = Property(QColor, get_border_color, set_border_color, notify=border_color_changed)
     cell_dead_color = Property(QColor, get_cell_dead_color, set_cell_dead_color, notify=cell_dead_color_changed)
     cell_alive_color = Property(QColor, get_cell_alive_color, set_cell_alive_color, notify=cell_alive_color_changed)
@@ -408,11 +416,11 @@ class ConwaysGameOfLife(QWidget):
     @staticmethod
     def savable_properties_name_list() -> List[str]:
         """Returns list of savable properties associated specifically with this widget."""
-        return ["state", "cols", "rows", "turn_duration", "border_thickness", "border_color", "cell_dead_color",
-                "cell_alive_color"]
+        return ["cols", "rows", "turn_duration", "border_thickness", "border_color", "cell_dead_color",
+                "cell_alive_color", "state"]
 
     @staticmethod
-    def all_properties_name_list() -> List[str]:
+    def all_dynamic_properties_name_list() -> List[str]:
         """Returns list of all properties associated specifically with this widget."""
-        return ["state", "cols", "rows", "turn_duration", "border_thickness", "border_color", "cell_dead_color",
-                "cell_alive_color", "is_game_running", "turn_number"]
+        return ["cols", "rows", "turn_duration", "border_thickness", "border_color", "cell_dead_color",
+                "cell_alive_color", "is_game_running", "turn_number", "state"]

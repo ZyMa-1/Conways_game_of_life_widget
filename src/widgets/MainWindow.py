@@ -3,7 +3,7 @@ Author: ZyMa-1
 """
 
 from PySide6.QtCore import Slot, QObject, QSettings
-from PySide6.QtGui import QColor, QActionGroup
+from PySide6.QtGui import QActionGroup
 from PySide6.QtWidgets import QMainWindow, QLabel, QColorDialog, QPushButton
 
 from src.backend.ImageSaver import ImageSaver
@@ -11,8 +11,9 @@ from src.backend.MessageBoxFactory import MessageBoxFactory
 from src.backend.SettingsManager import SettingsManager
 from src.backend.SignalCollector import SignalCollector
 from src.backend.WarningMessageBoxGenerator import WarningMessageBoxGenerator
-from src.conways_game_of_life.ConwaysGameOfLifeConfigManager import ConwaysGameOfLifeConfigManager
-from src.conways_game_of_life.ConwaysGameOfLifePropertiesManager import ConwaysGameOfLifePropertiesManager
+from src.conways_game_of_life.ConfigManager.ConwaysGameOfLifeConfigManager import ConwaysGameOfLifeConfigManager
+from src.conways_game_of_life.PropertiesManager.ConwaysGameOfLifePropertiesManager import \
+    ConwaysGameOfLifePropertiesManager
 from src.ui.Ui_MainWindow import Ui_MainWindow
 from src.widgets.AboutDialog import AboutDialog
 
@@ -184,10 +185,10 @@ class MainWindow(QMainWindow):
         # Create handlers for widgets using property manager
         self.properties_manager.add_handler_by_property_name(widget=self.ui.is_game_running_label,
                                                              property_name="is_game_running",
-                                                             is_two_way=False)
+                                                             is_both_way=False)
         self.properties_manager.add_handler_by_property_name(widget=self.ui.turn_number_label,
                                                              property_name="turn_number",
-                                                             is_two_way=False)
+                                                             is_both_way=False)
         self.properties_manager.add_handler_by_property_name(widget=self.ui.rows_spin_box,
                                                              property_name="rows")
         self.properties_manager.add_handler_by_property_name(widget=self.ui.cols_spin_box,

@@ -1,16 +1,4 @@
-Improve DOM_XML to be more dynamic (yes done)
-Qt linguist stuff (yea)
-Notify properties methods (yea)
-Remove _game_properties_to_widgets_values function, replace it with PropertiesManager (yes done)
-
-Good old settings manager (yes)
-Make separate color handler widget to separate its inner logic (button click, color dialog itself and stuff,
-    and outside logic (maybe idk)) (nah, no need)
-Auto convert widget to properties func in PropertiesManager. (y)
-I am thinking of some config file which literally would define all handlers stuff and it is even better to do
-    that for settings (good thing, but hard to create customizable thing)
-
-Why StringList property doesnt work?? (why)
+Why StringList property doesnt work??
 Status bar hints (lazy)
 Try to write Jekyll documentation (lazy)
 QML (no, i have so much to do)

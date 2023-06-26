@@ -8,50 +8,12 @@ import json
 import pathlib
 
 from PySide6.QtCore import QObject
-from PySide6.QtGui import QColor
 from PySide6.QtWidgets import QFileDialog
 
 from src.backend.PathManager import PathManager
 from src.conways_game_of_life.ConwaysGameOfLife import ConwaysGameOfLife
-
-
-class _ValueConverter:
-    @staticmethod
-    def convert_value_from_json(value):
-        if isinstance(value, QColor):
-            value = QColor(value[0], value[1], value[2])
-
-        return value
-
-    @staticmethod
-    def convert_value_from_widget(value):
-        if isinstance(value, QColor):
-            value = (value.red(), value.green(), value.blue())
-
-        return value
-
-
-class _DialogFactory:
-    @staticmethod
-    def create_save_config_file_dialog(*, parent, dir: str) -> QFileDialog:
-        file_dialog = QFileDialog(parent)
-        file_dialog.setDefaultSuffix('json')
-        file_dialog.setDirectory(dir)
-        file_dialog.setFileMode(QFileDialog.FileMode.AnyFile)
-        file_dialog.setAcceptMode(QFileDialog.AcceptMode.AcceptSave)
-        file_dialog.setNameFilters(["JSON Files (*.json)"])
-        file_dialog.setWindowTitle("Save Config")
-        return file_dialog
-
-    @staticmethod
-    def create_load_config_file_dialog(*, parent, dir: str) -> QFileDialog:
-        file_dialog = QFileDialog(parent)
-        file_dialog.setDefaultSuffix('json')
-        file_dialog.setFileMode(QFileDialog.FileMode.ExistingFile)
-        file_dialog.setDirectory(dir)
-        file_dialog.setNameFilters(["JSON Files (*.json)"])
-        file_dialog.setWindowTitle("Load Config")
-        return file_dialog
+from .FileDialogFactory import FileDialogFactory
+from .QtPropertyJsonConverter import QtPropertyJsonConverter
 
 
 class ConwaysGameOfLifeConfigManager(QObject):
@@ -68,8 +30,8 @@ class ConwaysGameOfLifeConfigManager(QObject):
 
     def save_config(self, parent=None) -> None | str:
         """Saves widget properties to '.json' file. Returns filename if operation was completed, None otherwise."""
-        file_dialog = _DialogFactory.create_save_config_file_dialog(parent=parent,
-                                                                    dir=str(self.CONFIGS_DIR))
+        file_dialog = FileDialogFactory.create_save_config_file_dialog(parent=parent,
+                                                                       dir=str(self.CONFIGS_DIR))
         if file_dialog.exec() == QFileDialog.DialogCode.Accepted:
             self._save_properties()
 
@@ -83,8 +45,8 @@ class ConwaysGameOfLifeConfigManager(QObject):
 
     def load_config(self, parent=None) -> None | str:
         """Loads widget properties from a '.json' file. Returns filename if operation was completed, None otherwise."""
-        file_dialog = _DialogFactory.create_load_config_file_dialog(parent=parent,
-                                                                    dir=str(self.CONFIGS_DIR))
+        file_dialog = FileDialogFactory.create_load_config_file_dialog(parent=parent,
+                                                                       dir=str(self.CONFIGS_DIR))
         if file_dialog.exec() == QFileDialog.DialogCode.Accepted:
             file_path = pathlib.Path(file_dialog.selectedFiles()[0])
             with open(file_path, 'r') as file:
@@ -100,13 +62,11 @@ class ConwaysGameOfLifeConfigManager(QObject):
         self._property_dict.clear()
         for property_name in self.conways_game_of_life_widget.savable_properties_name_list():
             value = getattr(self.conways_game_of_life_widget, property_name)
-            value = _ValueConverter.convert_value_from_widget(value)
+            value = QtPropertyJsonConverter.to_json_type(value)
 
             self._property_dict[property_name] = value
 
     def _load_properties(self):
-        for property_name in self._property_dict:
-            value = getattr(self.conways_game_of_life_widget, property_name)
-            value = _ValueConverter.convert_value_from_json(value)
-
+        for property_name, value in self._property_dict.items():
+            value = QtPropertyJsonConverter.to_property_type(value)
             setattr(self.conways_game_of_life_widget, property_name, value)
