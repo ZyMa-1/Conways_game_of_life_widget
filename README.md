@@ -1,5 +1,5 @@
 # Conways_game_of_life_widget
-[![Python Version](https://img.shields.io/badge/python-3.10-blue.svg)](https://www.python.org/downloads/release/python-310/)
+[![Python Version](https://img.shields.io/badge/Python-3.10-blue.svg)](https://www.python.org/downloads/release/python-310/)
 [![Licence MIT](https://img.shields.io/badge/License-MIT-purple.svg)](/LICENCE)
 ![Test Status](https://github.com/ZyMa-1/Conways_game_of_life_widget/actions/workflows/tests.yml/badge.svg?branch=master)
 
