@@ -37,6 +37,10 @@ This will create `main.oneilfe-build/` directory. Executable file contains in a 
   
 Screnshoots of the 'MainWindow' and QtDesigner interface, showcasing the loaded plugin, contains in [/readme_images](/readme_images) directory.
 
+# Blog
+
+I wrote a detailed blog about all parts of an applcation [right here](https://zyma-1.github.io/technical/2023/06/26/Conways-game-of-life-as-a-PySide6-widget.html)
+
 # Thanks to qtforpython-6 documentation:
  1. https://doc.qt.io/qt-6/designer-using-custom-widgets.html
  2. https://doc.qt.io/qtforpython-6/deployment/index.html
