@@ -1,5 +1,0 @@
-Convert resources (.qrs) file to python (.py) file:
-
-pyside6-rcc .\src\resources_qrc\resources.qrc -o .\src\resources_py\rc_resources.py
-
-To use it, import it to the main.py file.
