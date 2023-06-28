@@ -75,6 +75,8 @@ class MainWindow(QMainWindow):
             self.ui.action_english_US.setChecked(True)
         self.ui.conways_game_of_life_widget.setFocus()
 
+        # Create color dialog handlers
+
         self.color_dialog_handler_1 = ColorDialogHandler(button=self.ui.border_color_button,
                                                          label=self.ui.border_color_label,
                                                          parent=self)

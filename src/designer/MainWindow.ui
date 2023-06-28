@@ -71,6 +71,9 @@
             <pointsize>11</pointsize>
            </font>
           </property>
+          <property name="statusTip">
+           <string>Turn number label</string>
+          </property>
           <property name="text">
            <string>0</string>
           </property>
@@ -94,6 +97,9 @@
            <font>
             <pointsize>11</pointsize>
            </font>
+          </property>
+          <property name="statusTip">
+           <string>Is game running label</string>
           </property>
           <property name="text">
            <string>:)</string>
@@ -132,7 +138,7 @@
          <enum>Qt::StrongFocus</enum>
         </property>
         <property name="statusTip">
-         <string/>
+         <string>Conway's game of life widget</string>
         </property>
         <property name="whatsThis">
          <string/>
@@ -168,6 +174,9 @@
         </property>
         <item>
          <widget class="QPushButton" name="start_button">
+          <property name="statusTip">
+           <string>Start game button</string>
+          </property>
           <property name="text">
            <string>Start</string>
           </property>
@@ -175,6 +184,9 @@
         </item>
         <item>
          <widget class="QPushButton" name="stop_button">
+          <property name="statusTip">
+           <string>Stop game button</string>
+          </property>
           <property name="text">
            <string>Stop</string>
           </property>
@@ -182,6 +194,9 @@
         </item>
         <item>
          <widget class="QPushButton" name="clear_board_button">
+          <property name="statusTip">
+           <string>Clear board button</string>
+          </property>
           <property name="text">
            <string>Clear board</string>
           </property>
@@ -196,6 +211,9 @@
           <width>0</width>
           <height>30</height>
          </size>
+        </property>
+        <property name="statusTip">
+         <string>Reset to default button</string>
         </property>
         <property name="text">
          <string>Reset to default</string>
@@ -261,6 +279,9 @@
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <widget class="QDockWidget" name="dockWidget">
+   <property name="statusTip">
+    <string>Dock widget</string>
+   </property>
    <property name="styleSheet">
     <string notr="true"/>
    </property>
@@ -327,6 +348,9 @@
          <property name="focusPolicy">
           <enum>Qt::ClickFocus</enum>
          </property>
+         <property name="statusTip">
+          <string>Apply settings button</string>
+         </property>
          <property name="text">
           <string>Apply</string>
          </property>
@@ -340,6 +364,9 @@
        </item>
        <item row="5" column="1" colspan="2">
         <widget class="QSpinBox" name="turn_duration_spin_box">
+         <property name="statusTip">
+          <string>Turn duration spin box</string>
+         </property>
          <property name="suffix">
           <string> ms</string>
          </property>
@@ -356,6 +383,9 @@
          <property name="focusPolicy">
           <enum>Qt::WheelFocus</enum>
          </property>
+         <property name="statusTip">
+          <string>Row count spin box</string>
+         </property>
          <property name="minimum">
           <number>-100</number>
          </property>
@@ -371,6 +401,9 @@
            <width>0</width>
            <height>0</height>
           </size>
+         </property>
+         <property name="statusTip">
+          <string>Cell alive color button</string>
          </property>
          <property name="text">
           <string>Choose color...</string>
@@ -392,6 +425,9 @@
            <height>0</height>
           </size>
          </property>
+         <property name="statusTip">
+          <string>Border color button</string>
+         </property>
          <property name="text">
           <string>Choose color...</string>
          </property>
@@ -410,6 +446,9 @@
            <width>20</width>
            <height>20</height>
           </size>
+         </property>
+         <property name="statusTip">
+          <string>Label displaying color</string>
          </property>
          <property name="text">
           <string/>
@@ -448,6 +487,9 @@
            <height>0</height>
           </size>
          </property>
+         <property name="statusTip">
+          <string>Label displaying color</string>
+         </property>
          <property name="text">
           <string/>
          </property>
@@ -467,6 +509,9 @@
            <width>0</width>
            <height>0</height>
           </size>
+         </property>
+         <property name="statusTip">
+          <string>Cell dead color button</string>
          </property>
          <property name="text">
           <string>Choose color...</string>
@@ -489,6 +534,9 @@
        </item>
        <item row="4" column="1" colspan="2">
         <widget class="QSpinBox" name="cols_spin_box">
+         <property name="statusTip">
+          <string>Column count spin box</string>
+         </property>
          <property name="minimum">
           <number>-100</number>
          </property>
@@ -511,6 +559,9 @@
            <height>20</height>
           </size>
          </property>
+         <property name="statusTip">
+          <string>Label displaying color</string>
+         </property>
          <property name="text">
           <string/>
          </property>
@@ -518,6 +569,9 @@
        </item>
        <item row="6" column="1" colspan="2">
         <widget class="QSpinBox" name="border_thickness_spin_box">
+         <property name="statusTip">
+          <string>Border thickness spin box</string>
+         </property>
          <property name="suffix">
           <string> px</string>
          </property>
@@ -535,10 +589,16 @@
    <property name="text">
     <string>About</string>
    </property>
+   <property name="statusTip">
+    <string>About application</string>
+   </property>
   </action>
   <action name="action_export_to_image">
    <property name="text">
     <string>Export to image</string>
+   </property>
+   <property name="statusTip">
+    <string>Export game widget to image</string>
    </property>
   </action>
   <action name="actionExport_config_to_json">
@@ -555,9 +615,15 @@
    <property name="text">
     <string>Save config</string>
    </property>
+   <property name="statusTip">
+    <string>Save config</string>
+   </property>
   </action>
   <action name="action_load_config">
    <property name="text">
+    <string>Load config</string>
+   </property>
+   <property name="statusTip">
     <string>Load config</string>
    </property>
   </action>
@@ -571,6 +637,9 @@
    <property name="text">
     <string>Game of life settings</string>
    </property>
+   <property name="statusTip">
+    <string>Change Dock widget visibility</string>
+   </property>
   </action>
   <action name="action_english_US">
    <property name="checkable">
@@ -582,6 +651,9 @@
    <property name="text">
     <string>English (US)</string>
    </property>
+   <property name="statusTip">
+    <string>English</string>
+   </property>
   </action>
   <action name="action_russian_RU">
    <property name="checkable">
@@ -589,6 +661,9 @@
    </property>
    <property name="text">
     <string>Russian (RU)</string>
+   </property>
+   <property name="statusTip">
+    <string>Russian</string>
    </property>
   </action>
  </widget>
