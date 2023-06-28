@@ -5,13 +5,13 @@ Create ".ts" file using *pyside6-lupdate* tool:
 ```
 pyside6-lupdate main.py .\src\ .\src\backend\ImageSaver.py .\src\backend\MessageBoxFactory.py .\src\backend\WarningMessageBoxGenerator.py -ts .\localization\translations\main_gui_ru.ts
 ```
-
+<br>
 Open ".ts" file using Qt-Linguist tool, do translations and save the result:
 
 ```
 pyside6-linguist
 ```
-
+<br>
 Convert resulted ".ts" files to ".qm" files using *pyside6-lrelease* tool:
 
 ```
