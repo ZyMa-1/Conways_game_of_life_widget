@@ -1,4 +1,5 @@
-#Resources
+# Resources
+
 To convert resources (.qrs) files to python (.py) files use *pyside6-rcc* tool:
 
 ```
