@@ -68,7 +68,6 @@ class ConwaysGameOfLife(QWidget):
         self._cell_alive_color = ColorProperty(DEFAULT_CELL_ON_COLOR)
         self._cell_dead_color = ColorProperty(DEFAULT_CELL_OFF_COLOR)
         self._is_game_running = False
-        self._timer = QTimer(self)
         self._cols = DEFAULT_COLS
         self._rows = DEFAULT_ROWS
         self._turn_duration = DEFAULT_TURN_DURATION
