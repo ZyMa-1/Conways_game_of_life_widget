@@ -11,7 +11,8 @@ class MessageBoxFactory(QObject):
         box = QMessageBox(parent)
         box.setWindowTitle(QCoreApplication.translate("MessageBoxFactory", "Message"))
         box.setIcon(QMessageBox.Icon.Information)
-        box.setText(QCoreApplication.translate("MessageBoxFactory", "File save successfully at") + f"'exports/{filename}'")
+        box.setText(
+            QCoreApplication.translate("MessageBoxFactory", "File save successfully at") + f"'exports/{filename}'")
         return box
 
     @staticmethod
@@ -27,7 +28,7 @@ class MessageBoxFactory(QObject):
         box = QMessageBox(parent)
         box.setWindowTitle(QCoreApplication.translate("MessageBoxFactory", "Message"))
         box.setIcon(QMessageBox.Icon.Information)
-        box.setText(QCoreApplication.translate("MessageBoxFactory", "Config loaded from") + f"'configs/{filename}'")
+        box.setText(f"Config loaded from 'configs/{filename}'")
         return box
 
     @staticmethod
@@ -35,6 +36,7 @@ class MessageBoxFactory(QObject):
         box = QMessageBox(parent)
         box.setWindowTitle(QCoreApplication.translate("MessageBoxFactory", "Message"))
         box.setIcon(QMessageBox.Icon.Information)
-        box.setText(QCoreApplication.translate("MessageBoxFactory", "Language changed to ") + lang +
-                    QCoreApplication.translate("MessageBoxFactory", ". Restart app to see the changes"))
+        box.setText(QCoreApplication.translate("MessageBoxFactory",
+                                               "Language changed to ") + lang + ". " + QCoreApplication.translate(
+            "MessageBoxFactory", "Restart app to see the changes"))
         return box
