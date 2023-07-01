@@ -17,7 +17,7 @@ from src.conways_game_of_life.ConfigManager.ConwaysGameOfLifeConfigManager impor
 from src.conways_game_of_life.ConwaysGameOfLife import ConwaysGameOfLife
 from src.conways_game_of_life.PropertiesManager.ConwaysGameOfLifePropertiesManager import \
     ConwaysGameOfLifePropertiesManager
-from src.threads.PatternsDataLoader import PatternsDataLoader
+from src.runnable_threads.PatternsDataLoader import PatternsDataLoader
 from src.ui.Ui_MainWindow import Ui_MainWindow
 from src.widgets.AboutDialog import AboutDialog
 

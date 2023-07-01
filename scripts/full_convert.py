@@ -3,7 +3,6 @@ Converts .ui file to .py file using 'pyside6-uic' command line tool
 
 Author: ZyMa-1
 """
-import os
 import pathlib
 import subprocess as sp
 from typing import List

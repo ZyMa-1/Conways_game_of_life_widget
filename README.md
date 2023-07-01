@@ -9,15 +9,18 @@ Integratable with Qt Designer.
 The project includes a ConfigManager that enables the saving of game widget properties to a JSON file and subsequently loading them back into a widget.  
   
 The project also includes a PropertiesManager that facilitates communication between widgets and game widget properties, ensuring that any changes made to one are appropriately reflected in the other.
+
+Goal of the project was to learn how to build scalable and manageble application.
   
 # Info
+- [Main.md](/info/Main.md)
 - [Build.md](/info/Build.md)
 - [Localization.md](/info/Localization.md)
 - [Resources.md](/info/Resources.md)
 
 # Showcase  
   
-Screnshoots of the 'MainWindow' and QtDesigner interface, showcasing the loaded plugin, contains in [/readme_images](/readme_images) directory.
+Screenshots of the 'MainWindow' and QtDesigner interface, showcasing the loaded plugin, contains in [/readme_images](/readme_images) directory.
 
 # Blog
 
@@ -26,3 +29,5 @@ I have written a detailed blog covering all aspects of the application. You can 
 # Thanks to qtforpython-6 documentation:
  1. https://doc.qt.io/qt-6/designer-using-custom-widgets.html
  2. https://doc.qt.io/qtforpython-6/deployment/index.html
+
+And there is much more useful information there.
