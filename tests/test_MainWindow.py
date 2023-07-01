@@ -20,7 +20,7 @@ def create_app():
 
     app.setOrganizationName("ZyMa-1")
     app.setApplicationName("Conway's Game Of Life Widget")
-    app.setApplicationVersion("0.1.1")
+    app.setApplicationVersion("0.2")
     return app
 
 
@@ -44,6 +44,7 @@ class MainWindowTest(unittest.TestCase):
 
         cls.temp_configs = tempfile.TemporaryDirectory(prefix="config")
         cls.temp_exports = tempfile.TemporaryDirectory(prefix="exports")
+        cls.temp_pattern_gallery = tempfile.TemporaryDirectory(prefix="pattern_gallery")
         cls.settings_temp_file_path = PathManager.PROJECT_ROOT / 'settings.ini'
 
         cls.settings = SettingsManager(parent=cls.app).settings_instance()

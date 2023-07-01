@@ -8,7 +8,7 @@ from PySide6.QtDesigner import (QDesignerCustomWidgetInterface)
 from PySide6.QtGui import QIcon
 
 from .ConwaysGameOfLife import ConwaysGameOfLife, DEFAULT_COLS, DEFAULT_ROWS, DEFAULT_TURN_DURATION, \
-    DEFAULT_BORDER_THICKNESS, DEFAULT_BORDER_COLOR, DEFAULT_CELL_ON_COLOR, DEFAULT_CELL_OFF_COLOR
+    DEFAULT_BORDER_THICKNESS, DEFAULT_BORDER_COLOR, DEFAULT_CELL_ALIVE_COLOR, DEFAULT_CELL_DEAD_COLOR
 from .ConwaysGameOfLife_taskmenu import ConwaysGameOfLifeTaskMenuFactory
 
 min_w = 322
@@ -46,16 +46,16 @@ DOM_XML = f"""
         </property>
         <property name='cell_dead_color'>
             <color>
-                <red>{DEFAULT_CELL_OFF_COLOR.red()}</red>
-                <green>{DEFAULT_CELL_OFF_COLOR.green()}</green>
-                <blue>{DEFAULT_CELL_OFF_COLOR.blue()}</blue>
+                <red>{DEFAULT_CELL_DEAD_COLOR.red()}</red>
+                <green>{DEFAULT_CELL_DEAD_COLOR.green()}</green>
+                <blue>{DEFAULT_CELL_DEAD_COLOR.blue()}</blue>
             </color>
         </property>
         <property name='cell_alive_color'>
             <color>
-                <red>{DEFAULT_CELL_ON_COLOR.red()}</red>
-                <green>{DEFAULT_CELL_ON_COLOR.green()}</green>
-                <blue>{DEFAULT_CELL_ON_COLOR.blue()}</blue>
+                <red>{DEFAULT_CELL_ALIVE_COLOR.red()}</red>
+                <green>{DEFAULT_CELL_ALIVE_COLOR.green()}</green>
+                <blue>{DEFAULT_CELL_ALIVE_COLOR.blue()}</blue>
             </color>
         </property>
     </widget>

@@ -16,14 +16,14 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
 from PySide6.QtWidgets import (QAbstractButton, QApplication, QDialog, QDialogButtonBox,
-    QGridLayout, QLabel, QSizePolicy, QSpacerItem,
-    QVBoxLayout, QWidget)
+    QFrame, QGridLayout, QLabel, QSizePolicy,
+    QSpacerItem, QVBoxLayout, QWidget)
 
 class Ui_Dialog(object):
     def setupUi(self, Dialog):
         if not Dialog.objectName():
             Dialog.setObjectName(u"Dialog")
-        Dialog.resize(320, 187)
+        Dialog.resize(320, 218)
         self.verticalLayout = QVBoxLayout(Dialog)
         self.verticalLayout.setObjectName(u"verticalLayout")
         self.verticalLayout_2 = QVBoxLayout()
@@ -53,42 +53,49 @@ class Ui_Dialog(object):
 
         self.gridLayout.addWidget(self.author_name_label, 0, 1, 1, 1)
 
-        self.label_4 = QLabel(Dialog)
-        self.label_4.setObjectName(u"label_4")
-        sizePolicy1 = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
-        sizePolicy1.setHorizontalStretch(0)
-        sizePolicy1.setVerticalStretch(0)
-        sizePolicy1.setHeightForWidth(self.label_4.sizePolicy().hasHeightForWidth())
-        self.label_4.setSizePolicy(sizePolicy1)
-
-        self.gridLayout.addWidget(self.label_4, 2, 0, 1, 1)
-
         self.label = QLabel(Dialog)
         self.label.setObjectName(u"label")
-        sizePolicy2 = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
-        sizePolicy2.setHorizontalStretch(0)
-        sizePolicy2.setVerticalStretch(0)
-        sizePolicy2.setHeightForWidth(self.label.sizePolicy().hasHeightForWidth())
-        self.label.setSizePolicy(sizePolicy2)
+        sizePolicy1 = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
+        sizePolicy1.setHorizontalStretch(0)
+        sizePolicy1.setVerticalStretch(0)
+        sizePolicy1.setHeightForWidth(self.label.sizePolicy().hasHeightForWidth())
+        self.label.setSizePolicy(sizePolicy1)
         self.label.setStyleSheet(u"")
         self.label.setAlignment(Qt.AlignLeading|Qt.AlignLeft|Qt.AlignTop)
 
         self.gridLayout.addWidget(self.label, 0, 0, 1, 1)
 
-        self.docs_link_label = QLabel(Dialog)
-        self.docs_link_label.setObjectName(u"docs_link_label")
+        self.label_4 = QLabel(Dialog)
+        self.label_4.setObjectName(u"label_4")
+        sizePolicy2 = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
+        sizePolicy2.setHorizontalStretch(0)
+        sizePolicy2.setVerticalStretch(0)
+        sizePolicy2.setHeightForWidth(self.label_4.sizePolicy().hasHeightForWidth())
+        self.label_4.setSizePolicy(sizePolicy2)
 
-        self.gridLayout.addWidget(self.docs_link_label, 2, 1, 1, 1)
+        self.gridLayout.addWidget(self.label_4, 3, 0, 1, 1)
+
+        self.app_version_label = QLabel(Dialog)
+        self.app_version_label.setObjectName(u"app_version_label")
+
+        self.gridLayout.addWidget(self.app_version_label, 1, 1, 1, 1)
+
+        self.label_2 = QLabel(Dialog)
+        self.label_2.setObjectName(u"label_2")
+
+        self.gridLayout.addWidget(self.label_2, 4, 0, 1, 1)
 
         self.label_6 = QLabel(Dialog)
         self.label_6.setObjectName(u"label_6")
 
         self.gridLayout.addWidget(self.label_6, 1, 0, 1, 1)
 
-        self.app_version_label = QLabel(Dialog)
-        self.app_version_label.setObjectName(u"app_version_label")
+        self.line = QFrame(Dialog)
+        self.line.setObjectName(u"line")
+        self.line.setFrameShape(QFrame.HLine)
+        self.line.setFrameShadow(QFrame.Sunken)
 
-        self.gridLayout.addWidget(self.app_version_label, 1, 1, 1, 1)
+        self.gridLayout.addWidget(self.line, 2, 0, 1, 2)
 
 
         self.verticalLayout_2.addLayout(self.gridLayout)
@@ -108,18 +115,16 @@ class Ui_Dialog(object):
 
 
         self.retranslateUi(Dialog)
-
-        QMetaObject.connectSlotsByName(Dialog)
     # setupUi
 
     def retranslateUi(self, Dialog):
         Dialog.setWindowTitle(QCoreApplication.translate("Dialog", u"About", None))
         self.app_name_label.setText(QCoreApplication.translate("Dialog", u"{app_name}", None))
         self.author_name_label.setText(QCoreApplication.translate("Dialog", u"{author_name}", None))
-        self.label_4.setText(QCoreApplication.translate("Dialog", u"Documentation: ", None))
         self.label.setText(QCoreApplication.translate("Dialog", u"Author:", None))
-        self.docs_link_label.setText(QCoreApplication.translate("Dialog", u"{docs_link}", None))
-        self.label_6.setText(QCoreApplication.translate("Dialog", u"App version:", None))
+        self.label_4.setText(QCoreApplication.translate("Dialog", u"Spend my free time on this project (:", None))
         self.app_version_label.setText(QCoreApplication.translate("Dialog", u"{app_version}", None))
+        self.label_2.setText(QCoreApplication.translate("Dialog", u"Hope it will pay off", None))
+        self.label_6.setText(QCoreApplication.translate("Dialog", u"App version:", None))
     # retranslateUi
 

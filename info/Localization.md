@@ -16,7 +16,7 @@ Convert resulted ".ts" files to ".qm" files using *pyside6-lrelease* tool:
 
 ```
 pyside6-lrelease .\localization\translations\main_gui_ru.ts -qm .\localization\translates\main_gui_ru.qm
-pyside6-lrelease .\localization\translations\main_gui_ru.ts -qm .\src\resources_qrc\translations\main_gui_ru.qm
+pyside6-lrelease .\localization\translations\main_gui_ru.ts -qm .\src\resources\translations\main_gui_ru.qm
 ```
 
 Don't forget to do 'Resources.md' next, as qtforpython documentation recommends to hold ".qm" files in Qt Resource system.

@@ -1,0 +1,124 @@
+import json
+import os
+import pathlib
+
+from PySide6.QtCore import QRunnable, QObject, Signal, Slot, Qt, QSize, QRect, QPoint
+from PySide6.QtGui import QOffscreenSurface, QPainter, QPixmap, QImage
+from jsonschema import validators
+from jsonschema.exceptions import ValidationError
+
+from src.backend.PathManager import PathManager
+from src.conways_game_of_life.ConwaysGameOfLife import ConwaysGameOfLife
+
+schema = {
+    "type": "object",
+    "properties": {
+        "rows": {"type": "integer"},
+        "cols": {"type": "integer"},
+        "state": {
+            "type": "array",
+            "items": {
+                "type": "array",
+                "items": {"type": "string"}
+            }
+        },
+        "pattern_name": {"type": "string"}
+    },
+    "required": ["rows", "cols", "state", "pattern_name"]
+}
+
+
+class PatternsDataLoader(QRunnable):
+    def __init__(self):
+        super().__init__()
+
+        self.PATTERN_GALLERY = PathManager.PATTERN_GALLERY_DIR
+        self.json_file_paths = []
+        self.result_data = []
+        self.signals = _PatternDataLoaderSignals()
+
+    def run(self):
+        self.load_file_paths()
+        for file_path in self.json_file_paths:
+            with open(file_path, "r") as json_file:
+                data = json.load(json_file)
+
+            if not self.validate_json_data(data):
+                continue
+
+            parsed_data = self.parse_data(data)
+            if not self.validate_data_on_widget(parsed_data):
+                continue
+
+            self.result_data.append((parsed_data, self.generate_pixmap(parsed_data)))
+
+        self.signals.finished.emit()
+        self.signals.data_generated.emit(self.result_data)
+
+    @staticmethod
+    def validate_data_on_widget(parsed_data: dict) -> bool:
+        is_valid = True
+
+        @Slot(str, str)
+        def _error_catch_slot(*args: str):
+            nonlocal is_valid
+            is_valid = False
+
+        game_widget = ConwaysGameOfLife()
+        game_widget.property_setter_error_signal.connect(_error_catch_slot)
+        game_widget.rows = parsed_data["rows"]
+        game_widget.cols = parsed_data["cols"]
+        game_widget.state = parsed_data["state"]
+        game_widget.property_setter_error_signal.disconnect(_error_catch_slot)
+        del game_widget
+
+        return is_valid
+
+    @staticmethod
+    def generate_pixmap(parsed_data: dict):
+        game_widget = ConwaysGameOfLife()
+        game_widget.setFixedSize(QSize(64, 64))
+        game_widget.rows = parsed_data["rows"]
+        game_widget.cols = parsed_data["cols"]
+        game_widget.state = parsed_data["state"]
+
+        pixmap = QPixmap(game_widget.size())
+
+        with QPainter(pixmap) as painter:
+            game_widget.render(painter, QPoint(0, 0), QRect(QPoint(0, 0), game_widget.size()))
+
+            result_width = 64
+            aspect_ratio = pixmap.width() / pixmap.height()
+            result_height = int(result_width / aspect_ratio)
+            resized_pixmap = pixmap.scaled(result_width, result_height, Qt.AspectRatioMode.KeepAspectRatio)
+
+            return resized_pixmap
+
+    @staticmethod
+    def parse_data(data: dict) -> dict:
+        return {"rows": int(data["rows"]),
+                "cols": int(data["cols"]),
+                "state": data["state"],
+                "pattern_name": str(data["pattern_name"])}
+
+    @staticmethod
+    def validate_json_data(data: dict) -> bool:
+        try:
+            validators.validate(data, schema)
+            return True
+        except ValidationError:
+            return False
+
+    def load_file_paths(self):
+        json_file_paths = []
+        with os.scandir(self.PATTERN_GALLERY) as entries:
+            for entry in entries:
+                if entry.is_file() and entry.name.endswith(".json"):
+                    json_file_paths.append(pathlib.Path(entry.path))
+
+        self.json_file_paths.extend(json_file_paths)
+
+
+class _PatternDataLoaderSignals(QObject):
+    finished = Signal()
+    data_generated = Signal(list)

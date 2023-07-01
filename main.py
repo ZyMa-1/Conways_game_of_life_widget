@@ -10,7 +10,6 @@ import sys
 from PySide6.QtCore import QTranslator, QLocale
 from PySide6.QtWidgets import QApplication
 
-import src.resources_py.rc_resources
 from src.backend.PathManager import PathManager
 from src.backend.SettingsManager import SettingsManager
 
@@ -22,14 +21,12 @@ from src.backend.SettingsManager import SettingsManager
 #
 # qInstallMessageHandler(message_handler)
 
-def __keep_alive():
-    _ = src.resources_py.rc_resources
-
 
 def ensure_if_ok_to_run():
     PathManager.set_project_root(pathlib.Path(__file__).absolute().parent)
     os.makedirs('configs', exist_ok=True)
     os.makedirs('exports', exist_ok=True)
+    os.makedirs('pattern_gallery', exist_ok=True)
 
 
 def init_language_settings():
@@ -42,8 +39,8 @@ def init_language_settings():
 
     # Initialize translations using resource file
     translator = QTranslator(app)
-    path = ':/translations'
-    if translator.load(lang, 'main_gui', '_', path):
+    path = ':/translations/main_gui_ru.qm'
+    if translator.load(lang, path):
         app.installTranslator(translator)
 
 
@@ -56,7 +53,7 @@ if __name__ == '__main__':
 
     app.setOrganizationName("ZyMa-1")
     app.setApplicationName("Conway's Game Of Life Widget")
-    app.setApplicationVersion("0.1.1")
+    app.setApplicationVersion("0.2")
 
     # Retrieving language value from settings
     init_language_settings()

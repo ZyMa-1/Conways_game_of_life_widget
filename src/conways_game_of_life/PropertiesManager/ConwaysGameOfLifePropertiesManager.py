@@ -22,14 +22,11 @@ class ConwaysGameOfLifePropertiesManager(QObject):
 
         self.conways_game_of_life_widget = conwaysGameOfLifeWidget
         self._slot_property_connector = SlotPropertyConnector(parent=self)
-        self._widget_value_converter = QtPropertyWidgetConverter()
 
-        self._slots_exist = {}  # property_name: True
-        self._widgets = {}  # property_name: widget
+        self._widgets = {}  # property_name: widget, for both mutual connection
 
     def add_handler_by_property_name(self, *, widget, property_name: str, is_both_way: bool = True):
-        if property_name in self._slots_exist or \
-                property_name not in self.conways_game_of_life_widget.all_dynamic_properties_name_list():
+        if property_name not in self.conways_game_of_life_widget.all_dynamic_properties_name_list():
             return
 
         property_changed_signal = self._get_property_changed_signal(property_name)
@@ -38,14 +35,13 @@ class ConwaysGameOfLifePropertiesManager(QObject):
                                                                  property_value=value,
                                                                  signal=property_changed_signal,
                                                                  widget=widget)
-        self._slots_exist[property_name] = True
         if is_both_way:
             self._widgets[property_name] = widget
 
     def assign_all_widget_values_to_properties(self):
         for property_name, widget in self._widgets.items():
-            value = self._widget_value_converter.convert_widget_value(property_name=property_name,
-                                                                      widget=widget)
+            value = QtPropertyWidgetConverter.convert_widget_value(property_name=property_name,
+                                                                   widget=widget)
             setattr(self.conways_game_of_life_widget, property_name, value)
 
     def _get_property_changed_signal(self, property_name: str) -> Signal:
@@ -55,6 +51,7 @@ class ConwaysGameOfLifePropertiesManager(QObject):
             raise AttributeError("Property changed signal does not exists")
 
         if not isinstance(property_changed_signal, Signal):
-            raise AttributeError(f"Property signal is not a signal. Property signal is {type(property_changed_signal)}")
+            raise AttributeError(
+                f"Property signal is not a signal. Retrieved object type is {type(property_changed_signal)}")
 
         return property_changed_signal

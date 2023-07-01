@@ -16,18 +16,20 @@ from PySide6.QtGui import (QAction, QBrush, QColor, QConicalGradient,
     QIcon, QImage, QKeySequence, QLinearGradient,
     QPainter, QPalette, QPixmap, QRadialGradient,
     QTransform)
-from PySide6.QtWidgets import (QApplication, QDockWidget, QGridLayout, QHBoxLayout,
-    QLabel, QLayout, QMainWindow, QMenu,
-    QMenuBar, QPushButton, QSizePolicy, QSpinBox,
-    QStatusBar, QVBoxLayout, QWidget)
+from PySide6.QtWidgets import (QApplication, QButtonGroup, QComboBox, QDockWidget,
+    QGridLayout, QHBoxLayout, QLabel, QLayout,
+    QMainWindow, QMenu, QMenuBar, QPushButton,
+    QSizePolicy, QSpacerItem, QSpinBox, QStatusBar,
+    QToolButton, QVBoxLayout, QWidget)
 
 from src.conways_game_of_life.ConwaysGameOfLife import ConwaysGameOfLife
+import src.resources.rc_resources
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
-        MainWindow.resize(574, 481)
+        MainWindow.resize(703, 481)
         sizePolicy = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -37,18 +39,14 @@ class Ui_MainWindow(object):
         self.action_about.setObjectName(u"action_about")
         self.action_export_to_image = QAction(MainWindow)
         self.action_export_to_image.setObjectName(u"action_export_to_image")
-        self.actionExport_config_to_json = QAction(MainWindow)
-        self.actionExport_config_to_json.setObjectName(u"actionExport_config_to_json")
-        self.action_export_to_mp4 = QAction(MainWindow)
-        self.action_export_to_mp4.setObjectName(u"action_export_to_mp4")
         self.action_save_config = QAction(MainWindow)
         self.action_save_config.setObjectName(u"action_save_config")
         self.action_load_config = QAction(MainWindow)
         self.action_load_config.setObjectName(u"action_load_config")
-        self.action_view_dock_widget = QAction(MainWindow)
-        self.action_view_dock_widget.setObjectName(u"action_view_dock_widget")
-        self.action_view_dock_widget.setCheckable(True)
-        self.action_view_dock_widget.setChecked(True)
+        self.action_view_settings = QAction(MainWindow)
+        self.action_view_settings.setObjectName(u"action_view_settings")
+        self.action_view_settings.setCheckable(True)
+        self.action_view_settings.setChecked(True)
         self.action_english_US = QAction(MainWindow)
         self.action_english_US.setObjectName(u"action_english_US")
         self.action_english_US.setCheckable(True)
@@ -56,6 +54,10 @@ class Ui_MainWindow(object):
         self.action_russian_RU = QAction(MainWindow)
         self.action_russian_RU.setObjectName(u"action_russian_RU")
         self.action_russian_RU.setCheckable(True)
+        self.action_view_tools = QAction(MainWindow)
+        self.action_view_tools.setObjectName(u"action_view_tools")
+        self.action_view_tools.setCheckable(True)
+        self.action_view_tools.setChecked(True)
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
         self.horizontalLayout = QHBoxLayout(self.centralwidget)
@@ -126,16 +128,19 @@ class Ui_MainWindow(object):
         self.layout_buttons.setContentsMargins(-1, 0, -1, -1)
         self.start_button = QPushButton(self.centralwidget)
         self.start_button.setObjectName(u"start_button")
+        self.start_button.setFocusPolicy(Qt.NoFocus)
 
         self.layout_buttons.addWidget(self.start_button)
 
         self.stop_button = QPushButton(self.centralwidget)
         self.stop_button.setObjectName(u"stop_button")
+        self.stop_button.setFocusPolicy(Qt.NoFocus)
 
         self.layout_buttons.addWidget(self.stop_button)
 
         self.clear_board_button = QPushButton(self.centralwidget)
         self.clear_board_button.setObjectName(u"clear_board_button")
+        self.clear_board_button.setFocusPolicy(Qt.NoFocus)
 
         self.layout_buttons.addWidget(self.clear_board_button)
 
@@ -145,6 +150,7 @@ class Ui_MainWindow(object):
         self.reset_to_default_button = QPushButton(self.centralwidget)
         self.reset_to_default_button.setObjectName(u"reset_to_default_button")
         self.reset_to_default_button.setMinimumSize(QSize(0, 30))
+        self.reset_to_default_button.setFocusPolicy(Qt.NoFocus)
 
         self.verticalLayout.addWidget(self.reset_to_default_button)
 
@@ -154,7 +160,7 @@ class Ui_MainWindow(object):
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QMenuBar(MainWindow)
         self.menubar.setObjectName(u"menubar")
-        self.menubar.setGeometry(QRect(0, 0, 574, 22))
+        self.menubar.setGeometry(QRect(0, 0, 703, 22))
         self.menuHelp = QMenu(self.menubar)
         self.menuHelp.setObjectName(u"menuHelp")
         self.menuExport = QMenu(self.menubar)
@@ -171,11 +177,12 @@ class Ui_MainWindow(object):
         self.statusbar = QStatusBar(MainWindow)
         self.statusbar.setObjectName(u"statusbar")
         MainWindow.setStatusBar(self.statusbar)
-        self.dockWidget = QDockWidget(MainWindow)
-        self.dockWidget.setObjectName(u"dockWidget")
-        self.dockWidget.setStyleSheet(u"")
-        self.dockWidget.setFloating(False)
-        self.dockWidget.setFeatures(QDockWidget.DockWidgetClosable|QDockWidget.DockWidgetFloatable|QDockWidget.DockWidgetMovable)
+        self.settings_dock_widget = QDockWidget(MainWindow)
+        self.settings_dock_widget.setObjectName(u"settings_dock_widget")
+        self.settings_dock_widget.setStyleSheet(u"")
+        self.settings_dock_widget.setFloating(False)
+        self.settings_dock_widget.setFeatures(QDockWidget.DockWidgetClosable|QDockWidget.DockWidgetFloatable|QDockWidget.DockWidgetMovable)
+        self.settings_dock_widget.setAllowedAreas(Qt.RightDockWidgetArea)
         self.dockWidgetContents_2 = QWidget()
         self.dockWidgetContents_2.setObjectName(u"dockWidgetContents_2")
         self.verticalLayout_2 = QVBoxLayout(self.dockWidgetContents_2)
@@ -204,13 +211,14 @@ class Ui_MainWindow(object):
         self.apply_button.setObjectName(u"apply_button")
         self.apply_button.setMinimumSize(QSize(0, 40))
         self.apply_button.setMaximumSize(QSize(16777214, 16777215))
-        self.apply_button.setFocusPolicy(Qt.ClickFocus)
+        self.apply_button.setFocusPolicy(Qt.NoFocus)
         self.apply_button.setFlat(False)
 
         self.layout_settings.addWidget(self.apply_button, 10, 1, 1, 2)
 
         self.turn_duration_spin_box = QSpinBox(self.dockWidgetContents_2)
         self.turn_duration_spin_box.setObjectName(u"turn_duration_spin_box")
+        self.turn_duration_spin_box.setFocusPolicy(Qt.ClickFocus)
         self.turn_duration_spin_box.setMinimum(-10000)
         self.turn_duration_spin_box.setMaximum(10000)
 
@@ -218,7 +226,7 @@ class Ui_MainWindow(object):
 
         self.rows_spin_box = QSpinBox(self.dockWidgetContents_2)
         self.rows_spin_box.setObjectName(u"rows_spin_box")
-        self.rows_spin_box.setFocusPolicy(Qt.WheelFocus)
+        self.rows_spin_box.setFocusPolicy(Qt.ClickFocus)
         self.rows_spin_box.setMinimum(-100)
         self.rows_spin_box.setMaximum(100)
 
@@ -227,6 +235,7 @@ class Ui_MainWindow(object):
         self.cell_alive_color_button = QPushButton(self.dockWidgetContents_2)
         self.cell_alive_color_button.setObjectName(u"cell_alive_color_button")
         self.cell_alive_color_button.setMinimumSize(QSize(0, 0))
+        self.cell_alive_color_button.setFocusPolicy(Qt.NoFocus)
 
         self.layout_settings.addWidget(self.cell_alive_color_button, 8, 1, 1, 1)
 
@@ -238,6 +247,7 @@ class Ui_MainWindow(object):
         self.border_color_button = QPushButton(self.dockWidgetContents_2)
         self.border_color_button.setObjectName(u"border_color_button")
         self.border_color_button.setMinimumSize(QSize(0, 0))
+        self.border_color_button.setFocusPolicy(Qt.NoFocus)
 
         self.layout_settings.addWidget(self.border_color_button, 7, 1, 1, 1)
 
@@ -271,6 +281,7 @@ class Ui_MainWindow(object):
         self.cell_dead_color_button = QPushButton(self.dockWidgetContents_2)
         self.cell_dead_color_button.setObjectName(u"cell_dead_color_button")
         self.cell_dead_color_button.setMinimumSize(QSize(0, 0))
+        self.cell_dead_color_button.setFocusPolicy(Qt.NoFocus)
 
         self.layout_settings.addWidget(self.cell_dead_color_button, 9, 1, 1, 1)
 
@@ -286,6 +297,7 @@ class Ui_MainWindow(object):
 
         self.cols_spin_box = QSpinBox(self.dockWidgetContents_2)
         self.cols_spin_box.setObjectName(u"cols_spin_box")
+        self.cols_spin_box.setFocusPolicy(Qt.ClickFocus)
         self.cols_spin_box.setMinimum(-100)
         self.cols_spin_box.setMaximum(100)
 
@@ -301,6 +313,7 @@ class Ui_MainWindow(object):
 
         self.border_thickness_spin_box = QSpinBox(self.dockWidgetContents_2)
         self.border_thickness_spin_box.setObjectName(u"border_thickness_spin_box")
+        self.border_thickness_spin_box.setFocusPolicy(Qt.ClickFocus)
         self.border_thickness_spin_box.setMinimum(-100)
 
         self.layout_settings.addWidget(self.border_thickness_spin_box, 6, 1, 1, 2)
@@ -308,8 +321,89 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_2.addLayout(self.layout_settings)
 
-        self.dockWidget.setWidget(self.dockWidgetContents_2)
-        MainWindow.addDockWidget(Qt.RightDockWidgetArea, self.dockWidget)
+        self.settings_dock_widget.setWidget(self.dockWidgetContents_2)
+        MainWindow.addDockWidget(Qt.RightDockWidgetArea, self.settings_dock_widget)
+        self.edit_tools_dock_widget = QDockWidget(MainWindow)
+        self.edit_tools_dock_widget.setObjectName(u"edit_tools_dock_widget")
+        self.edit_tools_dock_widget.setAllowedAreas(Qt.LeftDockWidgetArea)
+        self.dockWidgetContents_3 = QWidget()
+        self.dockWidgetContents_3.setObjectName(u"dockWidgetContents_3")
+        self.verticalLayout_4 = QVBoxLayout(self.dockWidgetContents_3)
+        self.verticalLayout_4.setObjectName(u"verticalLayout_4")
+        self.verticalLayout_4.setSizeConstraint(QLayout.SetDefaultConstraint)
+        self.verticalLayout_3 = QVBoxLayout()
+        self.verticalLayout_3.setObjectName(u"verticalLayout_3")
+        self.default_mode_tool_button = QToolButton(self.dockWidgetContents_3)
+        self.default_mode_tool_button.setObjectName(u"default_mode_tool_button")
+        sizePolicy4 = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Minimum)
+        sizePolicy4.setHorizontalStretch(0)
+        sizePolicy4.setVerticalStretch(0)
+        sizePolicy4.setHeightForWidth(self.default_mode_tool_button.sizePolicy().hasHeightForWidth())
+        self.default_mode_tool_button.setSizePolicy(sizePolicy4)
+        self.default_mode_tool_button.setMinimumSize(QSize(0, 30))
+        self.default_mode_tool_button.setCheckable(True)
+        self.default_mode_tool_button.setChecked(True)
+        self.default_mode_tool_button.setAutoExclusive(True)
+        self.default_mode_tool_button.setAutoRaise(False)
+
+        self.verticalLayout_3.addWidget(self.default_mode_tool_button)
+
+        self.paint_mode_tool_button = QToolButton(self.dockWidgetContents_3)
+        self.tool_button_group = QButtonGroup(MainWindow)
+        self.tool_button_group.setObjectName(u"tool_button_group")
+        self.tool_button_group.addButton(self.paint_mode_tool_button)
+        self.paint_mode_tool_button.setObjectName(u"paint_mode_tool_button")
+        sizePolicy4.setHeightForWidth(self.paint_mode_tool_button.sizePolicy().hasHeightForWidth())
+        self.paint_mode_tool_button.setSizePolicy(sizePolicy4)
+        self.paint_mode_tool_button.setMinimumSize(QSize(0, 30))
+        self.paint_mode_tool_button.setCheckable(True)
+        self.paint_mode_tool_button.setAutoExclusive(True)
+
+        self.verticalLayout_3.addWidget(self.paint_mode_tool_button, 0, Qt.AlignHCenter)
+
+        self.erase_mode_tool_button = QToolButton(self.dockWidgetContents_3)
+        self.tool_button_group.addButton(self.erase_mode_tool_button)
+        self.erase_mode_tool_button.setObjectName(u"erase_mode_tool_button")
+        sizePolicy4.setHeightForWidth(self.erase_mode_tool_button.sizePolicy().hasHeightForWidth())
+        self.erase_mode_tool_button.setSizePolicy(sizePolicy4)
+        self.erase_mode_tool_button.setMinimumSize(QSize(0, 30))
+        self.erase_mode_tool_button.setCheckable(True)
+        self.erase_mode_tool_button.setAutoExclusive(True)
+
+        self.verticalLayout_3.addWidget(self.erase_mode_tool_button, 0, Qt.AlignHCenter)
+
+        self.verticalSpacer = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
+
+        self.verticalLayout_3.addItem(self.verticalSpacer)
+
+
+        self.verticalLayout_4.addLayout(self.verticalLayout_3)
+
+        self.edit_tools_dock_widget.setWidget(self.dockWidgetContents_3)
+        MainWindow.addDockWidget(Qt.LeftDockWidgetArea, self.edit_tools_dock_widget)
+        self.pattern_gallery_dock_widget = QDockWidget(MainWindow)
+        self.pattern_gallery_dock_widget.setObjectName(u"pattern_gallery_dock_widget")
+        self.pattern_gallery_dock_widget.setAllowedAreas(Qt.LeftDockWidgetArea)
+        self.dockWidgetContents_4 = QWidget()
+        self.dockWidgetContents_4.setObjectName(u"dockWidgetContents_4")
+        self.verticalLayout_5 = QVBoxLayout(self.dockWidgetContents_4)
+        self.verticalLayout_5.setObjectName(u"verticalLayout_5")
+        self.patterns_combo_box = QComboBox(self.dockWidgetContents_4)
+        self.patterns_combo_box.setObjectName(u"patterns_combo_box")
+        self.patterns_combo_box.setEnabled(False)
+        self.patterns_combo_box.setFocusPolicy(Qt.NoFocus)
+
+        self.verticalLayout_5.addWidget(self.patterns_combo_box)
+
+        self.insert_pattern_button = QPushButton(self.dockWidgetContents_4)
+        self.insert_pattern_button.setObjectName(u"insert_pattern_button")
+        self.insert_pattern_button.setEnabled(False)
+        self.insert_pattern_button.setFocusPolicy(Qt.NoFocus)
+
+        self.verticalLayout_5.addWidget(self.insert_pattern_button)
+
+        self.pattern_gallery_dock_widget.setWidget(self.dockWidgetContents_4)
+        MainWindow.addDockWidget(Qt.LeftDockWidgetArea, self.pattern_gallery_dock_widget)
         QWidget.setTabOrder(self.rows_spin_box, self.cols_spin_box)
         QWidget.setTabOrder(self.cols_spin_box, self.border_thickness_spin_box)
         QWidget.setTabOrder(self.border_thickness_spin_box, self.cell_alive_color_button)
@@ -327,7 +421,8 @@ class Ui_MainWindow(object):
         self.menuExport.addAction(self.action_export_to_image)
         self.menuSave.addAction(self.action_save_config)
         self.menuLoad.addAction(self.action_load_config)
-        self.menuView.addAction(self.action_view_dock_widget)
+        self.menuView.addAction(self.action_view_settings)
+        self.menuView.addAction(self.action_view_tools)
         self.menuLanguage.addAction(self.action_english_US)
         self.menuLanguage.addAction(self.action_russian_RU)
 
@@ -335,8 +430,6 @@ class Ui_MainWindow(object):
 
         self.apply_button.setDefault(False)
 
-
-        QMetaObject.connectSlotsByName(MainWindow)
     # setupUi
 
     def retranslateUi(self, MainWindow):
@@ -349,8 +442,6 @@ class Ui_MainWindow(object):
 #if QT_CONFIG(statustip)
         self.action_export_to_image.setStatusTip(QCoreApplication.translate("MainWindow", u"Export game widget to image", None))
 #endif // QT_CONFIG(statustip)
-        self.actionExport_config_to_json.setText(QCoreApplication.translate("MainWindow", u"Export config to json", None))
-        self.action_export_to_mp4.setText(QCoreApplication.translate("MainWindow", u"Export to mp4", None))
         self.action_save_config.setText(QCoreApplication.translate("MainWindow", u"Save config", None))
 #if QT_CONFIG(statustip)
         self.action_save_config.setStatusTip(QCoreApplication.translate("MainWindow", u"Save config", None))
@@ -359,9 +450,9 @@ class Ui_MainWindow(object):
 #if QT_CONFIG(statustip)
         self.action_load_config.setStatusTip(QCoreApplication.translate("MainWindow", u"Load config", None))
 #endif // QT_CONFIG(statustip)
-        self.action_view_dock_widget.setText(QCoreApplication.translate("MainWindow", u"Game of life settings", None))
+        self.action_view_settings.setText(QCoreApplication.translate("MainWindow", u"Game of life settings", None))
 #if QT_CONFIG(statustip)
-        self.action_view_dock_widget.setStatusTip(QCoreApplication.translate("MainWindow", u"Change Dock widget visibility", None))
+        self.action_view_settings.setStatusTip(QCoreApplication.translate("MainWindow", u"Change Dock widget visibility", None))
 #endif // QT_CONFIG(statustip)
         self.action_english_US.setText(QCoreApplication.translate("MainWindow", u"English (US)", None))
 #if QT_CONFIG(statustip)
@@ -371,6 +462,7 @@ class Ui_MainWindow(object):
 #if QT_CONFIG(statustip)
         self.action_russian_RU.setStatusTip(QCoreApplication.translate("MainWindow", u"Russian", None))
 #endif // QT_CONFIG(statustip)
+        self.action_view_tools.setText(QCoreApplication.translate("MainWindow", u"Tools", None))
         self.label.setText(QCoreApplication.translate("MainWindow", u"Turn number:", None))
 #if QT_CONFIG(statustip)
         self.turn_number_label.setStatusTip(QCoreApplication.translate("MainWindow", u"Turn number label", None))
@@ -409,9 +501,9 @@ class Ui_MainWindow(object):
         self.menuView.setTitle(QCoreApplication.translate("MainWindow", u"View", None))
         self.menuLanguage.setTitle(QCoreApplication.translate("MainWindow", u"Language", None))
 #if QT_CONFIG(statustip)
-        self.dockWidget.setStatusTip(QCoreApplication.translate("MainWindow", u"Dock widget", None))
+        self.settings_dock_widget.setStatusTip(QCoreApplication.translate("MainWindow", u"Settings dock widget", None))
 #endif // QT_CONFIG(statustip)
-        self.dockWidget.setWindowTitle(QCoreApplication.translate("MainWindow", u"Game of life settings", None))
+        self.settings_dock_widget.setWindowTitle(QCoreApplication.translate("MainWindow", u"Game of life settings", None))
         self.label_4.setText(QCoreApplication.translate("MainWindow", u"Column count:", None))
         self.label_6.setText(QCoreApplication.translate("MainWindow", u"Border thickness:", None))
         self.label_2.setText(QCoreApplication.translate("MainWindow", u"Turn duration:", None))
@@ -461,5 +553,36 @@ class Ui_MainWindow(object):
         self.border_thickness_spin_box.setStatusTip(QCoreApplication.translate("MainWindow", u"Border thickness spin box", None))
 #endif // QT_CONFIG(statustip)
         self.border_thickness_spin_box.setSuffix(QCoreApplication.translate("MainWindow", u" px", None))
+#if QT_CONFIG(statustip)
+        self.edit_tools_dock_widget.setStatusTip(QCoreApplication.translate("MainWindow", u"Edit tools dock widget", None))
+#endif // QT_CONFIG(statustip)
+        self.edit_tools_dock_widget.setWindowTitle(QCoreApplication.translate("MainWindow", u"Edit tools", None))
+#if QT_CONFIG(statustip)
+        self.default_mode_tool_button.setStatusTip(QCoreApplication.translate("MainWindow", u"Default mode - change cell states one by one", None))
+#endif // QT_CONFIG(statustip)
+        self.default_mode_tool_button.setText(QCoreApplication.translate("MainWindow", u"\"Default\" mode", None))
+#if QT_CONFIG(statustip)
+        self.paint_mode_tool_button.setStatusTip(QCoreApplication.translate("MainWindow", u"Paint mode - Create multiple alive cells by dragging your mouse over the widget", None))
+#endif // QT_CONFIG(statustip)
+        self.paint_mode_tool_button.setText(QCoreApplication.translate("MainWindow", u"\"Paint\" mode", None))
+#if QT_CONFIG(statustip)
+        self.erase_mode_tool_button.setStatusTip(QCoreApplication.translate("MainWindow", u"Erase mode - Delete multiple alive cells by dragging your mouse over the widget", None))
+#endif // QT_CONFIG(statustip)
+        self.erase_mode_tool_button.setText(QCoreApplication.translate("MainWindow", u"\"Erase\" mode", None))
+#if QT_CONFIG(statustip)
+        self.pattern_gallery_dock_widget.setStatusTip(QCoreApplication.translate("MainWindow", u"Patterns dock widget", None))
+#endif // QT_CONFIG(statustip)
+        self.pattern_gallery_dock_widget.setWindowTitle(QCoreApplication.translate("MainWindow", u"Patterns", None))
+#if QT_CONFIG(statustip)
+        self.patterns_combo_box.setStatusTip(QCoreApplication.translate("MainWindow", u"Patterns combo box", None))
+#endif // QT_CONFIG(statustip)
+        self.patterns_combo_box.setCurrentText("")
+        self.patterns_combo_box.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Choose pattern", None))
+#if QT_CONFIG(statustip)
+        self.insert_pattern_button.setStatusTip(QCoreApplication.translate("MainWindow", u"Insert pattern to a current active cell", None))
+#endif // QT_CONFIG(statustip)
+        self.insert_pattern_button.setText(QCoreApplication.translate("MainWindow", u"Insert pattern\n"
+"to current \n"
+"position", None))
     # retranslateUi
 

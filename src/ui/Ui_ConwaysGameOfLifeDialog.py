@@ -19,7 +19,6 @@ from PySide6.QtWidgets import (QAbstractButton, QApplication, QDialog, QDialogBu
     QSizePolicy, QVBoxLayout, QWidget)
 
 from src.conways_game_of_life.ConwaysGameOfLife import ConwaysGameOfLife
-import resources_rc
 
 class Ui_ConwaysGameOfLifeDialog(object):
     def setupUi(self, ConwaysGameOfLifeDialog):
@@ -46,8 +45,6 @@ class Ui_ConwaysGameOfLifeDialog(object):
 
 
         self.retranslateUi(ConwaysGameOfLifeDialog)
-
-        QMetaObject.connectSlotsByName(ConwaysGameOfLifeDialog)
     # setupUi
 
     def retranslateUi(self, ConwaysGameOfLifeDialog):

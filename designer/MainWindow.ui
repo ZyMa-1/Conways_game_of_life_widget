@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>574</width>
+    <width>703</width>
     <height>481</height>
    </rect>
   </property>
@@ -174,6 +174,9 @@
         </property>
         <item>
          <widget class="QPushButton" name="start_button">
+          <property name="focusPolicy">
+           <enum>Qt::NoFocus</enum>
+          </property>
           <property name="statusTip">
            <string>Start game button</string>
           </property>
@@ -184,6 +187,9 @@
         </item>
         <item>
          <widget class="QPushButton" name="stop_button">
+          <property name="focusPolicy">
+           <enum>Qt::NoFocus</enum>
+          </property>
           <property name="statusTip">
            <string>Stop game button</string>
           </property>
@@ -194,6 +200,9 @@
         </item>
         <item>
          <widget class="QPushButton" name="clear_board_button">
+          <property name="focusPolicy">
+           <enum>Qt::NoFocus</enum>
+          </property>
           <property name="statusTip">
            <string>Clear board button</string>
           </property>
@@ -212,6 +221,9 @@
           <height>30</height>
          </size>
         </property>
+        <property name="focusPolicy">
+         <enum>Qt::NoFocus</enum>
+        </property>
         <property name="statusTip">
          <string>Reset to default button</string>
         </property>
@@ -229,7 +241,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>574</width>
+     <width>703</width>
      <height>22</height>
     </rect>
    </property>
@@ -261,7 +273,8 @@
     <property name="title">
      <string>View</string>
     </property>
-    <addaction name="action_view_dock_widget"/>
+    <addaction name="action_view_settings"/>
+    <addaction name="action_view_tools"/>
    </widget>
    <widget class="QMenu" name="menuLanguage">
     <property name="title">
@@ -278,9 +291,9 @@
    <addaction name="menuHelp"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
-  <widget class="QDockWidget" name="dockWidget">
+  <widget class="QDockWidget" name="settings_dock_widget">
    <property name="statusTip">
-    <string>Dock widget</string>
+    <string>Settings dock widget</string>
    </property>
    <property name="styleSheet">
     <string notr="true"/>
@@ -290,6 +303,9 @@
    </property>
    <property name="features">
     <set>QDockWidget::DockWidgetClosable|QDockWidget::DockWidgetFloatable|QDockWidget::DockWidgetMovable</set>
+   </property>
+   <property name="allowedAreas">
+    <set>Qt::RightDockWidgetArea</set>
    </property>
    <property name="windowTitle">
     <string>Game of life settings</string>
@@ -346,7 +362,7 @@
           </size>
          </property>
          <property name="focusPolicy">
-          <enum>Qt::ClickFocus</enum>
+          <enum>Qt::NoFocus</enum>
          </property>
          <property name="statusTip">
           <string>Apply settings button</string>
@@ -364,6 +380,9 @@
        </item>
        <item row="5" column="1" colspan="2">
         <widget class="QSpinBox" name="turn_duration_spin_box">
+         <property name="focusPolicy">
+          <enum>Qt::ClickFocus</enum>
+         </property>
          <property name="statusTip">
           <string>Turn duration spin box</string>
          </property>
@@ -381,7 +400,7 @@
        <item row="3" column="1" colspan="2">
         <widget class="QSpinBox" name="rows_spin_box">
          <property name="focusPolicy">
-          <enum>Qt::WheelFocus</enum>
+          <enum>Qt::ClickFocus</enum>
          </property>
          <property name="statusTip">
           <string>Row count spin box</string>
@@ -401,6 +420,9 @@
            <width>0</width>
            <height>0</height>
           </size>
+         </property>
+         <property name="focusPolicy">
+          <enum>Qt::NoFocus</enum>
          </property>
          <property name="statusTip">
           <string>Cell alive color button</string>
@@ -424,6 +446,9 @@
            <width>0</width>
            <height>0</height>
           </size>
+         </property>
+         <property name="focusPolicy">
+          <enum>Qt::NoFocus</enum>
          </property>
          <property name="statusTip">
           <string>Border color button</string>
@@ -510,6 +535,9 @@
            <height>0</height>
           </size>
          </property>
+         <property name="focusPolicy">
+          <enum>Qt::NoFocus</enum>
+         </property>
          <property name="statusTip">
           <string>Cell dead color button</string>
          </property>
@@ -534,6 +562,9 @@
        </item>
        <item row="4" column="1" colspan="2">
         <widget class="QSpinBox" name="cols_spin_box">
+         <property name="focusPolicy">
+          <enum>Qt::ClickFocus</enum>
+         </property>
          <property name="statusTip">
           <string>Column count spin box</string>
          </property>
@@ -569,6 +600,9 @@
        </item>
        <item row="6" column="1" colspan="2">
         <widget class="QSpinBox" name="border_thickness_spin_box">
+         <property name="focusPolicy">
+          <enum>Qt::ClickFocus</enum>
+         </property>
          <property name="statusTip">
           <string>Border thickness spin box</string>
          </property>
@@ -581,6 +615,195 @@
         </widget>
        </item>
       </layout>
+     </item>
+    </layout>
+   </widget>
+  </widget>
+  <widget class="QDockWidget" name="edit_tools_dock_widget">
+   <property name="statusTip">
+    <string>Edit tools dock widget</string>
+   </property>
+   <property name="allowedAreas">
+    <set>Qt::LeftDockWidgetArea</set>
+   </property>
+   <property name="windowTitle">
+    <string>Edit tools</string>
+   </property>
+   <attribute name="dockWidgetArea">
+    <number>1</number>
+   </attribute>
+   <widget class="QWidget" name="dockWidgetContents_3">
+    <layout class="QVBoxLayout" name="verticalLayout_4">
+     <property name="sizeConstraint">
+      <enum>QLayout::SetDefaultConstraint</enum>
+     </property>
+     <item>
+      <layout class="QVBoxLayout" name="verticalLayout_3">
+       <item>
+        <widget class="QToolButton" name="default_mode_tool_button">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Fixed" vsizetype="Minimum">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>30</height>
+          </size>
+         </property>
+         <property name="statusTip">
+          <string>Default mode - change cell states one by one</string>
+         </property>
+         <property name="text">
+          <string>&quot;Default&quot; mode</string>
+         </property>
+         <property name="checkable">
+          <bool>true</bool>
+         </property>
+         <property name="checked">
+          <bool>true</bool>
+         </property>
+         <property name="autoExclusive">
+          <bool>true</bool>
+         </property>
+         <property name="autoRaise">
+          <bool>false</bool>
+         </property>
+        </widget>
+       </item>
+       <item alignment="Qt::AlignHCenter">
+        <widget class="QToolButton" name="paint_mode_tool_button">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Fixed" vsizetype="Minimum">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>30</height>
+          </size>
+         </property>
+         <property name="statusTip">
+          <string>Paint mode - Create multiple alive cells by dragging your mouse over the widget</string>
+         </property>
+         <property name="text">
+          <string>&quot;Paint&quot; mode</string>
+         </property>
+         <property name="checkable">
+          <bool>true</bool>
+         </property>
+         <property name="autoExclusive">
+          <bool>true</bool>
+         </property>
+         <attribute name="buttonGroup">
+          <string notr="true">tool_button_group</string>
+         </attribute>
+        </widget>
+       </item>
+       <item alignment="Qt::AlignHCenter">
+        <widget class="QToolButton" name="erase_mode_tool_button">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Fixed" vsizetype="Minimum">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>30</height>
+          </size>
+         </property>
+         <property name="statusTip">
+          <string>Erase mode - Delete multiple alive cells by dragging your mouse over the widget</string>
+         </property>
+         <property name="text">
+          <string>&quot;Erase&quot; mode</string>
+         </property>
+         <property name="checkable">
+          <bool>true</bool>
+         </property>
+         <property name="autoExclusive">
+          <bool>true</bool>
+         </property>
+         <attribute name="buttonGroup">
+          <string notr="true">tool_button_group</string>
+         </attribute>
+        </widget>
+       </item>
+       <item>
+        <spacer name="verticalSpacer">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
+     </item>
+    </layout>
+   </widget>
+  </widget>
+  <widget class="QDockWidget" name="pattern_gallery_dock_widget">
+   <property name="statusTip">
+    <string>Patterns dock widget</string>
+   </property>
+   <property name="allowedAreas">
+    <set>Qt::LeftDockWidgetArea</set>
+   </property>
+   <property name="windowTitle">
+    <string>Patterns</string>
+   </property>
+   <attribute name="dockWidgetArea">
+    <number>1</number>
+   </attribute>
+   <widget class="QWidget" name="dockWidgetContents_4">
+    <layout class="QVBoxLayout" name="verticalLayout_5">
+     <item>
+      <widget class="QComboBox" name="patterns_combo_box">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
+       <property name="focusPolicy">
+        <enum>Qt::NoFocus</enum>
+       </property>
+       <property name="statusTip">
+        <string>Patterns combo box</string>
+       </property>
+       <property name="currentText">
+        <string/>
+       </property>
+       <property name="placeholderText">
+        <string>Choose pattern</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="insert_pattern_button">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
+       <property name="focusPolicy">
+        <enum>Qt::NoFocus</enum>
+       </property>
+       <property name="statusTip">
+        <string>Insert pattern to a current active cell</string>
+       </property>
+       <property name="text">
+        <string>Insert pattern
+to current 
+position</string>
+       </property>
+      </widget>
      </item>
     </layout>
    </widget>
@@ -601,16 +824,6 @@
     <string>Export game widget to image</string>
    </property>
   </action>
-  <action name="actionExport_config_to_json">
-   <property name="text">
-    <string>Export config to json</string>
-   </property>
-  </action>
-  <action name="action_export_to_mp4">
-   <property name="text">
-    <string>Export to mp4</string>
-   </property>
-  </action>
   <action name="action_save_config">
    <property name="text">
     <string>Save config</string>
@@ -627,7 +840,7 @@
     <string>Load config</string>
    </property>
   </action>
-  <action name="action_view_dock_widget">
+  <action name="action_view_settings">
    <property name="checkable">
     <bool>true</bool>
    </property>
@@ -666,6 +879,17 @@
     <string>Russian</string>
    </property>
   </action>
+  <action name="action_view_tools">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Tools</string>
+   </property>
+  </action>
  </widget>
  <customwidgets>
   <customwidget>
@@ -684,6 +908,11 @@
   <tabstop>cell_dead_color_button</tabstop>
   <tabstop>turn_duration_spin_box</tabstop>
  </tabstops>
- <resources/>
+ <resources>
+  <include location="../src/resources/resources.qrc"/>
+ </resources>
  <connections/>
+ <buttongroups>
+  <buttongroup name="tool_button_group"/>
+ </buttongroups>
 </ui>

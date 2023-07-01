@@ -3,7 +3,7 @@ Conway's game of life.
 
 Author: ZyMa-1
 """
-
+from enum import Enum
 from typing import List
 
 from PySide6.QtCore import QPoint, QRect, QSize, QTimer, Qt, Signal, Slot, Property
@@ -17,12 +17,12 @@ DEFAULT_ROWS = 10  # px (assigned to attribute)
 DEFAULT_CELL_WIDTH = 30  # px (used only in size hints)
 DEFAULT_BORDER_THICKNESS = 2  # (assigned to attribute)
 DEFAULT_TURN_DURATION = 1500  # ms (assigned to attribute)
-DEFAULT_CELL_OFF_COLOR = QColor(255, 255, 255)  # (assigned to attribute)
-DEFAULT_CELL_ON_COLOR = QColor(173, 216, 230)  # (assigned to attribute)
+DEFAULT_CELL_DEAD_COLOR = QColor(255, 255, 255)  # (assigned to attribute)
+DEFAULT_CELL_ALIVE_COLOR = QColor(173, 216, 230)  # (assigned to attribute)
 DEFAULT_BORDER_COLOR = QColor(192, 192, 192)  # (assigned to attribute)
 DEFAULT_ACTIVE_CELL_COLOR = QColor(235, 235, 235)  # (used)
-CELL_ON = '*'  # (used)
-CELL_OFF = '.'  # (used)
+CELL_ALIVE = '*'  # (used)
+CELL_DEAD = '.'  # (used)
 
 
 # ...*......
@@ -31,11 +31,15 @@ CELL_OFF = '.'  # (used)
 # ..........
 # ..........
 
-
 class ConwaysGameOfLife(QWidget):
+    class EditMode(Enum):
+        DEFAULT = 0
+        PAINT = 1
+        ERASE = 2
+
     # Inner signals:
-    _layout_changed = Signal()  # number of rows or cols changed
-    property_setter_error_signal = Signal(str, str)  # invalid value passed to property setter
+    _layout_changed = Signal()  # Emits when number of rows or cols changed
+    property_setter_error_signal = Signal(str, str)  # Emits when  invalid value passed to property setter
 
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -47,15 +51,18 @@ class ConwaysGameOfLife(QWidget):
         self._turn_number = 0
         self._border_thickness = DEFAULT_BORDER_THICKNESS
         self._border_color = ColorProperty(DEFAULT_BORDER_COLOR)
-        self._cell_alive_color = ColorProperty(DEFAULT_CELL_ON_COLOR)
-        self._cell_dead_color = ColorProperty(DEFAULT_CELL_OFF_COLOR)
+        self._cell_alive_color = ColorProperty(DEFAULT_CELL_ALIVE_COLOR)
+        self._cell_dead_color = ColorProperty(DEFAULT_CELL_DEAD_COLOR)
         self._is_game_running = False
-        self._timer = QTimer(self)
+        self._edit_mode = ConwaysGameOfLife.EditMode.DEFAULT
         self._cols = DEFAULT_COLS
         self._rows = DEFAULT_ROWS
         self._turn_duration = DEFAULT_TURN_DURATION
         self._active_cell: None | Tuple[int, int] = (0, 0)
-        self._state = [''.join(CELL_OFF for j in range(self._cols)) for i in range(self._rows)]
+        self._state = [[CELL_DEAD for col in range(self._cols)] for row in range(self._rows)]
+
+        # Other widget parts
+        self._timer = QTimer(self)
 
         # Connect signals to slots
         self._timer.timeout.connect(self._make_turn)
@@ -65,14 +72,15 @@ class ConwaysGameOfLife(QWidget):
         self._turn_number = 0
         self._border_thickness = DEFAULT_BORDER_THICKNESS
         self._border_color = ColorProperty(DEFAULT_BORDER_COLOR)
-        self._cell_alive_color = ColorProperty(DEFAULT_CELL_ON_COLOR)
-        self._cell_dead_color = ColorProperty(DEFAULT_CELL_OFF_COLOR)
+        self._cell_alive_color = ColorProperty(DEFAULT_CELL_ALIVE_COLOR)
+        self._cell_dead_color = ColorProperty(DEFAULT_CELL_DEAD_COLOR)
         self._is_game_running = False
+        self._edit_mode = ConwaysGameOfLife.EditMode.DEFAULT
         self._cols = DEFAULT_COLS
         self._rows = DEFAULT_ROWS
         self._turn_duration = DEFAULT_TURN_DURATION
         self._active_cell: None | Tuple[int, int] = (0, 0)
-        self._state = [''.join(CELL_OFF for j in range(self._cols)) for i in range(self._rows)]
+        self._state = [[CELL_DEAD for col in range(self._cols)] for row in range(self._rows)]
 
     # Properties :[
     def get_turn_number(self):
@@ -85,16 +93,21 @@ class ConwaysGameOfLife(QWidget):
         return self._state
 
     @property_setter_error_handle
-    def set_state(self, value: List[str]):
-        if isinstance(value, list) and len(value) == self._rows and all(
-                isinstance(elem, str) and (
-                        len(elem) == self._cols and elem.count(CELL_OFF) + elem.count(CELL_ON) == len(elem)) for elem in
-                value):
-            self._state = value
-            self.update()
-            self.state_changed.emit(self._state)
-        else:
+    def set_state(self, value: List[List[str]]):
+        if not isinstance(value, list) or len(value) != self._rows:
             raise ValueError("State value is not correct")
+
+        for row in range(self._rows):
+            if len(value[row]) != self._cols:
+                raise ValueError("State value is not correct")
+
+            for col in range(self._cols):
+                if len(value[row][col]) != 1 or (value[row][col] != CELL_DEAD and value[row][col] != CELL_ALIVE):
+                    raise ValueError("State value is not correct")
+
+        self._state = value
+        self.update()
+        self.state_changed.emit(self._state)
 
     def get_cols(self):
         return self._cols
@@ -166,7 +179,28 @@ class ConwaysGameOfLife(QWidget):
         self.update()
         self.cell_alive_color_changed.emit(self._cell_alive_color.color)
 
-    # :Some functions:
+    # API functionality
+
+    def setEditMode(self, value: EditMode):
+        self._edit_mode = value
+
+    def insert_pattern(self, pattern_data: dict):
+        if self._is_game_running or self._active_cell is None:
+            return
+
+        max_possible_rows = self._rows - self._active_cell[0]
+        max_possible_cols = self._cols - self._active_cell[1]
+
+        new_state = []
+        for row in range(min(max_possible_rows, pattern_data["rows"])):
+            new_row = []
+            for col in range(min(max_possible_cols, pattern_data["cols"])):
+                new_row.append(pattern_data["state"][row][col])
+            new_state.append(new_row)
+
+        self._insert_state_array_at(*self._active_cell, new_state)
+
+    # :Logic functions:
 
     def _adjust_state(self):
         """Adjusts state according to new rows or cols count."""
@@ -175,55 +209,64 @@ class ConwaysGameOfLife(QWidget):
         if rows != self._rows or cols != self._cols:
             new_state = []
             for row in range(self._rows):
-                new_row = ""
+                new_row = []
                 for col in range(self._cols):
                     if row < rows and col < cols:
-                        new_row += self._state[row][col]
+                        new_row.append(self._state[row][col])
                     else:
-                        new_row += CELL_OFF
+                        new_row.append(CELL_DEAD)
                 new_state.append(new_row)
             self._state = new_state
 
-    def _change_state_at(self, row, col, new_cell_state):
-        new_row = self._state[row][:col] + new_cell_state + self._state[row][col + 1:]
-        self._state[row] = new_row
+    def _insert_state_array_at(self, row, col, state_array):
+        for i in range(len(state_array)):
+            for j in range(len(state_array[0])):
+                self._state[i + row][j + col] = state_array[i][j]
+        self.update()
+
+    def _change_cell_state_at(self, row, col, new_cell_state):
+        if not (0 <= row < self._rows and 0 <= col < self._cols):
+            return
+
+        self._state[row][col] = new_cell_state
 
     def _change_cell_state_to_opposite(self, row, col):
-        if self._state[row][col] == CELL_ON:
-            self._change_state_at(row, col, CELL_OFF)
-        elif self._state[row][col] == CELL_OFF:
-            self._change_state_at(row, col, CELL_ON)
+        if self._state[row][col] == CELL_ALIVE:
+            self._change_cell_state_at(row, col, CELL_DEAD)
+        elif self._state[row][col] == CELL_DEAD:
+            self._change_cell_state_at(row, col, CELL_ALIVE)
 
     def _get_alive_neighbor_count(self, row, col):
         count = 0
         for i in range(row - 1, row + 2):
             for j in range(col - 1, col + 2):
                 if (i != row or j != col) and 0 <= i < self._rows and 0 <= j < self._cols:
-                    if self._state[i][j] == CELL_ON:
+                    if self._state[i][j] == CELL_ALIVE:
                         count += 1
         return count
 
+    @Slot()
     def _make_turn(self):
         self._turn_number += 1
         new_state = []
 
         for row in range(self._rows):
-            new_row = ""
+            new_row = []
             for col in range(self._cols):
                 cell_state = self._state[row][col]
                 neighbor_count = self._get_alive_neighbor_count(row, col)
 
                 # Apply the rules of Conway's Game of Life
-                if cell_state == CELL_ON and (neighbor_count < 2 or neighbor_count > 3):
-                    new_row += CELL_OFF
-                elif cell_state == CELL_OFF and neighbor_count == 3:
-                    new_row += CELL_ON
+                if cell_state == CELL_ALIVE and (neighbor_count < 2 or neighbor_count > 3):
+                    new_row.append(CELL_DEAD)
+                elif cell_state == CELL_DEAD and neighbor_count == 3:
+                    new_row.append(CELL_ALIVE)
                 else:
-                    new_row += cell_state
+                    new_row.append(cell_state)
+
             new_state.append(new_row)
 
         self._state = new_state
-
         self.turn_number_changed.emit(self._turn_number)
         self.update()
 
@@ -253,7 +296,7 @@ class ConwaysGameOfLife(QWidget):
         self.update()
 
     def clear_state(self):
-        self._state = [''.join(CELL_OFF for j in range(self._cols)) for i in range(self._rows)]
+        self._state = [[CELL_DEAD for col in range(self._cols)] for row in range(self._rows)]
         self.update()
 
     def reset_to_default(self):
@@ -261,7 +304,7 @@ class ConwaysGameOfLife(QWidget):
         self._assign_default_attribute_values()
         self.update()
 
-    # ?Some interaction stuff?
+        # ?Some interaction stuff?
 
     def mousePressEvent(self, event):
         if self._is_game_running or event.buttons() != Qt.MouseButton.LeftButton:
@@ -271,6 +314,35 @@ class ConwaysGameOfLife(QWidget):
         if res is not None:
             row, col = res
             self._change_cell_state_to_opposite(row, col)
+            self.update()
+
+    def mouseMoveEvent(self, event):
+        if self._is_game_running or event.buttons() != Qt.MouseButton.LeftButton:
+            return
+
+        match self._edit_mode:
+            case ConwaysGameOfLife.EditMode.DEFAULT:
+                self.mouseMoveEventDefault(event)
+            case ConwaysGameOfLife.EditMode.PAINT:
+                self.mouseMoveEventPaint(event)
+            case ConwaysGameOfLife.EditMode.ERASE:
+                self.mouseMoveEventErase(event)
+
+    def mouseMoveEventDefault(self, event):
+        pass
+
+    def mouseMoveEventPaint(self, event):
+        res = self._cell_coordinates_from_point(event.position().toPoint())
+        if res is not None:
+            row, col = res
+            self._change_cell_state_at(row, col, CELL_ALIVE)
+            self.update()
+
+    def mouseMoveEventErase(self, event):
+        res = self._cell_coordinates_from_point(event.position().toPoint())
+        if res is not None:
+            row, col = res
+            self._change_cell_state_at(row, col, CELL_DEAD)
             self.update()
 
     def keyPressEvent(self, event):
@@ -297,13 +369,15 @@ class ConwaysGameOfLife(QWidget):
                 self._active_cell = (self._active_cell[0], self._active_cell[1] + 1)
             self.update()
 
+        super().keyPressEvent(event)
+
     # !!Paint related functions!!
 
     def _cell_coordinates_from_point(self, point: QPoint) -> Tuple[int, int] | None:
         row = int((point.y() - self._border_thickness) / (self._border_thickness + self._cell_height()))
         col = int((point.x() - self._border_thickness) / (self._border_thickness + self._cell_width()))
         cell = self._cell_rect(row, col)
-        return (row, col) if cell.contains(point) else None
+        return (row, col) if cell.contains(point) and 0 <= row < self._rows and 0 <= col <= self._cols else None
 
     def _cell_width(self):
         return (self.width() - (self._cols + 1) * self._border_thickness) / self._cols
@@ -351,7 +425,7 @@ class ConwaysGameOfLife(QWidget):
                     cell = self._cell_rect(row, col)
                     if self._active_cell is not None and self._active_cell == (row, col):
                         painter.fillRect(cell, DEFAULT_ACTIVE_CELL_COLOR)
-                    elif self._state[row][col] == CELL_ON:
+                    elif self._state[row][col] == CELL_ALIVE:
                         painter.fillRect(cell, self._cell_alive_color.color)
                     else:
                         painter.fillRect(cell, self._cell_dead_color.color)
@@ -386,6 +460,7 @@ class ConwaysGameOfLife(QWidget):
         # Set focus whenever widget is available
         # Consider grabKeyboard func.
         self.setFocus()
+        super().focusInEvent(event)
 
     # Properties signals
     state_changed = Signal(list)
@@ -400,7 +475,7 @@ class ConwaysGameOfLife(QWidget):
     turn_number_changed = Signal(int)
 
     # Pyqt properties:
-    state = Property(list, get_state, set_state, notify=state_changed)  # Does not work
+    state = Property(list, get_state, set_state, notify=state_changed)  # Does not work in Qt-Designer
     cols = Property(int, get_cols, set_cols, notify=cols_changed)
     rows = Property(int, get_rows, set_rows, notify=rows_changed)
     turn_duration = Property(int, get_turn_duration, set_turn_duration, notify=turn_duration_changed)
