@@ -47,6 +47,9 @@ class ConwaysGameOfLife(QWidget):
         # Set strong focus policy
         self.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
 
+        # Set mouse tracking for better edit mode experience (it is not helping much)
+        self.setMouseTracking(True)
+
         # Create widget parameters
         self._turn_number = 0
         self._border_thickness = DEFAULT_BORDER_THICKNESS

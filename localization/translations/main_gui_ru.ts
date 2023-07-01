@@ -131,7 +131,7 @@
     </message>
     <message>
         <location filename="../../designer/MainWindow.ui" line="250"/>
-        <location filename="../../designer/MainWindow.ui" line="813"/>
+        <location filename="../../designer/MainWindow.ui" line="814"/>
         <source>About</source>
         <translation type="unfinished"></translation>
     </message>
@@ -156,251 +156,252 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../designer/MainWindow.ui" line="281"/>
+        <location filename="../../designer/MainWindow.ui" line="282"/>
         <source>Language</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../designer/MainWindow.ui" line="296"/>
+        <location filename="../../designer/MainWindow.ui" line="297"/>
         <source>Settings dock widget</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../designer/MainWindow.ui" line="311"/>
-        <location filename="../../designer/MainWindow.ui" line="851"/>
+        <location filename="../../designer/MainWindow.ui" line="312"/>
+        <location filename="../../designer/MainWindow.ui" line="852"/>
         <source>Game of life settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../designer/MainWindow.ui" line="332"/>
+        <location filename="../../designer/MainWindow.ui" line="333"/>
         <source>Column count:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../designer/MainWindow.ui" line="339"/>
+        <location filename="../../designer/MainWindow.ui" line="340"/>
         <source>Border thickness:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../designer/MainWindow.ui" line="346"/>
+        <location filename="../../designer/MainWindow.ui" line="347"/>
         <source>Turn duration:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../designer/MainWindow.ui" line="368"/>
+        <location filename="../../designer/MainWindow.ui" line="369"/>
         <source>Apply settings button</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../designer/MainWindow.ui" line="371"/>
+        <location filename="../../designer/MainWindow.ui" line="372"/>
         <source>Apply</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../designer/MainWindow.ui" line="387"/>
+        <location filename="../../designer/MainWindow.ui" line="388"/>
         <source>Turn duration spin box</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../designer/MainWindow.ui" line="390"/>
+        <location filename="../../designer/MainWindow.ui" line="391"/>
         <source> ms</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../designer/MainWindow.ui" line="406"/>
+        <location filename="../../designer/MainWindow.ui" line="407"/>
         <source>Row count spin box</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../designer/MainWindow.ui" line="428"/>
+        <location filename="../../designer/MainWindow.ui" line="429"/>
         <source>Cell alive color button</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../designer/MainWindow.ui" line="431"/>
-        <location filename="../../designer/MainWindow.ui" line="457"/>
-        <location filename="../../designer/MainWindow.ui" line="545"/>
+        <location filename="../../designer/MainWindow.ui" line="432"/>
+        <location filename="../../designer/MainWindow.ui" line="458"/>
+        <location filename="../../designer/MainWindow.ui" line="546"/>
         <source>Choose color...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../designer/MainWindow.ui" line="438"/>
+        <location filename="../../designer/MainWindow.ui" line="439"/>
         <source>Border color:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../designer/MainWindow.ui" line="454"/>
+        <location filename="../../designer/MainWindow.ui" line="455"/>
         <source>Border color button</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../designer/MainWindow.ui" line="476"/>
-        <location filename="../../designer/MainWindow.ui" line="516"/>
-        <location filename="../../designer/MainWindow.ui" line="594"/>
+        <location filename="../../designer/MainWindow.ui" line="477"/>
+        <location filename="../../designer/MainWindow.ui" line="517"/>
+        <location filename="../../designer/MainWindow.ui" line="595"/>
         <source>Label displaying color</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../designer/MainWindow.ui" line="526"/>
+        <location filename="../../designer/MainWindow.ui" line="527"/>
         <source>Cell alive color:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../designer/MainWindow.ui" line="542"/>
+        <location filename="../../designer/MainWindow.ui" line="543"/>
         <source>Cell dead color button</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../designer/MainWindow.ui" line="552"/>
+        <location filename="../../designer/MainWindow.ui" line="553"/>
         <source>Row count:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../designer/MainWindow.ui" line="559"/>
+        <location filename="../../designer/MainWindow.ui" line="560"/>
         <source>Cell dead color:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../designer/MainWindow.ui" line="569"/>
+        <location filename="../../designer/MainWindow.ui" line="570"/>
         <source>Column count spin box</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../designer/MainWindow.ui" line="607"/>
+        <location filename="../../designer/MainWindow.ui" line="608"/>
         <source>Border thickness spin box</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../designer/MainWindow.ui" line="610"/>
+        <location filename="../../designer/MainWindow.ui" line="611"/>
         <source> px</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../designer/MainWindow.ui" line="624"/>
+        <location filename="../../designer/MainWindow.ui" line="625"/>
         <source>Edit tools dock widget</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../designer/MainWindow.ui" line="630"/>
+        <location filename="../../designer/MainWindow.ui" line="631"/>
         <source>Edit tools</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../designer/MainWindow.ui" line="657"/>
+        <location filename="../../designer/MainWindow.ui" line="658"/>
         <source>Default mode - change cell states one by one</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../designer/MainWindow.ui" line="660"/>
+        <location filename="../../designer/MainWindow.ui" line="661"/>
         <source>&quot;Default&quot; mode</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../designer/MainWindow.ui" line="691"/>
+        <location filename="../../designer/MainWindow.ui" line="692"/>
         <source>Paint mode - Create multiple alive cells by dragging your mouse over the widget</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../designer/MainWindow.ui" line="694"/>
+        <location filename="../../designer/MainWindow.ui" line="695"/>
         <source>&quot;Paint&quot; mode</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../designer/MainWindow.ui" line="722"/>
+        <location filename="../../designer/MainWindow.ui" line="723"/>
         <source>Erase mode - Delete multiple alive cells by dragging your mouse over the widget</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../designer/MainWindow.ui" line="725"/>
+        <location filename="../../designer/MainWindow.ui" line="726"/>
         <source>&quot;Erase&quot; mode</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../designer/MainWindow.ui" line="758"/>
-        <source>Patterns dock widget</source>
+        <location filename="../../designer/MainWindow.ui" line="759"/>
+        <source>Pattern gallery dock widget</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../designer/MainWindow.ui" line="764"/>
-        <source>Patterns</source>
+        <location filename="../../designer/MainWindow.ui" line="765"/>
+        <location filename="../../designer/MainWindow.ui" line="902"/>
+        <source>Pattern gallery</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../designer/MainWindow.ui" line="780"/>
+        <location filename="../../designer/MainWindow.ui" line="781"/>
         <source>Patterns combo box</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../designer/MainWindow.ui" line="786"/>
+        <location filename="../../designer/MainWindow.ui" line="787"/>
         <source>Choose pattern</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../designer/MainWindow.ui" line="799"/>
+        <location filename="../../designer/MainWindow.ui" line="800"/>
         <source>Insert pattern to a current active cell</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../designer/MainWindow.ui" line="802"/>
+        <location filename="../../designer/MainWindow.ui" line="803"/>
         <source>Insert pattern
 to current 
 position</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../designer/MainWindow.ui" line="816"/>
+        <location filename="../../designer/MainWindow.ui" line="817"/>
         <source>About application</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../designer/MainWindow.ui" line="821"/>
+        <location filename="../../designer/MainWindow.ui" line="822"/>
         <source>Export to image</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../designer/MainWindow.ui" line="824"/>
+        <location filename="../../designer/MainWindow.ui" line="825"/>
         <source>Export game widget to image</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../designer/MainWindow.ui" line="829"/>
-        <location filename="../../designer/MainWindow.ui" line="832"/>
+        <location filename="../../designer/MainWindow.ui" line="830"/>
+        <location filename="../../designer/MainWindow.ui" line="833"/>
         <source>Save config</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../designer/MainWindow.ui" line="837"/>
-        <location filename="../../designer/MainWindow.ui" line="840"/>
+        <location filename="../../designer/MainWindow.ui" line="838"/>
+        <location filename="../../designer/MainWindow.ui" line="841"/>
         <source>Load config</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../designer/MainWindow.ui" line="854"/>
+        <location filename="../../designer/MainWindow.ui" line="855"/>
         <source>Change Dock widget visibility</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../designer/MainWindow.ui" line="865"/>
+        <location filename="../../designer/MainWindow.ui" line="866"/>
         <source>English (US)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../designer/MainWindow.ui" line="868"/>
+        <location filename="../../designer/MainWindow.ui" line="869"/>
         <source>English</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../designer/MainWindow.ui" line="876"/>
+        <location filename="../../designer/MainWindow.ui" line="877"/>
         <source>Russian (RU)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../designer/MainWindow.ui" line="879"/>
+        <location filename="../../designer/MainWindow.ui" line="880"/>
         <source>Russian</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../designer/MainWindow.ui" line="890"/>
+        <location filename="../../designer/MainWindow.ui" line="891"/>
         <source>Tools</source>
         <translation type="unfinished"></translation>
     </message>

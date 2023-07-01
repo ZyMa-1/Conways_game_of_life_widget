@@ -31,7 +31,7 @@ def convert_rcc(input_path: pathlib.Path, output_path: pathlib.Path):
 
 def update_ts(py_paths: List[pathlib.Path], output_path: pathlib.Path):
     full_command = f"pyside6-lupdate {' '.join([str(path) for path in py_paths])} -ts {str(output_path)}"
-    print(full_command)
+    # print(full_command)
     exit_code = sp.call(full_command, stdout=sp.PIPE)
     if exit_code == 0:
         print("\033[1;32;40m" + "pyside6-lupdate success \033[0;37;40m")

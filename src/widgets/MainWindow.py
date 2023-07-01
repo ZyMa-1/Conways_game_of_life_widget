@@ -164,11 +164,18 @@ class MainWindow(QMainWindow):
             self.ui.settings_dock_widget.hide()
 
     @Slot(bool)
-    def handle_action_view_tools_triggered(self, is_checked: bool):
+    def handle_action_view_edit_tools_triggered(self, is_checked: bool):
         if is_checked:
             self.ui.edit_tools_dock_widget.show()
         else:
             self.ui.edit_tools_dock_widget.hide()
+
+    @Slot(bool)
+    def handle_action_view_pattern_gallery_triggered(self, is_checked: bool):
+        if is_checked:
+            self.ui.pattern_gallery_dock_widget.show()
+        else:
+            self.ui.pattern_gallery_dock_widget.hide()
 
     @Slot()
     def handle_language_changed(self):
@@ -298,8 +305,11 @@ class MainWindow(QMainWindow):
         self.ui.settings_dock_widget.visibilityChanged.connect(
             lambda is_visible: self.ui.action_view_settings.setChecked(is_visible))
         self.ui.edit_tools_dock_widget.visibilityChanged.connect(
-            lambda is_visible: self.ui.action_view_tools.setChecked(is_visible))
+            lambda is_visible: self.ui.action_view_edit_tools.setChecked(is_visible))
+        self.ui.pattern_gallery_dock_widget.visibilityChanged.connect(
+            lambda is_visible: self.ui.action_view_pattern_gallery.setChecked(is_visible))
         self.ui.action_view_settings.triggered.connect(self.handle_action_view_settings_triggered)
-        self.ui.action_view_tools.triggered.connect(self.handle_action_view_tools_triggered)
+        self.ui.action_view_edit_tools.triggered.connect(self.handle_action_view_edit_tools_triggered)
+        self.ui.action_view_pattern_gallery.triggered.connect(self.handle_action_view_pattern_gallery_triggered)
         self.ui.action_english_US.changed.connect(self.handle_language_changed)
         self.ui.action_russian_RU.changed.connect(self.handle_language_changed)
