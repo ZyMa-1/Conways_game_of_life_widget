@@ -60,9 +60,13 @@ if __name__ == "__main__":
     input_path_3 = PROJECT_ROOT / "designer" / "AboutDialog.ui"
     output_path_3 = PROJECT_ROOT / "src" / "ui" / "Ui_AboutDialog.py"
 
+    input_path_4 = PROJECT_ROOT / "designer" / "InstructionsDialog.ui"
+    output_path_4 = PROJECT_ROOT / "src" / "ui" / "Ui_InstructionsDialog.py"
+
     convert_ui(input_path_1, output_path_1)
     convert_ui(input_path_2, output_path_2)
     convert_ui(input_path_3, output_path_3)
+    convert_ui(input_path_4, output_path_4)
 
     ################## LOCALIZATION UPDATE ######################################
 

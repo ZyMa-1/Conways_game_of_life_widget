@@ -29,7 +29,7 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
-        MainWindow.resize(703, 481)
+        MainWindow.resize(703, 519)
         sizePolicy = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -62,6 +62,8 @@ class Ui_MainWindow(object):
         self.action_view_pattern_gallery.setObjectName(u"action_view_pattern_gallery")
         self.action_view_pattern_gallery.setCheckable(True)
         self.action_view_pattern_gallery.setChecked(True)
+        self.actionExport_turns_to_video = QAction(MainWindow)
+        self.actionExport_turns_to_video.setObjectName(u"actionExport_turns_to_video")
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
         self.horizontalLayout = QHBoxLayout(self.centralwidget)
@@ -106,6 +108,22 @@ class Ui_MainWindow(object):
 
 
         self.verticalLayout.addLayout(self.layout_top)
+
+        self.horizontalLayout_2 = QHBoxLayout()
+        self.horizontalLayout_2.setObjectName(u"horizontalLayout_2")
+        self.horizontalLayout_2.setContentsMargins(-1, 0, -1, -1)
+        self.horizontalSpacer = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+
+        self.horizontalLayout_2.addItem(self.horizontalSpacer)
+
+        self.help_button = QPushButton(self.centralwidget)
+        self.help_button.setObjectName(u"help_button")
+        self.help_button.setMinimumSize(QSize(0, 30))
+
+        self.horizontalLayout_2.addWidget(self.help_button)
+
+
+        self.verticalLayout.addLayout(self.horizontalLayout_2)
 
         self.conways_game_of_life_widget = ConwaysGameOfLife(self.centralwidget)
         self.conways_game_of_life_widget.setObjectName(u"conways_game_of_life_widget")
@@ -395,7 +413,9 @@ class Ui_MainWindow(object):
         self.patterns_combo_box = QComboBox(self.dockWidgetContents_4)
         self.patterns_combo_box.setObjectName(u"patterns_combo_box")
         self.patterns_combo_box.setEnabled(False)
+        self.patterns_combo_box.setMinimumSize(QSize(0, 34))
         self.patterns_combo_box.setFocusPolicy(Qt.NoFocus)
+        self.patterns_combo_box.setIconSize(QSize(32, 32))
 
         self.verticalLayout_5.addWidget(self.patterns_combo_box)
 
@@ -469,6 +489,7 @@ class Ui_MainWindow(object):
 #endif // QT_CONFIG(statustip)
         self.action_view_edit_tools.setText(QCoreApplication.translate("MainWindow", u"Tools", None))
         self.action_view_pattern_gallery.setText(QCoreApplication.translate("MainWindow", u"Pattern gallery", None))
+        self.actionExport_turns_to_video.setText(QCoreApplication.translate("MainWindow", u"Export turns to video", None))
         self.label.setText(QCoreApplication.translate("MainWindow", u"Turn number:", None))
 #if QT_CONFIG(statustip)
         self.turn_number_label.setStatusTip(QCoreApplication.translate("MainWindow", u"Turn number label", None))
@@ -478,6 +499,7 @@ class Ui_MainWindow(object):
         self.is_game_running_label.setStatusTip(QCoreApplication.translate("MainWindow", u"Is game running label", None))
 #endif // QT_CONFIG(statustip)
         self.is_game_running_label.setText(QCoreApplication.translate("MainWindow", u":)", None))
+        self.help_button.setText(QCoreApplication.translate("MainWindow", u"Help (?)", None))
 #if QT_CONFIG(statustip)
         self.conways_game_of_life_widget.setStatusTip(QCoreApplication.translate("MainWindow", u"Conway's game of life widget", None))
 #endif // QT_CONFIG(statustip)

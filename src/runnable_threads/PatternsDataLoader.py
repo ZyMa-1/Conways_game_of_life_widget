@@ -3,7 +3,7 @@ import os
 import pathlib
 
 from PySide6.QtCore import QRunnable, QObject, Signal, Slot, Qt, QSize, QRect, QPoint
-from PySide6.QtGui import QOffscreenSurface, QPainter, QPixmap, QImage
+from PySide6.QtGui import QPainter, QPixmap
 from jsonschema import validators
 from jsonschema.exceptions import ValidationError
 
@@ -77,7 +77,6 @@ class PatternsDataLoader(QRunnable):
     @staticmethod
     def generate_pixmap(parsed_data: dict):
         game_widget = ConwaysGameOfLife()
-        game_widget.setFixedSize(QSize(64, 64))
         game_widget.rows = parsed_data["rows"]
         game_widget.cols = parsed_data["cols"]
         game_widget.state = parsed_data["state"]
@@ -87,7 +86,7 @@ class PatternsDataLoader(QRunnable):
         with QPainter(pixmap) as painter:
             game_widget.render(painter, QPoint(0, 0), QRect(QPoint(0, 0), game_widget.size()))
 
-            result_width = 64
+            result_width = 32
             aspect_ratio = pixmap.width() / pixmap.height()
             result_height = int(result_width / aspect_ratio)
             resized_pixmap = pixmap.scaled(result_width, result_height, Qt.AspectRatioMode.KeepAspectRatio)
@@ -121,4 +120,4 @@ class PatternsDataLoader(QRunnable):
 
 class _PatternDataLoaderSignals(QObject):
     finished = Signal()
-    data_generated = Signal(list)
+    data_generated = Signal(list)  # List of (dict, QPixmap)

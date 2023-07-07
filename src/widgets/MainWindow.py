@@ -15,6 +15,7 @@ from src.backend.SignalCollector import SignalCollector
 from src.backend.WarningMessageBoxGenerator import WarningMessageBoxGenerator
 from src.conways_game_of_life.ConfigManager.ConwaysGameOfLifeConfigManager import ConwaysGameOfLifeConfigManager
 from src.conways_game_of_life.ConwaysGameOfLife import ConwaysGameOfLife
+from src.conways_game_of_life.InstructionsDialog import InstructionsDialog
 from src.conways_game_of_life.PropertiesManager.ConwaysGameOfLifePropertiesManager import \
     ConwaysGameOfLifePropertiesManager
 from src.runnable_threads.PatternsDataLoader import PatternsDataLoader
@@ -61,6 +62,7 @@ class MainWindow(QMainWindow):
         self.thread_pool: QThreadPool | None = None
         self.pattern_data_combo_box_loader: PatternsDataComboBoxLoader | None = None
         self.pattern_data_loader: PatternsDataLoader | None = None
+        self.instructions_dialog: InstructionsDialog | None = None
 
         # Init UI
         self.create_helper_classes()
@@ -200,21 +202,21 @@ class MainWindow(QMainWindow):
         if not is_checked:
             return
 
-        self.ui.conways_game_of_life_widget.setEditMode(ConwaysGameOfLife.EditMode.DEFAULT)
+        self.ui.conways_game_of_life_widget.set_edit_mode(ConwaysGameOfLife.EditMode.DEFAULT)
 
     @Slot(bool)
     def handle_paint_mode_tool_button_toggled(self, is_checked: bool):
         if not is_checked:
             return
 
-        self.ui.conways_game_of_life_widget.setEditMode(ConwaysGameOfLife.EditMode.PAINT)
+        self.ui.conways_game_of_life_widget.set_edit_mode(ConwaysGameOfLife.EditMode.PAINT)
 
     @Slot(bool)
     def handle_erase_mode_tool_button_toggled(self, is_checked: bool):
         if not is_checked:
             return
 
-        self.ui.conways_game_of_life_widget.setEditMode(ConwaysGameOfLife.EditMode.ERASE)
+        self.ui.conways_game_of_life_widget.set_edit_mode(ConwaysGameOfLife.EditMode.ERASE)
 
     @Slot(list)
     def handle_patterns_data_loaded(self, patterns_data: List[Tuple[Dict, QPixmap]]):
@@ -231,6 +233,11 @@ class MainWindow(QMainWindow):
 
         pattern_data = self.ui.patterns_combo_box.itemData(selected_index)
         self.ui.conways_game_of_life_widget.insert_pattern(pattern_data)
+
+    @Slot()
+    def handle_help_button_clicked(self):
+        if not self.instructions_dialog.isVisible():
+            self.instructions_dialog.show()
 
     # Init functions
 
@@ -287,6 +294,9 @@ class MainWindow(QMainWindow):
         # Create PatternDataComboBoxLoader
         self.pattern_data_combo_box_loader = PatternsDataComboBoxLoader(parent=self)
 
+        # Create InstructionsWidget
+        self.instructions_dialog = InstructionsDialog(parent=self)
+
     def connect_signals_to_slots(self):
         self.ui.action_about.triggered.connect(self.handle_action_about_triggered)
         self.ui.start_button.clicked.connect(self.handle_start_button_clicked)
@@ -298,6 +308,7 @@ class MainWindow(QMainWindow):
         self.ui.default_mode_tool_button.toggled.connect(self.handle_default_mode_tool_button_toggled)
         self.ui.paint_mode_tool_button.toggled.connect(self.handle_paint_mode_tool_button_toggled)
         self.ui.erase_mode_tool_button.toggled.connect(self.handle_erase_mode_tool_button_toggled)
+        self.ui.help_button.clicked.connect(self.handle_help_button_clicked)
 
         self.ui.action_export_to_image.triggered.connect(self.handle_action_export_to_image_triggered)
         self.ui.action_save_config.triggered.connect(self.handle_action_save_config_triggered)

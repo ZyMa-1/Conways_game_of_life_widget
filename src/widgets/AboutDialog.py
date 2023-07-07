@@ -4,7 +4,7 @@ Author: ZyMa-1
 
 from PySide6.QtWidgets import QDialog, QApplication
 
-from src.ui.Ui_AboutDialog import Ui_Dialog
+from src.ui.Ui_AboutDialog import Ui_AboutDialog
 
 
 class AboutDialog(QDialog):
@@ -16,7 +16,7 @@ class AboutDialog(QDialog):
         super().__init__(parent)
 
         # Setup UI
-        self.ui = Ui_Dialog()
+        self.ui = Ui_AboutDialog()
         self.ui.setupUi(self)
 
         # Update app_version and app_name labels

@@ -10,6 +10,7 @@ from PySide6.QtCore import QPoint, QRect, QSize, QTimer, Qt, Signal, Slot, Prope
 from PySide6.QtGui import QPainter
 from PySide6.QtWidgets import QWidget
 
+from .InstructionsDialog import InstructionsDialog
 from .utils import *
 
 DEFAULT_COLS = 10  # px (assigned to attribute)
@@ -183,8 +184,7 @@ class ConwaysGameOfLife(QWidget):
         self.cell_alive_color_changed.emit(self._cell_alive_color.color)
 
     # API functionality
-
-    def setEditMode(self, value: EditMode):
+    def set_edit_mode(self, value: EditMode):
         self._edit_mode = value
 
     def insert_pattern(self, pattern_data: dict):
