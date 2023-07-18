@@ -10,7 +10,6 @@ from PySide6.QtCore import QPoint, QRect, QSize, QTimer, Qt, Signal, Slot, Prope
 from PySide6.QtGui import QPainter
 from PySide6.QtWidgets import QWidget
 
-from .InstructionsDialog import InstructionsDialog
 from .utils import *
 
 DEFAULT_COLS = 10  # px (assigned to attribute)
@@ -24,6 +23,9 @@ DEFAULT_BORDER_COLOR = QColor(192, 192, 192)  # (assigned to attribute)
 DEFAULT_ACTIVE_CELL_COLOR = QColor(235, 235, 235)  # (used)
 CELL_ALIVE = '*'  # (used)
 CELL_DEAD = '.'  # (used)
+
+DEFAULT_STATE = [[CELL_DEAD for col in range(DEFAULT_COLS)] for row in
+                 range(DEFAULT_ROWS)]  # (used nowhere)
 
 
 # ...*......

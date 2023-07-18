@@ -75,7 +75,7 @@ class PatternsDataLoader(QRunnable):
         return is_valid
 
     @staticmethod
-    def generate_pixmap(parsed_data: dict):
+    def generate_pixmap(parsed_data: dict) -> QPixmap:
         game_widget = ConwaysGameOfLife()
         game_widget.rows = parsed_data["rows"]
         game_widget.cols = parsed_data["cols"]
