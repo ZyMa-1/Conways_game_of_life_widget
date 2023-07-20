@@ -14,32 +14,27 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../designer/AboutDialog.ui" line="57"/>
+        <location filename="../../designer/AboutDialog.ui" line="110"/>
         <source>{author_name}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../designer/AboutDialog.ui" line="76"/>
+        <location filename="../../designer/AboutDialog.ui" line="63"/>
         <source>Author:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../designer/AboutDialog.ui" line="92"/>
+        <location filename="../../designer/AboutDialog.ui" line="93"/>
         <source>Spend my free time on this project (:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../designer/AboutDialog.ui" line="99"/>
+        <location filename="../../designer/AboutDialog.ui" line="80"/>
         <source>{app_version}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../designer/AboutDialog.ui" line="106"/>
-        <source>Hope it will pay off</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../designer/AboutDialog.ui" line="113"/>
+        <location filename="../../designer/AboutDialog.ui" line="73"/>
         <source>App version:</source>
         <translation type="unfinished"></translation>
     </message>
@@ -56,7 +51,7 @@
     <name>InstructionsDialog</name>
     <message>
         <location filename="../../designer/InstructionsDialog.ui" line="14"/>
-        <source>Dialog</source>
+        <source>InstructionsDialog</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -79,37 +74,6 @@ current active cell position</source>
     </message>
     <message>
         <location filename="../../designer/InstructionsDialog.ui" line="131"/>
-        <source>X</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>InstructionsWidget</name>
-    <message>
-        <location filename="../../designer/InstructionsWidget.ui" line="17"/>
-        <source>Help</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../designer/InstructionsWidget.ui" line="52"/>
-        <source>Instructions</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../designer/InstructionsWidget.ui" line="70"/>
-        <source>• To change cell state to the opposite,
- press &apos;Enter&apos; key or click the cell with 
-left mouse button.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../designer/InstructionsWidget.ui" line="87"/>
-        <source>• Use arrow keys to change
-current active cell position</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../designer/InstructionsWidget.ui" line="133"/>
         <source>X</source>
         <translation type="unfinished"></translation>
     </message>

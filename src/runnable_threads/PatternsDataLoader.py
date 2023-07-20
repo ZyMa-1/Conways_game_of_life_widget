@@ -77,6 +77,7 @@ class PatternsDataLoader(QRunnable):
     @staticmethod
     def generate_pixmap(parsed_data: dict) -> QPixmap:
         game_widget = ConwaysGameOfLife()
+        game_widget._active_cell = (-1, -1)
         game_widget.rows = parsed_data["rows"]
         game_widget.cols = parsed_data["cols"]
         game_widget.state = parsed_data["state"]
@@ -95,6 +96,7 @@ class PatternsDataLoader(QRunnable):
 
     @staticmethod
     def parse_data(data: dict) -> dict:
+        """Type casting can be handled entirely by json schema"""
         return {"rows": int(data["rows"]),
                 "cols": int(data["cols"]),
                 "state": data["state"],

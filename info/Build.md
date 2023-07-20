@@ -31,7 +31,7 @@ P.S. to add certain directories with some data to the project build use `--inclu
 nuitka --include-data-dir=.\pattern_gallery\=.\pattern_gallery\ --standalone --follow-imports --quiet --disable-console --plugin-enable=pyside6 --output-filename=conways_game_of_life.exe .\main.py
 ```
 
-*Full command for standalone*:
+*Full command for onefile*:
 ```bash
 nuitka --include-data-dir=.\pattern_gallery\=.\pattern_gallery\ --onefile --follow-imports --quiet --disable-console --plugin-enable=pyside6 --output-filename=conways_game_of_life.exe .\main.py
 ```

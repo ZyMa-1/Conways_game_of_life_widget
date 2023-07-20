@@ -25,7 +25,7 @@ class Ui_InstructionsDialog(object):
             InstructionsDialog.setObjectName(u"InstructionsDialog")
         InstructionsDialog.resize(263, 206)
         InstructionsDialog.setStyleSheet(u"QWidget {\n"
-"	background-color: rgb(230, 230, 230);\n"
+"	background-color: rgb(210, 210, 210);\n"
 "}\n"
 "QLabel {\n"
 "	margin-top: 0.4em;\n"
@@ -98,7 +98,7 @@ class Ui_InstructionsDialog(object):
     # setupUi
 
     def retranslateUi(self, InstructionsDialog):
-        InstructionsDialog.setWindowTitle(QCoreApplication.translate("InstructionsDialog", u"Dialog", None))
+        InstructionsDialog.setWindowTitle(QCoreApplication.translate("InstructionsDialog", u"InstructionsDialog", None))
         self.label.setText(QCoreApplication.translate("InstructionsDialog", u"Instructions", None))
         self.label_2.setText(QCoreApplication.translate("InstructionsDialog", u"\u2022 To change cell state to the opposite,\n"
 " press 'Enter' key or click the cell with \n"

@@ -673,7 +673,7 @@
      </property>
      <item>
       <layout class="QVBoxLayout" name="verticalLayout_3">
-       <item>
+       <item alignment="Qt::AlignVCenter">
         <widget class="QToolButton" name="default_mode_tool_button">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Fixed" vsizetype="Minimum">
@@ -707,7 +707,7 @@
          </property>
         </widget>
        </item>
-       <item alignment="Qt::AlignHCenter">
+       <item alignment="Qt::AlignHCenter|Qt::AlignVCenter">
         <widget class="QToolButton" name="paint_mode_tool_button">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Fixed" vsizetype="Minimum">
@@ -738,7 +738,7 @@
          </attribute>
         </widget>
        </item>
-       <item alignment="Qt::AlignHCenter">
+       <item alignment="Qt::AlignHCenter|Qt::AlignVCenter">
         <widget class="QToolButton" name="erase_mode_tool_button">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Fixed" vsizetype="Minimum">

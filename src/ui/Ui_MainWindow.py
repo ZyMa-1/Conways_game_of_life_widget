@@ -368,7 +368,7 @@ class Ui_MainWindow(object):
         self.default_mode_tool_button.setAutoExclusive(True)
         self.default_mode_tool_button.setAutoRaise(False)
 
-        self.verticalLayout_3.addWidget(self.default_mode_tool_button)
+        self.verticalLayout_3.addWidget(self.default_mode_tool_button, 0, Qt.AlignVCenter)
 
         self.paint_mode_tool_button = QToolButton(self.dockWidgetContents_3)
         self.tool_button_group = QButtonGroup(MainWindow)
@@ -381,7 +381,7 @@ class Ui_MainWindow(object):
         self.paint_mode_tool_button.setCheckable(True)
         self.paint_mode_tool_button.setAutoExclusive(True)
 
-        self.verticalLayout_3.addWidget(self.paint_mode_tool_button, 0, Qt.AlignHCenter)
+        self.verticalLayout_3.addWidget(self.paint_mode_tool_button, 0, Qt.AlignHCenter|Qt.AlignVCenter)
 
         self.erase_mode_tool_button = QToolButton(self.dockWidgetContents_3)
         self.tool_button_group.addButton(self.erase_mode_tool_button)
@@ -392,7 +392,7 @@ class Ui_MainWindow(object):
         self.erase_mode_tool_button.setCheckable(True)
         self.erase_mode_tool_button.setAutoExclusive(True)
 
-        self.verticalLayout_3.addWidget(self.erase_mode_tool_button, 0, Qt.AlignHCenter)
+        self.verticalLayout_3.addWidget(self.erase_mode_tool_button, 0, Qt.AlignHCenter|Qt.AlignVCenter)
 
         self.verticalSpacer = QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding)
 

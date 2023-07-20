@@ -11,11 +11,11 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>InstructionsDialog</string>
   </property>
   <property name="styleSheet">
    <string notr="true">QWidget {
-	background-color: rgb(230, 230, 230);
+	background-color: rgb(210, 210, 210);
 }
 QLabel {
 	margin-top: 0.4em;
