@@ -318,7 +318,14 @@ class ConwaysGameOfLife(QWidget):
         res = self._cell_coordinates_from_point(event.position().toPoint())
         if res is not None:
             row, col = res
-            self._change_cell_state_to_opposite(row, col)
+            match self._edit_mode:
+                case ConwaysGameOfLife.EditMode.DEFAULT:
+                    self._change_cell_state_to_opposite(row, col)
+                case ConwaysGameOfLife.EditMode.PAINT:
+                    self._change_cell_state_at(row, col, CELL_ALIVE)
+                case ConwaysGameOfLife.EditMode.ERASE:
+                    self._change_cell_state_at(row, col, CELL_DEAD)
+
             self.update()
 
     def mouseMoveEvent(self, event):

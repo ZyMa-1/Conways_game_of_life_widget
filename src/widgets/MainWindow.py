@@ -239,7 +239,7 @@ class MainWindow(QMainWindow):
         if not self.instructions_dialog.isVisible():
             self.instructions_dialog.show()
 
-    # Init functions
+    # INIT FUNCTIONS
 
     def create_helper_classes(self):
         # Create ConfigManager
