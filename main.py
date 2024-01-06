@@ -32,23 +32,22 @@ def ensure_if_ok_to_run():
 def init_language_settings():
     settings = SettingsManager(parent=app).settings_instance()
     lang = settings.value("Language", "en", type=str)
-    if lang == "ru":
-        lang = QLocale.Language.Russian
-    elif lang == "en":
-        lang = QLocale.Language.English
+    # if lang == "ru":
+    #     lang = QLocale.Language.Russian
+    # elif lang == "en":
+    #     lang = QLocale.Language.English
 
     # Initialize translations using resource file
     translator = QTranslator(app)
-    path = ':/translations/main_gui_ru.qm'
-    if translator.load(lang, path):
+    path = f':/translations/main_gui_{lang}.qm'
+    if translator.load(path):
         app.installTranslator(translator)
 
 
 if __name__ == '__main__':
     ensure_if_ok_to_run()
 
-    MainWindow = getattr(importlib.import_module('src.widgets.MainWindow'), 'MainWindow')
-
+    from src.widgets.MainWindow import MainWindow
     app = QApplication(sys.argv)
 
     app.setOrganizationName("ZyMa-1")

@@ -1,6 +1,8 @@
 """
 Author: ZyMa-1
 """
+import os
+
 from PySide6.QtCore import QObject, QSettings
 
 from src.backend.PathManager import PathManager
@@ -20,7 +22,16 @@ class _SingletonMeta(type(QObject), type):
 class SettingsManager(QObject, metaclass=_SingletonMeta):
     def __init__(self, parent=None):
         super().__init__(parent)
-        self.settings = QSettings(str(PathManager.SETTINGS_INI), QSettings.Format.IniFormat)
+        settings_path = str(PathManager.SETTINGS_INI)
+
+        # Check if the INI file exists, and create it if not
+        if not os.path.exists(settings_path):
+            with open(settings_path, 'w'):
+                pass
+
+        self.settings = QSettings(settings_path, QSettings.Format.IniFormat)
+        if not self.settings.contains("Language"):
+            self.settings.setValue("Language", "en")
 
     def settings_instance(self) -> QSettings:
         return self.settings
