@@ -23,15 +23,7 @@ class SettingsManager(QObject, metaclass=_SingletonMeta):
     def __init__(self, parent=None):
         super().__init__(parent)
         settings_path = str(PathManager.SETTINGS_INI)
-
-        # Check if the INI file exists, and create it if not
-        if not os.path.exists(settings_path):
-            with open(settings_path, 'w'):
-                pass
-
         self.settings = QSettings(settings_path, QSettings.Format.IniFormat)
-        if not self.settings.contains("Language"):
-            self.settings.setValue("Language", "en")
 
     def settings_instance(self) -> QSettings:
         return self.settings

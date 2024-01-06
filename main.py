@@ -24,9 +24,11 @@ from src.backend.SettingsManager import SettingsManager
 
 def ensure_if_ok_to_run():
     PathManager.set_project_root(pathlib.Path(__file__).absolute().parent)
+    PathManager.create_settings_ini()
     os.makedirs('configs', exist_ok=True)
     os.makedirs('exports', exist_ok=True)
     os.makedirs('pattern_gallery', exist_ok=True)
+    PathManager.create_square_pattern()
 
 
 def init_language_settings():
@@ -40,7 +42,7 @@ def init_language_settings():
     # Initialize translations using resource file
     translator = QTranslator(app)
     path = f':/translations/main_gui_{lang}.qm'
-    if translator.load(path):
+    if lang == 'ru' and translator.load(path):
         app.installTranslator(translator)
 
 
