@@ -22,7 +22,6 @@ def ensure_if_ok_to_run():
     os.makedirs('configs', exist_ok=True)
     os.makedirs('exports', exist_ok=True)
     os.makedirs('pattern_gallery', exist_ok=True)
-    PathManager.create_files()
 
 
 def init_language_settings():

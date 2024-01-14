@@ -14,7 +14,7 @@ nuitka --standalone --follow-imports --quiet --disable-console --plugin-enable=p
 ```
 Executing this command will generate two directories: `main.build/` and `main.dist/`. The dist directory holds the executable file and other necessary components of the application.
 <br>  
-**Building one file:**  
+**Building one file:** (not working with keeping dynamic resources)
 <br>
 Run following command:
 ```bash
@@ -35,3 +35,6 @@ nuitka --include-data-dir=.\pattern_gallery\=.\pattern_gallery\ --standalone --f
 ```bash
 nuitka --include-data-dir=.\pattern_gallery\=.\pattern_gallery\ --onefile --follow-imports --quiet --disable-console --plugin-enable=pyside6 --output-filename=conways_game_of_life_v0.2.2.exe .\main.py
 ```
+
+### Notes:
+- `--include-data-dir` works as expected.
