@@ -1,11 +1,5 @@
-"""
-Additional functions and classes for ConwaysGameOfLifeWidget.
-
-Author: ZyMa-1
-"""
-
 from functools import wraps
-from typing import Tuple
+from typing import Tuple, TypedDict, List
 
 from PySide6.QtGui import QColor
 
@@ -54,3 +48,10 @@ class ColorProperty:
             self._color = QColor(*value)
         else:
             raise ValueError("Invalid color value")
+
+
+class PatternSchema(TypedDict):
+    rows: int
+    cols: int
+    state: List[List[str]]
+    pattern_name: str

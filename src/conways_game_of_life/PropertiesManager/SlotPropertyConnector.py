@@ -1,13 +1,15 @@
-from types import MappingProxyType, MethodType
+from types import MethodType
+from typing import Any
 
-from PySide6.QtCore import QObject, Slot
+from PySide6.QtCore import QObject, Slot, Signal
 from PySide6.QtGui import QColor
+from PySide6.QtWidgets import QWidget
 
 
 class _SlotFactory(QObject):
-    """Class purpose of which is to create unique slots."""
+    """Class to create unique slots"""
 
-    def __init__(self, widget, parent=None):
+    def __init__(self, widget: QWidget, parent=None):
         super().__init__(parent)
         self.widget = widget
 
@@ -33,7 +35,7 @@ class _SlotFactory(QObject):
     def _is_game_running_slot(self, value: bool):
         self.widget.setText(":)" if value else ":(")
 
-    SLOTS = MappingProxyType({
+    SLOTS = {
         "turn_number": _turn_number_int_slot,
         "is_game_running": _is_game_running_slot,
         "cols": _spin_box_int_slot,
@@ -43,14 +45,16 @@ class _SlotFactory(QObject):
         "border_color": _label_color_slot,
         "cell_dead_color": _label_color_slot,
         "cell_alive_color": _label_color_slot
-    })
+    }
 
 
 class SlotPropertyConnector(QObject):
     def __init__(self, parent=None):
         super().__init__(parent)
 
-    def connect_property_to_widget(self, *, property_name, property_value, signal, widget):
+    def connect_property_to_widget(self, property_name: str, property_value: Any, signal: Signal,
+                                   widget: QWidget) -> MethodType:
         slot = _SlotFactory(widget, parent=self.parent()).get_slot(property_name)
         slot(property_value)
         signal.connect(slot)
+        return slot

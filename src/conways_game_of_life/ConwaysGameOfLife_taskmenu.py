@@ -1,17 +1,13 @@
-"""
-Basic implementation of task menu extension.
-
-Author: ZyMa-1
-"""
-
 from PySide6.QtCore import Slot
 from PySide6.QtDesigner import (QExtensionFactory, QPyDesignerTaskMenuExtension)
 from PySide6.QtGui import QAction
 from PySide6.QtWidgets import QDialog
 
+from src.conways_game_of_life.ConwaysGameOfLife import ConwaysGameOfLife
 from src.ui.Ui_ConwaysGameOfLifeDialog import Ui_ConwaysGameOfLifeDialog
 
 
+# The task menu extensions by the tutorial
 class ConwaysGameOfLifeDialog(QDialog):
     def __init__(self, parent):
         super().__init__(parent)
@@ -24,14 +20,14 @@ class ConwaysGameOfLifeDialog(QDialog):
         self.ui.button_box.accepted.connect(self.accept)
         self.ui.button_box.rejected.connect(self.reject)
 
-    def set_values(self, conwaysGameOfLifeWidget):
-        self.ui.conways_game_of_life_widget.state = conwaysGameOfLifeWidget.state
+    def set_values(self, conways_game_of_life_widget: ConwaysGameOfLife):
+        self.ui.conways_game_of_life_widget.state = conways_game_of_life_widget.state
 
 
 class ConwaysGameOfLifeTaskMenu(QPyDesignerTaskMenuExtension):
-    def __init__(self, conwaysGameOfLifeWidget, parent):
+    def __init__(self, conways_game_of_life_widget: ConwaysGameOfLife, parent):
         super().__init__(parent)
-        self._conways_game_of_life_widget = conwaysGameOfLifeWidget
+        self._conways_game_of_life_widget = conways_game_of_life_widget
         self._edit_widget_action = QAction('Edit Widget...', None)
         self._edit_widget_action.triggered.connect(self._edit_widget)
 

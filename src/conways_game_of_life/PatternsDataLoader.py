@@ -2,7 +2,7 @@ import json
 import os
 import pathlib
 
-from PySide6.QtCore import QRunnable, QObject, Signal, Slot, Qt, QSize, QRect, QPoint
+from PySide6.QtCore import QRunnable, QObject, Signal, Slot, Qt, QRect, QPoint
 from PySide6.QtGui import QPainter, QPixmap
 from jsonschema import validators
 from jsonschema.exceptions import ValidationError
@@ -10,7 +10,7 @@ from jsonschema.exceptions import ValidationError
 from src.backend.PathManager import PathManager
 from src.conways_game_of_life.ConwaysGameOfLife import ConwaysGameOfLife
 
-schema = {
+pattern_json_schema = {
     "type": "object",
     "properties": {
         "rows": {"type": "integer"},
@@ -32,20 +32,17 @@ class PatternsDataLoader(QRunnable):
     def __init__(self):
         super().__init__()
 
-        self.PATTERN_GALLERY = PathManager.PATTERN_GALLERY_DIR
         self.json_file_paths = []
         self.result_data = []
-        self.signals = _PatternDataLoaderSignals()
+        self.signals = _PatternDataLoaderSignals()  # QRunnable cannot have signals
 
     def run(self):
         self.load_file_paths()
         for file_path in self.json_file_paths:
             with open(file_path, "r") as json_file:
                 data = json.load(json_file)
-
             if not self.validate_json_data(data):
                 continue
-
             parsed_data = self.parse_data(data)
             if not self.validate_data_on_widget(parsed_data):
                 continue
@@ -97,22 +94,23 @@ class PatternsDataLoader(QRunnable):
     @staticmethod
     def parse_data(data: dict) -> dict:
         """Type casting can be handled entirely by json schema"""
-        return {"rows": int(data["rows"]),
-                "cols": int(data["cols"]),
-                "state": data["state"],
-                "pattern_name": str(data["pattern_name"])}
+        # return {"rows": int(data["rows"]),
+        #         "cols": int(data["cols"]),
+        #         "state": data["state"],
+        #         "pattern_name": str(data["pattern_name"])}
+        return data
 
     @staticmethod
     def validate_json_data(data: dict) -> bool:
         try:
-            validators.validate(data, schema)
+            validators.validate(data, pattern_json_schema)
             return True
         except ValidationError:
             return False
 
     def load_file_paths(self):
         json_file_paths = []
-        with os.scandir(self.PATTERN_GALLERY) as entries:
+        with os.scandir(PathManager.PATTERN_GALLERY_DIR) as entries:
             for entry in entries:
                 if entry.is_file() and entry.name.endswith(".json"):
                     json_file_paths.append(pathlib.Path(entry.path))

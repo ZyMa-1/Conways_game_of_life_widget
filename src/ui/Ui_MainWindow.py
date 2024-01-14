@@ -29,7 +29,7 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
-        MainWindow.resize(703, 519)
+        MainWindow.resize(720, 530)
         sizePolicy = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -169,12 +169,24 @@ class Ui_MainWindow(object):
 
         self.verticalLayout.addLayout(self.layout_buttons)
 
+        self.horizontalLayout_3 = QHBoxLayout()
+        self.horizontalLayout_3.setObjectName(u"horizontalLayout_3")
+        self.horizontalLayout_3.setContentsMargins(-1, -1, -1, 0)
         self.reset_to_default_button = QPushButton(self.centralwidget)
         self.reset_to_default_button.setObjectName(u"reset_to_default_button")
         self.reset_to_default_button.setMinimumSize(QSize(0, 30))
         self.reset_to_default_button.setFocusPolicy(Qt.NoFocus)
 
-        self.verticalLayout.addWidget(self.reset_to_default_button)
+        self.horizontalLayout_3.addWidget(self.reset_to_default_button)
+
+        self.set_perfect_size_button = QPushButton(self.centralwidget)
+        self.set_perfect_size_button.setObjectName(u"set_perfect_size_button")
+        self.set_perfect_size_button.setMinimumSize(QSize(0, 30))
+
+        self.horizontalLayout_3.addWidget(self.set_perfect_size_button)
+
+
+        self.verticalLayout.addLayout(self.horizontalLayout_3)
 
 
         self.horizontalLayout.addLayout(self.verticalLayout)
@@ -182,7 +194,7 @@ class Ui_MainWindow(object):
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QMenuBar(MainWindow)
         self.menubar.setObjectName(u"menubar")
-        self.menubar.setGeometry(QRect(0, 0, 703, 22))
+        self.menubar.setGeometry(QRect(0, 0, 720, 22))
         self.menuHelp = QMenu(self.menubar)
         self.menuHelp.setObjectName(u"menuHelp")
         self.menuExport = QMenu(self.menubar)
@@ -214,20 +226,74 @@ class Ui_MainWindow(object):
         self.layout_settings.setObjectName(u"layout_settings")
         self.layout_settings.setSizeConstraint(QLayout.SetMinAndMaxSize)
         self.layout_settings.setContentsMargins(-1, 0, -1, -1)
-        self.label_4 = QLabel(self.dockWidgetContents_2)
-        self.label_4.setObjectName(u"label_4")
-
-        self.layout_settings.addWidget(self.label_4, 4, 0, 1, 1)
-
         self.label_6 = QLabel(self.dockWidgetContents_2)
         self.label_6.setObjectName(u"label_6")
 
         self.layout_settings.addWidget(self.label_6, 6, 0, 1, 1)
 
+        self.label_7 = QLabel(self.dockWidgetContents_2)
+        self.label_7.setObjectName(u"label_7")
+
+        self.layout_settings.addWidget(self.label_7, 8, 0, 1, 1)
+
+        self.border_color_label = QLabel(self.dockWidgetContents_2)
+        self.border_color_label.setObjectName(u"border_color_label")
+        sizePolicy3 = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
+        sizePolicy3.setHorizontalStretch(2)
+        sizePolicy3.setVerticalStretch(2)
+        sizePolicy3.setHeightForWidth(self.border_color_label.sizePolicy().hasHeightForWidth())
+        self.border_color_label.setSizePolicy(sizePolicy3)
+        self.border_color_label.setMinimumSize(QSize(20, 20))
+        self.border_color_label.setMaximumSize(QSize(16777215, 16777215))
+        self.border_color_label.setSizeIncrement(QSize(0, 0))
+        self.border_color_label.setBaseSize(QSize(0, 0))
+
+        self.layout_settings.addWidget(self.border_color_label, 7, 2, 1, 1)
+
+        self.cell_dead_color_button = QPushButton(self.dockWidgetContents_2)
+        self.cell_dead_color_button.setObjectName(u"cell_dead_color_button")
+        self.cell_dead_color_button.setMinimumSize(QSize(0, 0))
+        self.cell_dead_color_button.setFocusPolicy(Qt.NoFocus)
+
+        self.layout_settings.addWidget(self.cell_dead_color_button, 9, 1, 1, 1)
+
+        self.label_9 = QLabel(self.dockWidgetContents_2)
+        self.label_9.setObjectName(u"label_9")
+
+        self.layout_settings.addWidget(self.label_9, 7, 0, 1, 1)
+
+        self.label_8 = QLabel(self.dockWidgetContents_2)
+        self.label_8.setObjectName(u"label_8")
+
+        self.layout_settings.addWidget(self.label_8, 9, 0, 1, 1)
+
+        self.cell_alive_color_button = QPushButton(self.dockWidgetContents_2)
+        self.cell_alive_color_button.setObjectName(u"cell_alive_color_button")
+        self.cell_alive_color_button.setMinimumSize(QSize(0, 0))
+        self.cell_alive_color_button.setFocusPolicy(Qt.NoFocus)
+
+        self.layout_settings.addWidget(self.cell_alive_color_button, 8, 1, 1, 1)
+
         self.label_2 = QLabel(self.dockWidgetContents_2)
         self.label_2.setObjectName(u"label_2")
 
         self.layout_settings.addWidget(self.label_2, 5, 0, 1, 1)
+
+        self.cell_dead_color_label = QLabel(self.dockWidgetContents_2)
+        self.cell_dead_color_label.setObjectName(u"cell_dead_color_label")
+        sizePolicy3.setHeightForWidth(self.cell_dead_color_label.sizePolicy().hasHeightForWidth())
+        self.cell_dead_color_label.setSizePolicy(sizePolicy3)
+        self.cell_dead_color_label.setMinimumSize(QSize(20, 20))
+
+        self.layout_settings.addWidget(self.cell_dead_color_label, 9, 2, 1, 1)
+
+        self.rows_spin_box = QSpinBox(self.dockWidgetContents_2)
+        self.rows_spin_box.setObjectName(u"rows_spin_box")
+        self.rows_spin_box.setFocusPolicy(Qt.ClickFocus)
+        self.rows_spin_box.setMinimum(-100)
+        self.rows_spin_box.setMaximum(100)
+
+        self.layout_settings.addWidget(self.rows_spin_box, 3, 1, 1, 2)
 
         self.apply_button = QPushButton(self.dockWidgetContents_2)
         self.apply_button.setObjectName(u"apply_button")
@@ -238,6 +304,19 @@ class Ui_MainWindow(object):
 
         self.layout_settings.addWidget(self.apply_button, 10, 1, 1, 2)
 
+        self.cols_spin_box = QSpinBox(self.dockWidgetContents_2)
+        self.cols_spin_box.setObjectName(u"cols_spin_box")
+        self.cols_spin_box.setFocusPolicy(Qt.ClickFocus)
+        self.cols_spin_box.setMinimum(-100)
+        self.cols_spin_box.setMaximum(100)
+
+        self.layout_settings.addWidget(self.cols_spin_box, 4, 1, 1, 2)
+
+        self.label_3 = QLabel(self.dockWidgetContents_2)
+        self.label_3.setObjectName(u"label_3")
+
+        self.layout_settings.addWidget(self.label_3, 3, 0, 1, 1)
+
         self.turn_duration_spin_box = QSpinBox(self.dockWidgetContents_2)
         self.turn_duration_spin_box.setObjectName(u"turn_duration_spin_box")
         self.turn_duration_spin_box.setFocusPolicy(Qt.ClickFocus)
@@ -246,25 +325,17 @@ class Ui_MainWindow(object):
 
         self.layout_settings.addWidget(self.turn_duration_spin_box, 5, 1, 1, 2)
 
-        self.rows_spin_box = QSpinBox(self.dockWidgetContents_2)
-        self.rows_spin_box.setObjectName(u"rows_spin_box")
-        self.rows_spin_box.setFocusPolicy(Qt.ClickFocus)
-        self.rows_spin_box.setMinimum(-100)
-        self.rows_spin_box.setMaximum(100)
+        self.label_4 = QLabel(self.dockWidgetContents_2)
+        self.label_4.setObjectName(u"label_4")
 
-        self.layout_settings.addWidget(self.rows_spin_box, 3, 1, 1, 2)
+        self.layout_settings.addWidget(self.label_4, 4, 0, 1, 1)
 
-        self.cell_alive_color_button = QPushButton(self.dockWidgetContents_2)
-        self.cell_alive_color_button.setObjectName(u"cell_alive_color_button")
-        self.cell_alive_color_button.setMinimumSize(QSize(0, 0))
-        self.cell_alive_color_button.setFocusPolicy(Qt.NoFocus)
+        self.border_thickness_spin_box = QSpinBox(self.dockWidgetContents_2)
+        self.border_thickness_spin_box.setObjectName(u"border_thickness_spin_box")
+        self.border_thickness_spin_box.setFocusPolicy(Qt.ClickFocus)
+        self.border_thickness_spin_box.setMinimum(-100)
 
-        self.layout_settings.addWidget(self.cell_alive_color_button, 8, 1, 1, 1)
-
-        self.label_9 = QLabel(self.dockWidgetContents_2)
-        self.label_9.setObjectName(u"label_9")
-
-        self.layout_settings.addWidget(self.label_9, 7, 0, 1, 1)
+        self.layout_settings.addWidget(self.border_thickness_spin_box, 6, 1, 1, 2)
 
         self.border_color_button = QPushButton(self.dockWidgetContents_2)
         self.border_color_button.setObjectName(u"border_color_button")
@@ -272,58 +343,6 @@ class Ui_MainWindow(object):
         self.border_color_button.setFocusPolicy(Qt.NoFocus)
 
         self.layout_settings.addWidget(self.border_color_button, 7, 1, 1, 1)
-
-        self.cell_dead_color_label = QLabel(self.dockWidgetContents_2)
-        self.cell_dead_color_label.setObjectName(u"cell_dead_color_label")
-        sizePolicy3 = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
-        sizePolicy3.setHorizontalStretch(2)
-        sizePolicy3.setVerticalStretch(2)
-        sizePolicy3.setHeightForWidth(self.cell_dead_color_label.sizePolicy().hasHeightForWidth())
-        self.cell_dead_color_label.setSizePolicy(sizePolicy3)
-        self.cell_dead_color_label.setMinimumSize(QSize(20, 20))
-
-        self.layout_settings.addWidget(self.cell_dead_color_label, 9, 2, 1, 1)
-
-        self.border_color_label = QLabel(self.dockWidgetContents_2)
-        self.border_color_label.setObjectName(u"border_color_label")
-        sizePolicy3.setHeightForWidth(self.border_color_label.sizePolicy().hasHeightForWidth())
-        self.border_color_label.setSizePolicy(sizePolicy3)
-        self.border_color_label.setMinimumSize(QSize(20, 20))
-        self.border_color_label.setMaximumSize(QSize(16777215, 16777215))
-        self.border_color_label.setSizeIncrement(QSize(0, 0))
-        self.border_color_label.setBaseSize(QSize(0, 0))
-
-        self.layout_settings.addWidget(self.border_color_label, 7, 2, 1, 1)
-
-        self.label_7 = QLabel(self.dockWidgetContents_2)
-        self.label_7.setObjectName(u"label_7")
-
-        self.layout_settings.addWidget(self.label_7, 8, 0, 1, 1)
-
-        self.cell_dead_color_button = QPushButton(self.dockWidgetContents_2)
-        self.cell_dead_color_button.setObjectName(u"cell_dead_color_button")
-        self.cell_dead_color_button.setMinimumSize(QSize(0, 0))
-        self.cell_dead_color_button.setFocusPolicy(Qt.NoFocus)
-
-        self.layout_settings.addWidget(self.cell_dead_color_button, 9, 1, 1, 1)
-
-        self.label_3 = QLabel(self.dockWidgetContents_2)
-        self.label_3.setObjectName(u"label_3")
-
-        self.layout_settings.addWidget(self.label_3, 3, 0, 1, 1)
-
-        self.label_8 = QLabel(self.dockWidgetContents_2)
-        self.label_8.setObjectName(u"label_8")
-
-        self.layout_settings.addWidget(self.label_8, 9, 0, 1, 1)
-
-        self.cols_spin_box = QSpinBox(self.dockWidgetContents_2)
-        self.cols_spin_box.setObjectName(u"cols_spin_box")
-        self.cols_spin_box.setFocusPolicy(Qt.ClickFocus)
-        self.cols_spin_box.setMinimum(-100)
-        self.cols_spin_box.setMaximum(100)
-
-        self.layout_settings.addWidget(self.cols_spin_box, 4, 1, 1, 2)
 
         self.cell_alive_color_label = QLabel(self.dockWidgetContents_2)
         self.cell_alive_color_label.setObjectName(u"cell_alive_color_label")
@@ -333,12 +352,11 @@ class Ui_MainWindow(object):
 
         self.layout_settings.addWidget(self.cell_alive_color_label, 8, 2, 1, 1)
 
-        self.border_thickness_spin_box = QSpinBox(self.dockWidgetContents_2)
-        self.border_thickness_spin_box.setObjectName(u"border_thickness_spin_box")
-        self.border_thickness_spin_box.setFocusPolicy(Qt.ClickFocus)
-        self.border_thickness_spin_box.setMinimum(-100)
+        self.sync_button = QPushButton(self.dockWidgetContents_2)
+        self.sync_button.setObjectName(u"sync_button")
+        self.sync_button.setMinimumSize(QSize(0, 40))
 
-        self.layout_settings.addWidget(self.border_thickness_spin_box, 6, 1, 1, 2)
+        self.layout_settings.addWidget(self.sync_button, 11, 1, 1, 2)
 
 
         self.verticalLayout_2.addLayout(self.layout_settings)
@@ -522,6 +540,7 @@ class Ui_MainWindow(object):
         self.reset_to_default_button.setStatusTip(QCoreApplication.translate("MainWindow", u"Reset to default button", None))
 #endif // QT_CONFIG(statustip)
         self.reset_to_default_button.setText(QCoreApplication.translate("MainWindow", u"Reset to default", None))
+        self.set_perfect_size_button.setText(QCoreApplication.translate("MainWindow", u"Set perfect size", None))
         self.menuHelp.setTitle(QCoreApplication.translate("MainWindow", u"About", None))
         self.menuExport.setTitle(QCoreApplication.translate("MainWindow", u"Export", None))
         self.menuSave.setTitle(QCoreApplication.translate("MainWindow", u"Save", None))
@@ -532,55 +551,56 @@ class Ui_MainWindow(object):
         self.settings_dock_widget.setStatusTip(QCoreApplication.translate("MainWindow", u"Settings dock widget", None))
 #endif // QT_CONFIG(statustip)
         self.settings_dock_widget.setWindowTitle(QCoreApplication.translate("MainWindow", u"Game of life settings", None))
-        self.label_4.setText(QCoreApplication.translate("MainWindow", u"Column count:", None))
         self.label_6.setText(QCoreApplication.translate("MainWindow", u"Border thickness:", None))
-        self.label_2.setText(QCoreApplication.translate("MainWindow", u"Turn duration:", None))
+        self.label_7.setText(QCoreApplication.translate("MainWindow", u"Cell alive color:", None))
 #if QT_CONFIG(statustip)
-        self.apply_button.setStatusTip(QCoreApplication.translate("MainWindow", u"Apply settings button", None))
+        self.border_color_label.setStatusTip(QCoreApplication.translate("MainWindow", u"Label displaying color", None))
 #endif // QT_CONFIG(statustip)
-        self.apply_button.setText(QCoreApplication.translate("MainWindow", u"Apply", None))
+        self.border_color_label.setText("")
 #if QT_CONFIG(statustip)
-        self.turn_duration_spin_box.setStatusTip(QCoreApplication.translate("MainWindow", u"Turn duration spin box", None))
+        self.cell_dead_color_button.setStatusTip(QCoreApplication.translate("MainWindow", u"Cell dead color button", None))
 #endif // QT_CONFIG(statustip)
-        self.turn_duration_spin_box.setSuffix(QCoreApplication.translate("MainWindow", u" ms", None))
-#if QT_CONFIG(statustip)
-        self.rows_spin_box.setStatusTip(QCoreApplication.translate("MainWindow", u"Row count spin box", None))
-#endif // QT_CONFIG(statustip)
+        self.cell_dead_color_button.setText(QCoreApplication.translate("MainWindow", u"Choose color...", None))
+        self.label_9.setText(QCoreApplication.translate("MainWindow", u"Border color:", None))
+        self.label_8.setText(QCoreApplication.translate("MainWindow", u"Cell dead color:", None))
 #if QT_CONFIG(statustip)
         self.cell_alive_color_button.setStatusTip(QCoreApplication.translate("MainWindow", u"Cell alive color button", None))
 #endif // QT_CONFIG(statustip)
         self.cell_alive_color_button.setText(QCoreApplication.translate("MainWindow", u"Choose color...", None))
-        self.label_9.setText(QCoreApplication.translate("MainWindow", u"Border color:", None))
-#if QT_CONFIG(statustip)
-        self.border_color_button.setStatusTip(QCoreApplication.translate("MainWindow", u"Border color button", None))
-#endif // QT_CONFIG(statustip)
-        self.border_color_button.setText(QCoreApplication.translate("MainWindow", u"Choose color...", None))
+        self.label_2.setText(QCoreApplication.translate("MainWindow", u"Turn duration:", None))
 #if QT_CONFIG(statustip)
         self.cell_dead_color_label.setStatusTip(QCoreApplication.translate("MainWindow", u"Label displaying color", None))
 #endif // QT_CONFIG(statustip)
         self.cell_dead_color_label.setText("")
 #if QT_CONFIG(statustip)
-        self.border_color_label.setStatusTip(QCoreApplication.translate("MainWindow", u"Label displaying color", None))
+        self.rows_spin_box.setStatusTip(QCoreApplication.translate("MainWindow", u"Row count spin box", None))
 #endif // QT_CONFIG(statustip)
-        self.border_color_label.setText("")
-        self.label_7.setText(QCoreApplication.translate("MainWindow", u"Cell alive color:", None))
 #if QT_CONFIG(statustip)
-        self.cell_dead_color_button.setStatusTip(QCoreApplication.translate("MainWindow", u"Cell dead color button", None))
+        self.apply_button.setStatusTip(QCoreApplication.translate("MainWindow", u"Apply settings button", None))
 #endif // QT_CONFIG(statustip)
-        self.cell_dead_color_button.setText(QCoreApplication.translate("MainWindow", u"Choose color...", None))
-        self.label_3.setText(QCoreApplication.translate("MainWindow", u"Row count:", None))
-        self.label_8.setText(QCoreApplication.translate("MainWindow", u"Cell dead color:", None))
+        self.apply_button.setText(QCoreApplication.translate("MainWindow", u"Apply", None))
 #if QT_CONFIG(statustip)
         self.cols_spin_box.setStatusTip(QCoreApplication.translate("MainWindow", u"Column count spin box", None))
 #endif // QT_CONFIG(statustip)
+        self.label_3.setText(QCoreApplication.translate("MainWindow", u"Row count:", None))
 #if QT_CONFIG(statustip)
-        self.cell_alive_color_label.setStatusTip(QCoreApplication.translate("MainWindow", u"Label displaying color", None))
+        self.turn_duration_spin_box.setStatusTip(QCoreApplication.translate("MainWindow", u"Turn duration spin box", None))
 #endif // QT_CONFIG(statustip)
-        self.cell_alive_color_label.setText("")
+        self.turn_duration_spin_box.setSuffix(QCoreApplication.translate("MainWindow", u" ms", None))
+        self.label_4.setText(QCoreApplication.translate("MainWindow", u"Column count:", None))
 #if QT_CONFIG(statustip)
         self.border_thickness_spin_box.setStatusTip(QCoreApplication.translate("MainWindow", u"Border thickness spin box", None))
 #endif // QT_CONFIG(statustip)
         self.border_thickness_spin_box.setSuffix(QCoreApplication.translate("MainWindow", u" px", None))
+#if QT_CONFIG(statustip)
+        self.border_color_button.setStatusTip(QCoreApplication.translate("MainWindow", u"Border color button", None))
+#endif // QT_CONFIG(statustip)
+        self.border_color_button.setText(QCoreApplication.translate("MainWindow", u"Choose color...", None))
+#if QT_CONFIG(statustip)
+        self.cell_alive_color_label.setStatusTip(QCoreApplication.translate("MainWindow", u"Label displaying color", None))
+#endif // QT_CONFIG(statustip)
+        self.cell_alive_color_label.setText("")
+        self.sync_button.setText(QCoreApplication.translate("MainWindow", u"Sync", None))
 #if QT_CONFIG(statustip)
         self.edit_tools_dock_widget.setStatusTip(QCoreApplication.translate("MainWindow", u"Edit tools dock widget", None))
 #endif // QT_CONFIG(statustip)

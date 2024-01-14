@@ -1,9 +1,3 @@
-"""
-This file registers plugin in QtDesigner.
-
-Author: ZyMa-1
-"""
-
 from PySide6.QtDesigner import QPyDesignerCustomWidgetCollection
 
 from src.conways_game_of_life.ConwaysGameOfLife import ConwaysGameOfLife

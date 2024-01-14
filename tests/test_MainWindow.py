@@ -5,7 +5,7 @@ import tempfile
 import unittest
 from typing import ClassVar
 
-from PySide6.QtCore import QLocale, QTranslator, QSettings
+from PySide6.QtCore import QTranslator, QSettings
 from PySide6.QtGui import QColor
 from PySide6.QtWidgets import QApplication, QLabel
 
@@ -20,7 +20,7 @@ def create_app():
 
     app.setOrganizationName("ZyMa-1")
     app.setApplicationName("Conway's Game Of Life Widget")
-    app.setApplicationVersion("0.2.3")
+    app.setApplicationVersion("0.3")
     return app
 
 
@@ -30,11 +30,11 @@ def get_label_color(label: QLabel) -> QColor:
 
 class MainWindowTest(unittest.TestCase):
     """Tests the MainWidget GUI."""
-    app: ClassVar[QApplication | None] = None
-    temp_configs: ClassVar[tempfile.TemporaryDirectory | None] = None
-    temp_exports: ClassVar[tempfile.TemporaryDirectory | None] = None
-    settings_temp_file_path: ClassVar[pathlib.Path | None] = None
-    settings: ClassVar[QSettings | None] = None
+    app: ClassVar[QApplication]
+    temp_configs: ClassVar[tempfile.TemporaryDirectory]
+    temp_exports: ClassVar[tempfile.TemporaryDirectory]
+    settings_temp_file_path: ClassVar[pathlib.Path]
+    settings: ClassVar[QSettings]
 
     @classmethod
     def setUpClass(cls):
@@ -49,15 +49,9 @@ class MainWindowTest(unittest.TestCase):
 
         cls.settings = SettingsManager(parent=cls.app).settings_instance()
         lang = cls.settings.value("Language", "en", type=str)
-        if lang == "ru":
-            lang = QLocale.Language.Russian
-        elif lang == "en":
-            lang = QLocale.Language.English
-
-        # Initialize translations using resource file
         translator = QTranslator(cls.app)
-        path = ':/translations'
-        if translator.load(lang, 'main_gui', '_', path):
+        path = f':/translations/main_gui_{lang}.qm'
+        if translator.load(path):
             cls.app.installTranslator(translator)
 
     def setUp(self):

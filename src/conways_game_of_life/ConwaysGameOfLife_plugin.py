@@ -1,18 +1,9 @@
-"""
-Dynamic plugin file with some custom properties.
-
-Author: ZyMa-1
-"""
-
 from PySide6.QtDesigner import (QDesignerCustomWidgetInterface)
 from PySide6.QtGui import QIcon
 
 from .ConwaysGameOfLife import ConwaysGameOfLife, DEFAULT_COLS, DEFAULT_ROWS, DEFAULT_TURN_DURATION, \
-    DEFAULT_BORDER_THICKNESS, DEFAULT_BORDER_COLOR, DEFAULT_CELL_ALIVE_COLOR, DEFAULT_CELL_DEAD_COLOR
+    DEFAULT_BORDER_THICKNESS, DEFAULT_BORDER_COLOR, DEFAULT_CELL_ALIVE_COLOR, DEFAULT_CELL_DEAD_COLOR, MINIMUM_SIZE
 from .ConwaysGameOfLife_taskmenu import ConwaysGameOfLifeTaskMenuFactory
-
-min_w = 322
-min_h = 322
 
 DOM_XML = f"""
 <ui language='c++'>
@@ -21,8 +12,8 @@ DOM_XML = f"""
             <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>{min_w}</width>
-                <height>{min_h}</height>
+                <width>{MINIMUM_SIZE[0]}</width>
+                <height>{MINIMUM_SIZE[1]}</height>
             </rect>
         </property>
         <property name='cols'>
@@ -82,7 +73,7 @@ class ConwaysGameOfLifePlugin(QDesignerCustomWidgetInterface):
         return QIcon()
 
     def includeFile(self):
-        """Relative path to the custom widget file."""
+        """Relative path to the custom widget file"""
         return 'src/conways_game_of_life/ConwaysGameOfLife'
 
     def initialize(self, form_editor):
