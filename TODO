@@ -1,3 +1,5 @@
 - Fix Edit tools 'Erase' bug [yea, fixed]
 - Refactor ColorDialog [idk, that seems just fine]
 - Separate Game Logic [yea]
+- Language thing and tooltips for new v0.3 buttons.
+- Look for better way to create unique slots.

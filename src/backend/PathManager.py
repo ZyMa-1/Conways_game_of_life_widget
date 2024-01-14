@@ -19,9 +19,6 @@ class PathManager:
 
     @classmethod
     def create_files(cls):
-        if not os.path.exists(cls.SETTINGS_INI):
-            with open(cls.SETTINGS_INI, 'w') as f:
-                f.write('[General]\nLanguage=en')
         with open(cls.PATTERN_GALLERY_DIR / "square.json", 'w') as f:
             f.write(
                 """{

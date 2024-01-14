@@ -24,7 +24,7 @@ class AboutDialog(QDialog):
         self.ui.app_name_label.setText(app_name)
         self.ui.author_name_label.setText(app_author_name)
         self.ui.app_version_label.setText(app_version)
-        self.ui.text_label.setText("Spend my free time on this project (:\nAlso v0.3 is AITU thing :KZ:")
+        self.ui.text_label.setText("Spend my free time on this project (:\nv0.3 is for AITU python project.")
 
         self.ui.buttonBox.accepted.connect(self.accept)
         self.ui.buttonBox.rejected.connect(self.reject)

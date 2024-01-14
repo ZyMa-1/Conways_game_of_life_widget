@@ -9,15 +9,7 @@ def property_setter_error_handle(func):
     def wrapper(self, value):
         try:
             func(self, value)  # Call the original setter function
-        except ValueError as e:
-            error_message = str(e)
-            property_name = func.__name__
-            self.property_setter_error_signal.emit(property_name, error_message)
-        except TypeError as e:
-            error_message = str(e)
-            property_name = func.__name__
-            self.property_setter_error_signal.emit(property_name, error_message)
-        except AttributeError as e:
+        except (ValueError, TypeError, AttributeError) as e:
             error_message = str(e)
             property_name = func.__name__
             self.property_setter_error_signal.emit(property_name, error_message)
