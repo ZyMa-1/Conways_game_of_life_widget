@@ -3,3 +3,4 @@
 - Separate Game Logic [yea]
 - Language thing and tooltips for new v0.3 buttons.
 - Look for better way to create unique slots.
+- Fix incorrect json files interrupting entire pattern loading process.

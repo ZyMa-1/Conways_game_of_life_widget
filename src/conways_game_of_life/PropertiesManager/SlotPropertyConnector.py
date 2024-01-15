@@ -52,9 +52,13 @@ class SlotPropertyConnector(QObject):
     def __init__(self, parent=None):
         super().__init__(parent)
 
+        self.slot_factories = []
+
     def connect_property_to_widget(self, property_name: str, property_value: Any, signal: Signal,
                                    widget: QWidget) -> MethodType:
-        slot = _SlotFactory(widget, parent=self.parent()).get_slot(property_name)
+        slot_factory = _SlotFactory(widget, parent=self.parent())
+        self.slot_factories.append(slot_factory)
+        slot = slot_factory.get_slot(property_name)
         slot(property_value)
         signal.connect(slot)
         return slot

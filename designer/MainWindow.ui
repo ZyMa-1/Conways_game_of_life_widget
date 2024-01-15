@@ -278,6 +278,12 @@
             <height>30</height>
            </size>
           </property>
+          <property name="toolTip">
+           <string/>
+          </property>
+          <property name="statusTip">
+           <string>Set perfect size button</string>
+          </property>
           <property name="text">
            <string>Set perfect size</string>
           </property>
@@ -549,7 +555,7 @@
           <enum>Qt::NoFocus</enum>
          </property>
          <property name="statusTip">
-          <string>Apply settings button</string>
+          <string>Apply button</string>
          </property>
          <property name="text">
           <string>Apply</string>
@@ -675,6 +681,9 @@
            <width>0</width>
            <height>40</height>
           </size>
+         </property>
+         <property name="statusTip">
+          <string>Sync button</string>
          </property>
          <property name="text">
           <string>Sync</string>

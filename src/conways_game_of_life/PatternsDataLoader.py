@@ -1,6 +1,7 @@
 import json
 import os
 import pathlib
+from json import JSONDecodeError
 
 from PySide6.QtCore import QRunnable, QObject, Signal, Slot, Qt, QRect, QPoint
 from PySide6.QtGui import QPainter, QPixmap
@@ -39,8 +40,11 @@ class PatternsDataLoader(QRunnable):
     def run(self):
         self.load_file_paths()
         for file_path in self.json_file_paths:
-            with open(file_path, "r") as json_file:
-                data = json.load(json_file)
+            try:
+                with open(file_path, "r") as json_file:
+                    data = json.load(json_file)
+            except JSONDecodeError:
+                continue
             if not self.validate_json_data(data):
                 continue
             parsed_data = self.parse_data(data)

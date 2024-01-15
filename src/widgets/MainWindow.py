@@ -146,12 +146,7 @@ class MainWindow(QMainWindow):
     @Slot()
     def handle_apply_button_clicked(self):
         self.properties_manager.assign_widget_values_to_properties()
-
-        signal_data = self.property_setter_signal_collector.collect_signal_data()
-        if signal_data:
-            message = "\n".join(str(d) for d in signal_data)
-            warning_box = self.main_window_utils.create_warning_msg_box(message)
-            warning_box.exec()
+        self.show_property_signal_collector_errors()
 
     @Slot()
     def handle_reset_to_default_button_clicked(self):
@@ -186,6 +181,7 @@ class MainWindow(QMainWindow):
             msg = f"Config loaded from {filename}"
             message_box = self.main_window_utils.create_info_msg_box(msg)
             message_box.exec()
+            self.show_property_signal_collector_errors()
 
     @Slot(bool)
     def handle_action_view_settings_triggered(self, is_checked: bool):
@@ -277,6 +273,14 @@ class MainWindow(QMainWindow):
     @Slot()
     def handle_set_perfect_size_button_clicked(self):
         self.ui.conways_game_of_life_widget.set_perfect_size()
+
+    # Yeah
+    def show_property_signal_collector_errors(self):
+        signal_data = self.property_setter_signal_collector.collect_signal_data()
+        if signal_data:
+            message = "\n".join(str(d) for d in signal_data)
+            warning_box = self.main_window_utils.create_warning_msg_box(message)
+            warning_box.exec()
 
     # INIT METHODS
     def connect_signals_to_slots(self):

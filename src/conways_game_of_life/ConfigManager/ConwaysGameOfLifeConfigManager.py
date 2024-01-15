@@ -1,5 +1,6 @@
 import json
 import pathlib
+from json import JSONDecodeError
 from typing import Optional
 
 from PySide6.QtCore import QObject
@@ -53,8 +54,11 @@ class ConwaysGameOfLifeConfigManager(QObject):
         file_dialog.setWindowTitle("Load Config")
         if file_dialog.exec() == QFileDialog.DialogCode.Accepted:
             file_path = pathlib.Path(file_dialog.selectedFiles()[0])
-            with open(file_path, 'r') as file:
-                self._property_dict = json.load(file)
+            try:
+                with open(file_path, 'r') as file:
+                    self._property_dict = json.load(file)
+            except JSONDecodeError:
+                return None
 
             self._load_properties()
             return file_path.name
