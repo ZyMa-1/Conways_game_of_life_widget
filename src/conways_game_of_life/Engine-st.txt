@@ -1,0 +1,15 @@
+Base characteristics of the field:
+_turn_number
+_cols
+_rows
+_state
+
+Inner game logic:
+_adjust_state
+_insert_state_array_at
+_change_cell_state_at
+_change_cell_state_to_opposite
+_get_alive_neighbor_count
+_make_turn
+
+Extra Statistics (alive cells, dead cells, cells died, cells born)

@@ -77,8 +77,7 @@ class MainWindow(QMainWindow):
         self.properties_manager.link_widget_and_property(self.ui.cell_dead_color_label,
                                                          "cell_dead_color")
 
-        # Create UtilsFactory and get settings
-        UtilsFactory.create_resources(self)
+        # Get settings from UtilsFactory
         self.settings = UtilsFactory.get_settings()
 
         # Create property setter signal collector

@@ -6,7 +6,7 @@ from PySide6.QtCore import QTranslator
 from PySide6.QtWidgets import QApplication
 
 from src.backend.PathManager import PathManager
-from src.backend.SettingsManager import SettingsManager
+from src.backend.UtilsFactory import UtilsFactory
 
 
 # FOR DEBUGGING (to receive dumpObjectInfo output)
@@ -25,7 +25,8 @@ def ensure_if_ok_to_run():
 
 
 def init_language_settings():
-    settings = SettingsManager(parent=app).settings_instance()
+    UtilsFactory.create_resources(app)
+    settings = UtilsFactory.get_settings()
     lang = settings.value("Language", "en", type=str)
     translator = QTranslator(app)
     path = f':/translations/main_gui_{lang}.qm'
