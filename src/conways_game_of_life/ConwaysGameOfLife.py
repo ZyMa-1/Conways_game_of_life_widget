@@ -326,11 +326,6 @@ class ConwaysGameOfLife(QWidget):
         self.resize(size, size)
         super().resizeEvent(event)
 
-    def focusInEvent(self, event):
-        # IDK if that's doing something
-        self.grabKeyboard()
-        super().focusInEvent(event)
-
     # Signal suffix for the properties signals
     _signal_suffix = "_changed"
 
