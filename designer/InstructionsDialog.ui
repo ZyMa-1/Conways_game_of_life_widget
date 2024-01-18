@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>263</width>
+    <width>284</width>
     <height>206</height>
    </rect>
   </property>
@@ -65,9 +65,9 @@ QPushButton:pressed {
           </font>
          </property>
          <property name="text">
-          <string>• To change cell state to the opposite,
+          <string>• To change the cell state to the opposite,
  press 'Enter' key or click the cell with 
-left mouse button.</string>
+the left mouse button.</string>
          </property>
          <property name="margin">
           <number>0</number>
@@ -82,8 +82,8 @@ left mouse button.</string>
           </font>
          </property>
          <property name="text">
-          <string>• Use arrow keys to change
-current active cell position</string>
+          <string>• Use arrow keys on the keyboard
+to change the current active cell position</string>
          </property>
          <property name="margin">
           <number>0</number>

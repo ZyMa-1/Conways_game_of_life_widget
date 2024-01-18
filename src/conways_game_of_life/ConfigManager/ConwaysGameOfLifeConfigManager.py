@@ -8,7 +8,7 @@ from PySide6.QtWidgets import QFileDialog
 
 from src.backend.PathManager import PathManager
 from src.conways_game_of_life.ConwaysGameOfLife import ConwaysGameOfLife
-from .QtPropertyJsonConverter import to_json_type, to_property_type
+from .QtPropertyJsonConverter import serialize_property, deserialize_property
 
 
 class ConwaysGameOfLifeConfigManager(QObject):
@@ -69,10 +69,10 @@ class ConwaysGameOfLifeConfigManager(QObject):
         self._property_dict.clear()
         for name in self.conways_game_of_life_widget.savable_properties_names():
             value = self.conways_game_of_life_widget.property(name)
-            value = to_json_type(value)
+            value = serialize_property(value)
             self._property_dict[name] = value
 
     def _load_properties(self):
         for name, value in self._property_dict.items():
-            value = to_property_type(value)
+            value = deserialize_property(value)
             self.conways_game_of_life_widget.setProperty(name, value)

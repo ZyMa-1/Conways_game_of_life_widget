@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>320</width>
-    <height>196</height>
+    <height>210</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -44,7 +44,26 @@
        <property name="alignment">
         <set>Qt::AlignHCenter|Qt::AlignTop</set>
        </property>
+       <property name="margin">
+        <number>0</number>
+       </property>
       </widget>
+     </item>
+     <item>
+      <spacer name="verticalSpacer_2">
+       <property name="orientation">
+        <enum>Qt::Vertical</enum>
+       </property>
+       <property name="sizeType">
+        <enum>QSizePolicy::Fixed</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>20</width>
+         <height>8</height>
+        </size>
+       </property>
+      </spacer>
      </item>
      <item>
       <layout class="QGridLayout" name="gridLayout">
@@ -81,19 +100,6 @@
          </property>
         </widget>
        </item>
-       <item row="3" column="0">
-        <widget class="QLabel" name="text_label">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="text">
-          <string>{text}</string>
-         </property>
-        </widget>
-       </item>
        <item row="2" column="0" colspan="2">
         <widget class="Line" name="line">
          <property name="orientation">
@@ -111,6 +117,19 @@
          </property>
          <property name="alignment">
           <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="0" colspan="2">
+        <widget class="QLabel" name="text_label">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="text">
+          <string>{text}</string>
          </property>
         </widget>
        </item>

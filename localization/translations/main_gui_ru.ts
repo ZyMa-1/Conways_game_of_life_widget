@@ -14,27 +14,27 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../designer/AboutDialog.ui" line="93"/>
+        <location filename="../../designer/AboutDialog.ui" line="132"/>
         <source>{text}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../designer/AboutDialog.ui" line="110"/>
+        <location filename="../../designer/AboutDialog.ui" line="116"/>
         <source>{author_name}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../designer/AboutDialog.ui" line="63"/>
+        <location filename="../../designer/AboutDialog.ui" line="82"/>
         <source>Author:</source>
         <translation>Автор:</translation>
     </message>
     <message>
-        <location filename="../../designer/AboutDialog.ui" line="80"/>
+        <location filename="../../designer/AboutDialog.ui" line="99"/>
         <source>{app_version}</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../designer/AboutDialog.ui" line="73"/>
+        <location filename="../../designer/AboutDialog.ui" line="92"/>
         <source>App version:</source>
         <translation>Версия:</translation>
     </message>
@@ -61,20 +61,31 @@
     </message>
     <message>
         <location filename="../../designer/InstructionsDialog.ui" line="68"/>
+        <source>• To change the cell state to the opposite,
+ press &apos;Enter&apos; key or click the cell with 
+the left mouse button.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../designer/InstructionsDialog.ui" line="85"/>
+        <source>• Use arrow keys on the keyboard
+to change the current active cell position</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source>• To change cell state to the opposite,
  press &apos;Enter&apos; key or click the cell with 
 left mouse button.</source>
-        <translation>• Чтобы поменять состояние клетки
+        <translation type="vanished">• Чтобы поменять состояние клетки
  на противоположное
 нажмите клавишу &apos;Enter&apos; 
 или нажмите на клетку
 левой кнопкой мыши.</translation>
     </message>
     <message>
-        <location filename="../../designer/InstructionsDialog.ui" line="85"/>
         <source>• Use arrow keys to change
 current active cell position</source>
-        <translation>• Используйте стрелки 
+        <translation type="obsolete">• Используйте стрелки на клавиатуре
 чтобы поменять позицию 
 активной клетки</translation>
     </message>
@@ -295,17 +306,17 @@ current active cell position</source>
     <message>
         <location filename="../../designer/MainWindow.ui" line="285"/>
         <source>Set perfect size button</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../../designer/MainWindow.ui" line="288"/>
         <source>Set perfect size</source>
-        <translation type="unfinished"></translation>
+        <translation>Применить идеальный размер</translation>
     </message>
     <message>
         <location filename="../../designer/MainWindow.ui" line="558"/>
         <source>Apply button</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../../designer/MainWindow.ui" line="577"/>
@@ -325,12 +336,12 @@ current active cell position</source>
     <message>
         <location filename="../../designer/MainWindow.ui" line="686"/>
         <source>Sync button</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../../designer/MainWindow.ui" line="689"/>
         <source>Sync</source>
-        <translation type="unfinished"></translation>
+        <translation>Синхронизировать</translation>
     </message>
     <message>
         <location filename="../../designer/MainWindow.ui" line="700"/>

@@ -26,6 +26,8 @@ class ConwaysGameOfLifeEngine(QObject):
     # Emits when state of the board or other properties are changed via property setters ONLY
     # Handling board changes is up to the widget class to prevent frequent updates and redraws
     board_changed = Signal()
+    # Back to back
+    turn_made = Signal()
     # Emits when invalid value passed to property setter
     property_setter_error_signal = Signal(str, str)
 
@@ -158,6 +160,7 @@ class ConwaysGameOfLifeEngine(QObject):
         self._state = new_state
         self._turn_number += 1
         self.turn_number_changed.emit(self._turn_number)
+        self.turn_made.emit()
 
     # Properties signals
     turn_number_changed = Signal(int)

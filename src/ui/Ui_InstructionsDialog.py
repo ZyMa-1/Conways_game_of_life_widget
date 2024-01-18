@@ -23,7 +23,7 @@ class Ui_InstructionsDialog(object):
     def setupUi(self, InstructionsDialog):
         if not InstructionsDialog.objectName():
             InstructionsDialog.setObjectName(u"InstructionsDialog")
-        InstructionsDialog.resize(263, 206)
+        InstructionsDialog.resize(284, 206)
         InstructionsDialog.setStyleSheet(u"QWidget {\n"
 "	background-color: rgb(210, 210, 210);\n"
 "}\n"
@@ -100,11 +100,11 @@ class Ui_InstructionsDialog(object):
     def retranslateUi(self, InstructionsDialog):
         InstructionsDialog.setWindowTitle(QCoreApplication.translate("InstructionsDialog", u"InstructionsDialog", None))
         self.label.setText(QCoreApplication.translate("InstructionsDialog", u"Instructions", None))
-        self.label_2.setText(QCoreApplication.translate("InstructionsDialog", u"\u2022 To change cell state to the opposite,\n"
+        self.label_2.setText(QCoreApplication.translate("InstructionsDialog", u"\u2022 To change the cell state to the opposite,\n"
 " press 'Enter' key or click the cell with \n"
-"left mouse button.", None))
-        self.label_3.setText(QCoreApplication.translate("InstructionsDialog", u"\u2022 Use arrow keys to change\n"
-"current active cell position", None))
+"the left mouse button.", None))
+        self.label_3.setText(QCoreApplication.translate("InstructionsDialog", u"\u2022 Use arrow keys on the keyboard\n"
+"to change the current active cell position", None))
         self.close_button.setText(QCoreApplication.translate("InstructionsDialog", u"X", None))
     # retranslateUi
 

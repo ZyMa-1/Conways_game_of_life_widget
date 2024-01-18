@@ -29,7 +29,7 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
-        MainWindow.resize(720, 530)
+        MainWindow.resize(621, 439)
         sizePolicy = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -132,7 +132,7 @@ class Ui_MainWindow(object):
         sizePolicy2.setVerticalStretch(0)
         sizePolicy2.setHeightForWidth(self.conways_game_of_life_widget.sizePolicy().hasHeightForWidth())
         self.conways_game_of_life_widget.setSizePolicy(sizePolicy2)
-        self.conways_game_of_life_widget.setMinimumSize(QSize(0, 0))
+        self.conways_game_of_life_widget.setMinimumSize(QSize(240, 240))
         self.conways_game_of_life_widget.setMaximumSize(QSize(16777215, 16777215))
         self.conways_game_of_life_widget.setSizeIncrement(QSize(0, 0))
         self.conways_game_of_life_widget.setFocusPolicy(Qt.StrongFocus)
@@ -194,7 +194,7 @@ class Ui_MainWindow(object):
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QMenuBar(MainWindow)
         self.menubar.setObjectName(u"menubar")
-        self.menubar.setGeometry(QRect(0, 0, 720, 22))
+        self.menubar.setGeometry(QRect(0, 0, 621, 22))
         self.menuHelp = QMenu(self.menubar)
         self.menuHelp.setObjectName(u"menuHelp")
         self.menuExport = QMenu(self.menubar)
@@ -291,7 +291,7 @@ class Ui_MainWindow(object):
         self.rows_spin_box.setObjectName(u"rows_spin_box")
         self.rows_spin_box.setFocusPolicy(Qt.ClickFocus)
         self.rows_spin_box.setMinimum(-100)
-        self.rows_spin_box.setMaximum(100)
+        self.rows_spin_box.setMaximum(200)
 
         self.layout_settings.addWidget(self.rows_spin_box, 3, 1, 1, 2)
 
@@ -308,7 +308,7 @@ class Ui_MainWindow(object):
         self.cols_spin_box.setObjectName(u"cols_spin_box")
         self.cols_spin_box.setFocusPolicy(Qt.ClickFocus)
         self.cols_spin_box.setMinimum(-100)
-        self.cols_spin_box.setMaximum(100)
+        self.cols_spin_box.setMaximum(200)
 
         self.layout_settings.addWidget(self.cols_spin_box, 4, 1, 1, 2)
 

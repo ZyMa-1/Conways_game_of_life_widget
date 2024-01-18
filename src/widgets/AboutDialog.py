@@ -19,12 +19,13 @@ class AboutDialog(QDialog):
         app_instance = QApplication.instance()
         app_version = app_instance.applicationVersion()
         app_name = app_instance.applicationName()
-        app_author_name = app_instance.organizationName()
+        app_organization_name = app_instance.organizationName()
+        app_author_name = "Mikhail Ponomaryov"
 
         self.ui.app_name_label.setText(app_name)
-        self.ui.author_name_label.setText(app_author_name)
+        self.ui.author_name_label.setText(f"{app_organization_name} ({app_author_name})")
         self.ui.app_version_label.setText(app_version)
-        self.ui.text_label.setText("Spend my free time on this project (:\nv0.3 is for AITU python project.")
+        self.ui.text_label.setText(f"Spend my free time on this project (:\nv{app_version} is for AITU python project.")
 
         self.ui.buttonBox.accepted.connect(self.accept)
         self.ui.buttonBox.rejected.connect(self.reject)

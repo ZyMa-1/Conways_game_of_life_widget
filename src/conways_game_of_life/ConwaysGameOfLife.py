@@ -8,7 +8,7 @@ from PySide6.QtWidgets import QWidget
 from .utils import property_setter_error_handle, ColorProperty, PatternSchema
 from .ConwaysGameOfLifeEngine import CELL_ALIVE, CELL_DEAD, ConwaysGameOfLifeEngine, StateMatrixT
 
-MINIMUM_SIZE = (322, 322)
+MINIMUM_SIZE = (240, 240)
 
 DEFAULT_CELL_WIDTH = 30  # px (used only in size hints)
 DEFAULT_BORDER_THICKNESS = 2  # (assigned to attribute)
@@ -66,6 +66,7 @@ class ConwaysGameOfLife(QWidget):
         # Engine signals connection (wrapping included)
         self.engine.property_setter_error_signal.connect(self.property_setter_error_signal)
         self.engine.board_changed.connect(self._handle_board_changed)
+        self.engine.turn_made.connect(self.update)
         self.engine.turn_number_changed.connect(self.turn_number_changed)
 
     def _reset_to_defaults(self):
@@ -323,10 +324,11 @@ class ConwaysGameOfLife(QWidget):
                      (self._border_thickness + self._cell_height()) * self.engine.cols + self._border_thickness)
 
     def resizeEvent(self, event):
+        ...
         # Square
-        size = min(self.width(), self.height())
-        self.resize(size, size)
-        super().resizeEvent(event)
+        # size = min(self.width(), self.height())
+        # self.resize(size, size)
+        # super().resizeEvent(event)
 
     # Signal suffix for the properties signals
     _SIGNAL_SUFFIX = "_changed"

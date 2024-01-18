@@ -1,9 +1,8 @@
-import os
 import pathlib
 import sys
 import tempfile
 import unittest
-from typing import ClassVar
+from typing import ClassVar, List
 
 from PySide6.QtCore import QTranslator, QSettings
 from PySide6.QtGui import QColor
@@ -11,6 +10,7 @@ from PySide6.QtWidgets import QApplication, QLabel
 
 from src.backend.PathManager import PathManager
 from src.backend.SettingsManager import SettingsManager
+from src.backend.UtilsFactory import UtilsFactory
 from src.conways_game_of_life.ConwaysGameOfLife import ConwaysGameOfLife
 from src.widgets.MainWindow import MainWindow
 
@@ -20,7 +20,7 @@ def create_app():
 
     app.setOrganizationName("ZyMa-1")
     app.setApplicationName("Conway's Game Of Life Widget")
-    app.setApplicationVersion("0.3")
+    app.setApplicationVersion("0.4")
     return app
 
 
@@ -31,9 +31,7 @@ def get_label_color(label: QLabel) -> QColor:
 class MainWindowTest(unittest.TestCase):
     """Tests the MainWidget GUI."""
     app: ClassVar[QApplication]
-    temp_configs: ClassVar[tempfile.TemporaryDirectory]
-    temp_exports: ClassVar[tempfile.TemporaryDirectory]
-    settings_temp_file_path: ClassVar[pathlib.Path]
+    temp_dirs: ClassVar[List[tempfile.mkdtemp]]
     settings: ClassVar[QSettings]
 
     @classmethod
@@ -41,11 +39,12 @@ class MainWindowTest(unittest.TestCase):
         cls.app = create_app()
 
         PathManager.set_project_root(pathlib.Path(__file__).absolute().parent)
+        UtilsFactory.create_resources(cls.app)
 
-        cls.temp_configs = tempfile.TemporaryDirectory(prefix="config")
-        cls.temp_exports = tempfile.TemporaryDirectory(prefix="exports")
-        cls.temp_pattern_gallery = tempfile.TemporaryDirectory(prefix="pattern_gallery")
-        cls.settings_temp_file_path = PathManager.PROJECT_ROOT / 'settings.ini'
+        print('wow')
+        cls.temp_dirs = [tempfile.TemporaryDirectory("configs"),
+                         tempfile.TemporaryDirectory("exports"),
+                         tempfile.TemporaryDirectory("pattern_gallery")]
 
         cls.settings = SettingsManager(parent=cls.app).settings_instance()
         lang = cls.settings.value("Language", "en", type=str)
@@ -64,14 +63,9 @@ class MainWindowTest(unittest.TestCase):
 
     @classmethod
     def tearDownClass(cls):
-        cls.temp_configs.cleanup()
-        cls.temp_exports.cleanup()
-        try:
-            os.remove(str(cls.settings_temp_file_path))
-        except FileNotFoundError:
-            pass
+        pass
 
-    def test_defaults(self):
+    def test_setup_values(self):
         self.assertEqual(int(self.main_window.ui.rows_spin_box.value()),
                          self.conways_game_of_life_widget.rows)
         self.assertEqual(int(self.main_window.ui.cols_spin_box.value()),

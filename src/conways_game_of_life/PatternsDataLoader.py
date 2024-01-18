@@ -83,6 +83,7 @@ class PatternsDataLoader(QRunnable):
         game_widget.setProperty('rows', parsed_data["rows"])
         game_widget.setProperty('cols', parsed_data["cols"])
         game_widget.setProperty('state', parsed_data["state"])
+        game_widget.setProperty('border_thickness', 0)
 
         pixmap = QPixmap(game_widget.size())
 

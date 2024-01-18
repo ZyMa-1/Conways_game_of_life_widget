@@ -1,15 +1,17 @@
 from PySide6.QtGui import QColor
 
 
-def to_property_type(value):
-    if (isinstance(value, list) or isinstance(value, tuple)) and len(value) == 3:
-        value = QColor(value[0], value[1], value[2])
+def deserialize_property(obj):
+    if isinstance(obj, dict) and '__qcolor__' in obj:
+        rgba = obj['rgba']
+        return QColor(*rgba)
+    return obj
 
-    return value
 
-
-def to_json_type(value):
-    if isinstance(value, QColor):
-        value = (value.red(), value.green(), value.blue())
-
-    return value
+def serialize_property(obj):
+    if isinstance(obj, QColor):
+        return {
+            '__qcolor__': True,
+            'rgba': (obj.red(), obj.green(), obj.blue(), obj.alpha())
+        }
+    return obj

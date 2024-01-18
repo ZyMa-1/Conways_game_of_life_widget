@@ -23,7 +23,7 @@ class Ui_AboutDialog(object):
     def setupUi(self, AboutDialog):
         if not AboutDialog.objectName():
             AboutDialog.setObjectName(u"AboutDialog")
-        AboutDialog.resize(320, 196)
+        AboutDialog.resize(320, 210)
         self.verticalLayout = QVBoxLayout(AboutDialog)
         self.verticalLayout.setObjectName(u"verticalLayout")
         self.verticalLayout_2 = QVBoxLayout()
@@ -41,8 +41,13 @@ class Ui_AboutDialog(object):
         self.app_name_label.setFont(font)
         self.app_name_label.setStyleSheet(u"margin-top: 0.5em;")
         self.app_name_label.setAlignment(Qt.AlignHCenter|Qt.AlignTop)
+        self.app_name_label.setMargin(0)
 
         self.verticalLayout_2.addWidget(self.app_name_label, 0, Qt.AlignTop)
+
+        self.verticalSpacer_2 = QSpacerItem(20, 8, QSizePolicy.Minimum, QSizePolicy.Fixed)
+
+        self.verticalLayout_2.addItem(self.verticalSpacer_2)
 
         self.gridLayout = QGridLayout()
         self.gridLayout.setObjectName(u"gridLayout")
@@ -68,16 +73,6 @@ class Ui_AboutDialog(object):
 
         self.gridLayout.addWidget(self.app_version_label, 1, 1, 1, 1)
 
-        self.text_label = QLabel(AboutDialog)
-        self.text_label.setObjectName(u"text_label")
-        sizePolicy2 = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
-        sizePolicy2.setHorizontalStretch(0)
-        sizePolicy2.setVerticalStretch(0)
-        sizePolicy2.setHeightForWidth(self.text_label.sizePolicy().hasHeightForWidth())
-        self.text_label.setSizePolicy(sizePolicy2)
-
-        self.gridLayout.addWidget(self.text_label, 3, 0, 1, 1)
-
         self.line = QFrame(AboutDialog)
         self.line.setObjectName(u"line")
         self.line.setFrameShape(QFrame.HLine)
@@ -91,6 +86,16 @@ class Ui_AboutDialog(object):
         self.author_name_label.setAlignment(Qt.AlignLeading|Qt.AlignLeft|Qt.AlignTop)
 
         self.gridLayout.addWidget(self.author_name_label, 0, 1, 1, 1)
+
+        self.text_label = QLabel(AboutDialog)
+        self.text_label.setObjectName(u"text_label")
+        sizePolicy2 = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
+        sizePolicy2.setHorizontalStretch(0)
+        sizePolicy2.setVerticalStretch(0)
+        sizePolicy2.setHeightForWidth(self.text_label.sizePolicy().hasHeightForWidth())
+        self.text_label.setSizePolicy(sizePolicy2)
+
+        self.gridLayout.addWidget(self.text_label, 3, 0, 1, 2)
 
 
         self.verticalLayout_2.addLayout(self.gridLayout)
@@ -118,7 +123,7 @@ class Ui_AboutDialog(object):
         self.label.setText(QCoreApplication.translate("AboutDialog", u"Author:", None))
         self.label_6.setText(QCoreApplication.translate("AboutDialog", u"App version:", None))
         self.app_version_label.setText(QCoreApplication.translate("AboutDialog", u"{app_version}", None))
-        self.text_label.setText(QCoreApplication.translate("AboutDialog", u"{text}", None))
         self.author_name_label.setText(QCoreApplication.translate("AboutDialog", u"{author_name}", None))
+        self.text_label.setText(QCoreApplication.translate("AboutDialog", u"{text}", None))
     # retranslateUi
 

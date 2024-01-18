@@ -47,19 +47,25 @@ def convert_ts(input_path: pathlib.Path, output_path: pathlib.Path):
 
 
 if __name__ == "__main__":
+    src = PROJECT_ROOT / "src"
+    designer = PROJECT_ROOT / "designer"
+    ui = PROJECT_ROOT / "src" / "ui"
+    resources = PROJECT_ROOT / "src" / "resources"
+    translations = PROJECT_ROOT / "localization" / "translations"
+    r_translations = PROJECT_ROOT / "src" / "resources" / "translations"
     ################## UI ######################################
 
-    input_path_1 = PROJECT_ROOT / "designer" / "ConwaysGameOfLifeDialog.ui"
-    output_path_1 = PROJECT_ROOT / "src" / "ui" / "Ui_ConwaysGameOfLifeDialog.py"
+    input_path_1 = designer / "ConwaysGameOfLifeDialog.ui"
+    output_path_1 = ui / "Ui_ConwaysGameOfLifeDialog.py"
 
-    input_path_2 = PROJECT_ROOT / "designer" / "MainWindow.ui"
-    output_path_2 = PROJECT_ROOT / "src" / "ui" / "Ui_MainWindow.py"
+    input_path_2 = designer / "MainWindow.ui"
+    output_path_2 = ui / "Ui_MainWindow.py"
 
-    input_path_3 = PROJECT_ROOT / "designer" / "AboutDialog.ui"
-    output_path_3 = PROJECT_ROOT / "src" / "ui" / "Ui_AboutDialog.py"
+    input_path_3 = designer / "AboutDialog.ui"
+    output_path_3 = ui / "Ui_AboutDialog.py"
 
-    input_path_4 = PROJECT_ROOT / "designer" / "InstructionsDialog.ui"
-    output_path_4 = PROJECT_ROOT / "src" / "ui" / "Ui_InstructionsDialog.py"
+    input_path_4 = designer / "InstructionsDialog.ui"
+    output_path_4 = ui / "Ui_InstructionsDialog.py"
 
     convert_ui(input_path_1, output_path_1)
     convert_ui(input_path_2, output_path_2)
@@ -68,25 +74,23 @@ if __name__ == "__main__":
 
     ################## LOCALIZATION UPDATE ######################################
 
-    src_path = PROJECT_ROOT / "src"
-    designer_path = PROJECT_ROOT / "designer"
-    main_py_path = PROJECT_ROOT / "main.py"
-    py_paths_1 = [main_py_path, designer_path, src_path]
+    main_py = PROJECT_ROOT / "main.py"
+    py_paths_1 = [main_py, designer, src]
 
-    output_path_1 = PROJECT_ROOT / "localization" / "translations" / "main_gui_ru.ts"
+    output_path_1 = translations / "main_gui_ru.ts"
 
     update_ts(py_paths_1, output_path_1)
 
     ################## LOCALIZATION CONVERT #####################################
 
-    input_path_1 = PROJECT_ROOT / "localization" / "translations" / "main_gui_ru.ts"
-    output_path_1 = PROJECT_ROOT / "src" / "resources" / "translations" / "main_gui_ru.qm"
+    input_path_1 = translations / "main_gui_ru.ts"
+    output_path_1 = r_translations / "main_gui_ru.qm"
 
     convert_ts(input_path_1, output_path_1)
 
     ################## RESOURCES ######################################
 
-    input_path_1 = PROJECT_ROOT / "src" / "resources" / "resources.qrc"
-    output_path_1 = PROJECT_ROOT / "src" / "resources" / "rc_resources.py"
+    input_path_1 = resources / "resources.qrc"
+    output_path_1 = resources / "rc_resources.py"
 
     convert_rcc(input_path_1, output_path_1)

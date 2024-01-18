@@ -25,6 +25,8 @@ Goal of the project was to learn how to build scalable and manageble application
   
 Screenshots of the 'MainWindow' and QtDesigner interface, showcasing the loaded plugin, contains in [/readme_images](/readme_images) directory.
 
+![Image 4](/readme_images/4_new.png)
+
 # Blog
 
 I have written a detailed blog covering all aspects of the application. You can find it [right here](https://zyma-1.github.io/technical/2023/06/26/Conways-game-of-life-as-a-PySide6-widget.html).
