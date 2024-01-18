@@ -56,26 +56,26 @@ class MainWindow(QMainWindow):
         self.main_window_utils = MainWindowUtils(self)
 
         # Link widget and game properties
-        self.properties_manager.link_widget_and_property(self.ui.is_game_running_label,
-                                                         "is_game_running",
-                                                         is_both_way=False)
-        self.properties_manager.link_widget_and_property(self.ui.turn_number_label,
-                                                         "turn_number",
-                                                         is_both_way=False)
-        self.properties_manager.link_widget_and_property(self.ui.rows_spin_box,
-                                                         "rows")
-        self.properties_manager.link_widget_and_property(self.ui.cols_spin_box,
-                                                         "cols")
-        self.properties_manager.link_widget_and_property(self.ui.turn_duration_spin_box,
-                                                         "turn_duration")
-        self.properties_manager.link_widget_and_property(self.ui.border_thickness_spin_box,
-                                                         "border_thickness")
-        self.properties_manager.link_widget_and_property(self.ui.border_color_label,
-                                                         "border_color")
-        self.properties_manager.link_widget_and_property(self.ui.cell_alive_color_label,
-                                                         "cell_alive_color")
-        self.properties_manager.link_widget_and_property(self.ui.cell_dead_color_label,
-                                                         "cell_dead_color")
+        self.properties_manager.connect_widget_and_property(self.ui.is_game_running_label,
+                                                            "is_game_running",
+                                                            property_has_signal=True)
+        self.properties_manager.connect_widget_and_property(self.ui.turn_number_label,
+                                                            "turn_number",
+                                                            property_has_signal=True)
+        self.properties_manager.connect_widget_and_property(self.ui.rows_spin_box,
+                                                            "rows")
+        self.properties_manager.connect_widget_and_property(self.ui.cols_spin_box,
+                                                            "cols")
+        self.properties_manager.connect_widget_and_property(self.ui.turn_duration_spin_box,
+                                                            "turn_duration")
+        self.properties_manager.connect_widget_and_property(self.ui.border_thickness_spin_box,
+                                                            "border_thickness")
+        self.properties_manager.connect_widget_and_property(self.ui.border_color_label,
+                                                            "border_color")
+        self.properties_manager.connect_widget_and_property(self.ui.cell_alive_color_label,
+                                                            "cell_alive_color")
+        self.properties_manager.connect_widget_and_property(self.ui.cell_dead_color_label,
+                                                            "cell_dead_color")
 
         # Get settings from UtilsFactory
         self.settings = UtilsFactory.get_settings()
@@ -93,43 +93,12 @@ class MainWindow(QMainWindow):
         # Create Instructions dialog
         self.instructions_dialog = InstructionsDialog(parent=self)
 
-        # Init UI (more like scale)
+        # Init UI (more like create things I cannot create in Qt-designer)
         self.init_ui()
 
         self.connect_signals_to_slots()
 
-    def init_ui(self):
-        # Create action groups
-        self._lang_action_group = QActionGroup(self)
-        self._lang_action_group.setExclusive(True)
-        self._lang_action_group.addAction(self.ui.action_english_US)
-        self._lang_action_group.addAction(self.ui.action_russian_RU)
-
-        self._tools_action_group = QButtonGroup(self)
-        self._tools_action_group.setExclusive(True)
-        self._tools_action_group.addButton(self.ui.default_mode_tool_button)
-        self._tools_action_group.addButton(self.ui.paint_mode_tool_button)
-        self._tools_action_group.addButton(self.ui.erase_mode_tool_button)
-
-        # Change language check box
-        lang = self.settings.value("Language", "en", type=str)
-        if lang == "ru":
-            self.ui.action_russian_RU.setChecked(True)
-        elif lang == "en":
-            self.ui.action_english_US.setChecked(True)
-
-        # Create color dialog handlers
-        self._color_dialog_handlers = []
-        self._color_dialog_handlers.append(ColorDialogHandler(button=self.ui.border_color_button,
-                                                              label=self.ui.border_color_label,
-                                                              parent=self))
-        self._color_dialog_handlers.append(ColorDialogHandler(button=self.ui.cell_alive_color_button,
-                                                              label=self.ui.cell_alive_color_label,
-                                                              parent=self))
-        self._color_dialog_handlers.append(ColorDialogHandler(button=self.ui.cell_dead_color_button,
-                                                              label=self.ui.cell_dead_color_label,
-                                                              parent=self))
-
+    # Handlers
     @Slot()
     def handle_start_button_clicked(self):
         self.ui.conways_game_of_life_widget.start_game()
@@ -281,7 +250,39 @@ class MainWindow(QMainWindow):
             warning_box = self.main_window_utils.create_warning_msg_box(message)
             warning_box.exec()
 
-    # INIT METHODS
+    # Init methods
+    def init_ui(self):
+        # Create action groups
+        self._lang_action_group = QActionGroup(self)
+        self._lang_action_group.setExclusive(True)
+        self._lang_action_group.addAction(self.ui.action_english_US)
+        self._lang_action_group.addAction(self.ui.action_russian_RU)
+
+        self._tools_action_group = QButtonGroup(self)
+        self._tools_action_group.setExclusive(True)
+        self._tools_action_group.addButton(self.ui.default_mode_tool_button)
+        self._tools_action_group.addButton(self.ui.paint_mode_tool_button)
+        self._tools_action_group.addButton(self.ui.erase_mode_tool_button)
+
+        # Change language check box
+        lang = self.settings.value("Language", "en", type=str)
+        if lang == "ru":
+            self.ui.action_russian_RU.setChecked(True)
+        elif lang == "en":
+            self.ui.action_english_US.setChecked(True)
+
+        # Create color dialog handlers
+        self._color_dialog_handlers = []
+        self._color_dialog_handlers.append(ColorDialogHandler(button=self.ui.border_color_button,
+                                                              label=self.ui.border_color_label,
+                                                              parent=self))
+        self._color_dialog_handlers.append(ColorDialogHandler(button=self.ui.cell_alive_color_button,
+                                                              label=self.ui.cell_alive_color_label,
+                                                              parent=self))
+        self._color_dialog_handlers.append(ColorDialogHandler(button=self.ui.cell_dead_color_button,
+                                                              label=self.ui.cell_dead_color_label,
+                                                              parent=self))
+
     def connect_signals_to_slots(self):
         self.ui.action_about.triggered.connect(self.handle_action_about_triggered)
         self.ui.start_button.clicked.connect(self.handle_start_button_clicked)
