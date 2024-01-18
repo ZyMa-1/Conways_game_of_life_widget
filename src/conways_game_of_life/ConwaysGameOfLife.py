@@ -62,9 +62,11 @@ class ConwaysGameOfLife(QWidget):
         self._timer = QTimer(self)
 
         # Connect signals to slots
+        self._timer.timeout.connect(self.engine.make_turn)
+        # Engine signals connection (wrapping included)
         self.engine.property_setter_error_signal.connect(self.property_setter_error_signal)
         self.engine.board_changed.connect(self._handle_board_changed)
-        self._timer.timeout.connect(self.engine.make_turn)
+        self.engine.turn_number_changed.connect(self.turn_number_changed)
 
     def _reset_to_defaults(self):
         self._border_thickness = DEFAULT_BORDER_THICKNESS
@@ -72,7 +74,8 @@ class ConwaysGameOfLife(QWidget):
         self._cell_alive_color = ColorProperty(DEFAULT_CELL_ALIVE_COLOR)
         self._cell_dead_color = ColorProperty(DEFAULT_CELL_DEAD_COLOR)
         self._is_game_running = False
-        self._edit_mode = ConwaysGameOfLife.EditMode.DEFAULT
+        # Nuh-uh,
+        # self._edit_mode = ConwaysGameOfLife.EditMode.DEFAULT
         self._turn_duration = DEFAULT_TURN_DURATION
         self._active_cell = (0, 0)
 
@@ -303,13 +306,12 @@ class ConwaysGameOfLife(QWidget):
     @Slot()
     def _handle_board_changed(self):
         """Handles 'board_changed' signal of the engine"""
-        if self.is_game_running:
-            return
+        if self._active_cell is not None:
+            if self._active_cell[0] >= self.engine.rows:
+                self._active_cell = (self.engine.rows - 1, self._active_cell[1])
+            if self._active_cell[1] >= self.engine.cols:
+                self._active_cell = (self._active_cell[0], self.engine.cols - 1)
 
-        if self._active_cell[0] >= self.engine.rows:
-            self._active_cell = (self.engine.rows - 1, self._active_cell[1])
-        if self._active_cell[1] >= self.engine.cols:
-            self._active_cell = (self._active_cell[0], self.engine.cols - 1)
         self.update()
 
     # Miscellaneous stuff
