@@ -1,12 +1,4 @@
-- Fix Edit tools 'Erase' bug [yea, fixed]
-- Refactor ColorDialog [idk, that seems just fine]
-- Separate Game Logic [yea]
-- Language thing and tooltips for new v0.3 buttons.
-- Look for better way to create unique slots.
-- Fix incorrect json files interrupting entire pattern loading process.
-- Statistics api, move logic of the game to the engine part.
 - Zoom in/Zoom out (idk)
 - Statistics (alive cells, dead cells, cells died, cells born)
-- Keep track of property validation in engine
-- Wrapper properties
 - Make class for Pattern or naah
+- Full Language Translate
