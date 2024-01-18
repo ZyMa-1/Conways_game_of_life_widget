@@ -11,7 +11,7 @@ from .SlotPropertyConnector import SlotPropertyConnector
 
 class ConwaysGameOfLifePropertiesManager(QObject):
     """
-    Class for linking game properties to the widgets representing them and vice versa.
+    Class for linking game properties to the widgets values representing them and vice versa.
     """
 
     def __init__(self, game_widget: ConwaysGameOfLife, parent=None):
@@ -33,7 +33,7 @@ class ConwaysGameOfLifePropertiesManager(QObject):
         disable widget to property connection.
         """
         # Exception can occur in that, so catching it and raising another one is meh
-        value = self.game_widget.get_property(property_name)
+        value = self.game_widget.property(property_name)
         signal = None
         if property_has_signal:
             signal = self.game_widget.get_property_changed_signal(property_name)
@@ -48,9 +48,9 @@ class ConwaysGameOfLifePropertiesManager(QObject):
     def assign_widget_values_to_properties(self):
         for name, widget in self._property_to_widget.items():
             value = convert_widget_value(widget, name)
-            self.game_widget.set_property(name, value)
+            self.game_widget.setProperty(name, value)
 
     def assign_properties_values_to_widgets(self):
         for name, slot in self._property_to_widget_slot.items():
-            value = self.game_widget.get_property(name)
+            value = self.game_widget.property(name)
             slot(value)

@@ -68,9 +68,9 @@ class PatternsDataLoader(QRunnable):
 
         game_widget = ConwaysGameOfLife()
         game_widget.property_setter_error_signal.connect(_error_catch_slot)
-        game_widget.set_property('rows', parsed_data["rows"])
-        game_widget.set_property('cols', parsed_data["cols"])
-        game_widget.set_property('state', parsed_data["state"])
+        game_widget.setProperty('rows', parsed_data["rows"])
+        game_widget.setProperty('cols', parsed_data["cols"])
+        game_widget.setProperty('state', parsed_data["state"])
         game_widget.property_setter_error_signal.disconnect(_error_catch_slot)
         del game_widget
 
@@ -80,9 +80,9 @@ class PatternsDataLoader(QRunnable):
     def generate_pixmap(parsed_data: dict) -> QPixmap:
         game_widget = ConwaysGameOfLife()
         game_widget._active_cell = (-1, -1)
-        game_widget.set_property('rows', parsed_data["rows"])
-        game_widget.set_property('cols', parsed_data["cols"])
-        game_widget.set_property('state', parsed_data["state"])
+        game_widget.setProperty('rows', parsed_data["rows"])
+        game_widget.setProperty('cols', parsed_data["cols"])
+        game_widget.setProperty('state', parsed_data["state"])
 
         pixmap = QPixmap(game_widget.size())
 

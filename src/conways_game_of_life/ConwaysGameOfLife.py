@@ -1,12 +1,12 @@
 from enum import Enum
-from typing import Optional, Tuple, List, Any
+from typing import Optional, Tuple, List
 
 from PySide6.QtCore import QPoint, QTimer, Qt, Signal, Slot, Property, QPointF, QSizeF, QRectF, QSize
 from PySide6.QtGui import QPainter, QColor
 from PySide6.QtWidgets import QWidget
 
 from .utils import property_setter_error_handle, ColorProperty, PatternSchema
-from .ConwaysGameOfLifeEngine import CELL_ALIVE, CELL_DEAD, ConwaysGameOfLifeEngine
+from .ConwaysGameOfLifeEngine import CELL_ALIVE, CELL_DEAD, ConwaysGameOfLifeEngine, StateMatrixT
 
 MINIMUM_SIZE = (322, 322)
 
@@ -327,7 +327,7 @@ class ConwaysGameOfLife(QWidget):
         super().resizeEvent(event)
 
     # Signal suffix for the properties signals
-    _signal_suffix = "_changed"
+    _SIGNAL_SUFFIX = "_changed"
 
     # Properties signals
     is_game_running_changed = Signal(bool)
@@ -341,44 +341,63 @@ class ConwaysGameOfLife(QWidget):
     # Read only
     is_game_running = Property(bool, get_is_game_running, notify=is_game_running_changed)
 
+    # Wrapped properties and signals of the engine
+    ##############
+    ##############
+    def get_state(self):
+        return self.engine.get_state()
+
+    def set_state(self, value: StateMatrixT):
+        self.engine.set_state(value)
+
+    def get_cols(self):
+        return self.engine.get_cols()
+
+    def set_cols(self, value: int):
+        self.engine.set_cols(value)
+
+    def get_rows(self):
+        return self.engine.get_rows()
+
+    def set_rows(self, value: int):
+        self.engine.set_rows(value)
+
+    def get_turn_number(self):
+        return self.engine.get_turn_number()
+
+    # Properties signals
+    turn_number_changed = Signal(int)
+
+    # Pyqt properties (notify is not 'automatic'):
+    state = Property(list, get_state, set_state)  # Does not work in Qt-Designer for some reason
+    cols = Property(int, get_cols, set_cols)
+    rows = Property(int, get_rows, set_rows)
+    # read_only
+    turn_number = Property(int, get_turn_number, notify=turn_number_changed)
+    ##############
+    ##############
+
     # Stuff to json serialize the widget
-    _self_savable_properties = \
+    _SELF_SAVABLE_PROPERTIES = \
         ["turn_duration",
          "border_thickness",
          "border_color",
          "cell_dead_color",
          "cell_alive_color"]
-    _engine_savable_properties = \
+    _ENGINE_SAVABLE_PROPERTIES = \
         ["cols",
          "rows",
          "state"]
-    _savable_properties = _self_savable_properties + _engine_savable_properties
+    _SAVABLE_PROPERTIES = _SELF_SAVABLE_PROPERTIES + _ENGINE_SAVABLE_PROPERTIES
 
-    # Methods for interacting with widget/engine properties
-    def __objs(self):
-        return [self, self.engine]
-
-    def get_property(self, name: str):
-        for obj in self.__objs():
-            if isinstance(getattr(type(obj), name, None), Property):
-                return getattr(obj, name)
-        raise ValueError
-
+    # Extra methods regarding properties and their signals
     def get_property_changed_signal(self, name: str) -> Signal:
-        name += self._signal_suffix
-        for obj in self.__objs():
-            if isinstance(signal := getattr(obj, name, None), Signal):
-                return signal
-        raise ValueError
-
-    def set_property(self, name: str, value: Any):
-        for obj in self.__objs():
-            if isinstance(getattr(type(obj), name, None), Property):
-                setattr(obj, name, value)
-                return
+        name += self._SIGNAL_SUFFIX
+        if isinstance(signal := getattr(self, name, None), Signal):
+            return signal
         raise ValueError
 
     @classmethod
     def savable_properties_names(cls) -> List[str]:
         """Returns list of savable properties associated specifically with this widget"""
-        return cls._savable_properties
+        return cls._SAVABLE_PROPERTIES

@@ -12,7 +12,9 @@ from .QtPropertyJsonConverter import to_json_type, to_property_type
 
 
 class ConwaysGameOfLifeConfigManager(QObject):
-    """Class for saving and loading widget properties"""
+    """
+    Class for saving and loading widget properties to '.json' format.
+    """
 
     def __init__(self, conways_game_of_life_widget: ConwaysGameOfLife, parent=None):
         super().__init__(parent)
@@ -66,11 +68,11 @@ class ConwaysGameOfLifeConfigManager(QObject):
     def _save_properties(self):
         self._property_dict.clear()
         for name in self.conways_game_of_life_widget.savable_properties_names():
-            value = self.conways_game_of_life_widget.get_property(name)
+            value = self.conways_game_of_life_widget.property(name)
             value = to_json_type(value)
             self._property_dict[name] = value
 
     def _load_properties(self):
         for name, value in self._property_dict.items():
             value = to_property_type(value)
-            self.conways_game_of_life_widget.set_property(name, value)
+            self.conways_game_of_life_widget.setProperty(name, value)
