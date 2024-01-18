@@ -136,6 +136,7 @@ class ConwaysGameOfLife(QWidget):
         self.engine.insert_state_array_at(self._active_cell[0],
                                           self._active_cell[1],
                                           pattern_data["state"])
+        self.update()
 
     def set_perfect_size(self):
         old_width = self.width()

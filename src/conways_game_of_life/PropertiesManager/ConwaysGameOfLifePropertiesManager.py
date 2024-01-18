@@ -22,11 +22,15 @@ class ConwaysGameOfLifePropertiesManager(QObject):
         self._property_to_widget: Dict[str, QWidget] = {}  # {property_name: widget}
         self._property_to_widget_slot: Dict[str, MethodType] = {}  # {property_name: slot}
 
-    def connect_widget_and_property(self, widget: QWidget, property_name: str, property_has_signal: bool = False):
+    def connect_widget_and_property(self, widget: QWidget, property_name: str,
+                                    property_has_signal: bool = False, property_read_only: bool = False):
         """
         Connecting widget to the property.
-        If 'property_has_signal' is True
-        connecting property changed signal to the widget also.
+        If 'property_has_signal' is True,
+        connect property changed signal to the widget.
+
+        If 'property_read_only' is True,
+        disable widget to property connection.
         """
         # Exception can occur in that, so catching it and raising another one is meh
         value = self.game_widget.get_property(property_name)
@@ -37,8 +41,9 @@ class ConwaysGameOfLifePropertiesManager(QObject):
                                                                         property_value=value,
                                                                         widget=widget,
                                                                         signal=signal)
-        self._property_to_widget[property_name] = widget
         self._property_to_widget_slot[property_name] = slot
+        if not property_read_only:
+            self._property_to_widget[property_name] = widget
 
     def assign_widget_values_to_properties(self):
         for name, widget in self._property_to_widget.items():

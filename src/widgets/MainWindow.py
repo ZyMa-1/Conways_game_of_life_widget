@@ -58,10 +58,12 @@ class MainWindow(QMainWindow):
         # Link widget and game properties
         self.properties_manager.connect_widget_and_property(self.ui.is_game_running_label,
                                                             "is_game_running",
-                                                            property_has_signal=True)
+                                                            property_has_signal=True,
+                                                            property_read_only=True)
         self.properties_manager.connect_widget_and_property(self.ui.turn_number_label,
                                                             "turn_number",
-                                                            property_has_signal=True)
+                                                            property_has_signal=True,
+                                                            property_read_only=True)
         self.properties_manager.connect_widget_and_property(self.ui.rows_spin_box,
                                                             "rows")
         self.properties_manager.connect_widget_and_property(self.ui.cols_spin_box,
