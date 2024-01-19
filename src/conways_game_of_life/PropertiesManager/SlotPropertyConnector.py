@@ -30,7 +30,7 @@ class _SlotFactory(QObject):
         self.widget.setValue(value)
 
     @Slot(int)
-    def _turn_number_int_slot(self, value: int):
+    def _label_int_slot(self, value: int):
         self.widget.setText(str(value))
 
     @Slot(bool)
@@ -38,7 +38,7 @@ class _SlotFactory(QObject):
         self.widget.setText(":)" if value else ":(")
 
     SLOTS = {
-        "turn_number": _turn_number_int_slot,
+        "turn_number": _label_int_slot,
         "is_game_running": _is_game_running_slot,
         "cols": _spin_box_int_slot,
         "rows": _spin_box_int_slot,
@@ -46,7 +46,9 @@ class _SlotFactory(QObject):
         "border_thickness": _spin_box_int_slot,
         "border_color": _label_color_slot,
         "cell_dead_color": _label_color_slot,
-        "cell_alive_color": _label_color_slot
+        "cell_alive_color": _label_color_slot,
+        "alive_cells": _label_int_slot,
+        "dead_cells": _label_int_slot,
     }
 
 

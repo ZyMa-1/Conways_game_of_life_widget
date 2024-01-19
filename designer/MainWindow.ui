@@ -329,6 +329,7 @@
     <addaction name="action_view_settings"/>
     <addaction name="action_view_edit_tools"/>
     <addaction name="action_view_pattern_gallery"/>
+    <addaction name="action_view_game_statistics"/>
    </widget>
    <widget class="QMenu" name="menuLanguage">
     <property name="title">
@@ -1039,6 +1040,17 @@ position</string>
   <action name="actionExport_turns_to_video">
    <property name="text">
     <string>Export turns to video</string>
+   </property>
+  </action>
+  <action name="action_view_game_statistics">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Game Statistics</string>
    </property>
   </action>
  </widget>

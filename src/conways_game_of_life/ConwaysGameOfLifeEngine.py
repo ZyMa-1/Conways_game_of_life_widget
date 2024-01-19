@@ -98,6 +98,8 @@ class ConwaysGameOfLifeEngine(QObject):
         for row in range(self._rows):
             for col in range(self._cols):
                 self._alive_cells += self._state[row][col] == CELL_ALIVE
+        self.alive_cells_changed.emit(self._alive_cells)
+        self.dead_cells_changed.emit(self._rows * self._cols - self._alive_cells)
         self.board_changed.emit()
 
     # API functionality to interact with the game
@@ -107,11 +109,15 @@ class ConwaysGameOfLifeEngine(QObject):
         self._rows = DEFAULT_ROWS
         self._state = _default_state_matrix(self._rows, self._cols)
         self._alive_cells = 0
+        self.alive_cells_changed.emit(self._alive_cells)
+        self.dead_cells_changed.emit(self._rows * self._cols - self._alive_cells)
         self.turn_number_changed.emit(self._turn_number)
 
     def clear_state(self):
         self._state = _default_state_matrix(self._rows, self._cols)
         self._alive_cells = 0
+        self.alive_cells_changed.emit(self._alive_cells)
+        self.dead_cells_changed.emit(self._rows * self._cols - self._alive_cells)
 
     def insert_state_array_at(self, row: int, col: int, state_array: StateMatrixT):
         max_possible_rows = self._rows - row
@@ -121,6 +127,8 @@ class ConwaysGameOfLifeEngine(QObject):
                 self._alive_cells -= self._state[i + row][j + col] == CELL_ALIVE
                 self._state[i + row][j + col] = state_array[i][j]
                 self._alive_cells += state_array[i][j] == CELL_ALIVE
+        self.alive_cells_changed.emit(self._alive_cells)
+        self.dead_cells_changed.emit(self._rows * self._cols - self._alive_cells)
 
     # API + Inner logic (mixed)
     def change_cell_state_at(self, row: int, col: int, new_cell_state: str):
@@ -129,6 +137,8 @@ class ConwaysGameOfLifeEngine(QObject):
         self._alive_cells -= self._state[row][col] == CELL_ALIVE
         self._state[row][col] = new_cell_state
         self._alive_cells += new_cell_state == CELL_ALIVE
+        self.alive_cells_changed.emit(self._alive_cells)
+        self.dead_cells_changed.emit(self._rows * self._cols - self._alive_cells)
 
     def change_cell_state_to_opposite(self, row: int, col: int):
         if self._state[row][col] == CELL_ALIVE:
@@ -142,16 +152,19 @@ class ConwaysGameOfLifeEngine(QObject):
         rows = len(self._state)
         cols = len(self._state[0])
         new_state = []
+        self._alive_cells = 0
         for row in range(self._rows):
             new_row = []
             for col in range(self._cols):
                 if row < rows and col < cols:
                     new_row.append(self._state[row][col])
+                    self._alive_cells += self._state[row][col] == CELL_ALIVE
                 else:
-                    self._alive_cells -= self._state[row][col] == CELL_ALIVE
                     new_row.append(CELL_DEAD)
             new_state.append(new_row)
         self._state = new_state
+        self.alive_cells_changed.emit(self._alive_cells)
+        self.dead_cells_changed.emit(self._rows * self._cols - self._alive_cells)
 
     def _get_alive_neighbor_count(self, row: int, col: int):
         count = 0
@@ -179,19 +192,23 @@ class ConwaysGameOfLifeEngine(QObject):
                     new_row.append(CELL_ALIVE)
                     self._alive_cells += 1
                 else:
-                    new_row.append(CELL_ALIVE)
+                    new_row.append(CELL_DEAD)
 
             new_state.append(new_row)
 
         self._state = new_state
         self._turn_number += 1
         self.turn_number_changed.emit(self._turn_number)
+        self.alive_cells_changed.emit(self._alive_cells)
+        self.dead_cells_changed.emit(self._rows * self._cols - self._alive_cells)
         end_time = time.perf_counter()
         self._last_turn_performance = end_time - start_time
         self.turn_made.emit()
 
     # Properties signals
     turn_number_changed = Signal(int)
+    alive_cells_changed = Signal(int)
+    dead_cells_changed = Signal(int)
 
     # Pyqt properties (notify is not 'automatic'):
     state = Property(list, get_state, set_state)  # Does not work in Qt-Designer
@@ -199,5 +216,5 @@ class ConwaysGameOfLifeEngine(QObject):
     rows = Property(int, get_rows, set_rows)
     # read_only
     turn_number = Property(int, get_turn_number, notify=turn_number_changed)
-    alive_cells = Property(int, get_alive_cells)
-    dead_cells = Property(int, get_dead_cells)
+    alive_cells = Property(int, get_alive_cells, notify=alive_cells_changed)
+    dead_cells = Property(int, get_dead_cells, notify=dead_cells_changed)

@@ -64,6 +64,14 @@ class MainWindow(QMainWindow):
                                                             "turn_number",
                                                             property_has_signal=True,
                                                             property_read_only=True)
+        self.properties_manager.connect_widget_and_property(self.ui.alive_cells_label,
+                                                            "alive_cells",
+                                                            property_has_signal=True,
+                                                            property_read_only=True)
+        self.properties_manager.connect_widget_and_property(self.ui.dead_cells_label,
+                                                            "dead_cells",
+                                                            property_has_signal=True,
+                                                            property_read_only=True)
         self.properties_manager.connect_widget_and_property(self.ui.rows_spin_box,
                                                             "rows")
         self.properties_manager.connect_widget_and_property(self.ui.cols_spin_box,
@@ -97,7 +105,17 @@ class MainWindow(QMainWindow):
 
         self.connect_signals_to_slots()
 
-    # Handlers
+    # Outer Handlers
+    @Slot(list)
+    def handle_patterns_data_loaded(self, patterns_data: List[Tuple[Dict, QPixmap]]):
+        self.ui.patterns_combo_box.setEnabled(True)
+        self.ui.insert_pattern_button.setEnabled(True)
+        self.ui.patterns_combo_box.clear()
+        for pattern_data in patterns_data:
+            self.ui.patterns_combo_box.addItem(QIcon(pattern_data[1]), pattern_data[0]["pattern_name"],
+                                               userData=pattern_data[0])
+
+    # Inner handlers
     @Slot()
     def handle_start_button_clicked(self):
         self.ui.conways_game_of_life_widget.start_game()
@@ -171,6 +189,13 @@ class MainWindow(QMainWindow):
         else:
             self.ui.pattern_gallery_dock_widget.hide()
 
+    @Slot(bool)
+    def handle_action_view_game_statistics_triggered(self, is_checked: bool):
+        if is_checked:
+            self.ui.game_statistics_dock_widget.show()
+        else:
+            self.ui.game_statistics_dock_widget.hide()
+
     @Slot()
     def handle_language_changed(self):
         sender = self.sender()
@@ -210,15 +235,6 @@ class MainWindow(QMainWindow):
 
         self.ui.conways_game_of_life_widget.set_edit_mode(ConwaysGameOfLife.EditMode.ERASE)
 
-    @Slot(list)
-    def handle_patterns_data_loaded(self, patterns_data: List[Tuple[Dict, QPixmap]]):
-        self.ui.patterns_combo_box.setEnabled(True)
-        self.ui.insert_pattern_button.setEnabled(True)
-        self.ui.patterns_combo_box.clear()
-        for pattern_data in patterns_data:
-            self.ui.patterns_combo_box.addItem(QIcon(pattern_data[1]), pattern_data[0]["pattern_name"],
-                                               userData=pattern_data[0])
-
     @Slot()
     def handle_insert_pattern_button_clicked(self):
         selected_index = self.ui.patterns_combo_box.currentIndex()
@@ -253,16 +269,16 @@ class MainWindow(QMainWindow):
     # Init methods
     def init_ui(self):
         # Create action groups
-        self._lang_action_group = QActionGroup(self)
-        self._lang_action_group.setExclusive(True)
-        self._lang_action_group.addAction(self.ui.action_english_US)
-        self._lang_action_group.addAction(self.ui.action_russian_RU)
+        _lang_action_group = QActionGroup(self)
+        _lang_action_group.setExclusive(True)
+        _lang_action_group.addAction(self.ui.action_english_US)
+        _lang_action_group.addAction(self.ui.action_russian_RU)
 
-        self._tools_action_group = QButtonGroup(self)
-        self._tools_action_group.setExclusive(True)
-        self._tools_action_group.addButton(self.ui.default_mode_tool_button)
-        self._tools_action_group.addButton(self.ui.paint_mode_tool_button)
-        self._tools_action_group.addButton(self.ui.erase_mode_tool_button)
+        _tools_action_group = QButtonGroup(self)
+        _tools_action_group.setExclusive(True)
+        _tools_action_group.addButton(self.ui.default_mode_tool_button)
+        _tools_action_group.addButton(self.ui.paint_mode_tool_button)
+        _tools_action_group.addButton(self.ui.erase_mode_tool_button)
 
         # Change language check box
         lang = self.settings.value("Language", "en", type=str)
@@ -272,19 +288,42 @@ class MainWindow(QMainWindow):
             self.ui.action_english_US.setChecked(True)
 
         # Create color dialog handlers
-        self._color_dialog_handlers = []
-        self._color_dialog_handlers.append(ColorDialogHandler(button=self.ui.border_color_button,
-                                                              label=self.ui.border_color_label,
-                                                              parent=self))
-        self._color_dialog_handlers.append(ColorDialogHandler(button=self.ui.cell_alive_color_button,
-                                                              label=self.ui.cell_alive_color_label,
-                                                              parent=self))
-        self._color_dialog_handlers.append(ColorDialogHandler(button=self.ui.cell_dead_color_button,
-                                                              label=self.ui.cell_dead_color_label,
-                                                              parent=self))
+        _color_dialog_handlers = [ColorDialogHandler(button=self.ui.border_color_button,
+                                                     label=self.ui.border_color_label,
+                                                     parent=self),
+                                  ColorDialogHandler(button=self.ui.cell_alive_color_button,
+                                                     label=self.ui.cell_alive_color_label,
+                                                     parent=self),
+                                  ColorDialogHandler(button=self.ui.cell_dead_color_button,
+                                                     label=self.ui.cell_dead_color_label,
+                                                     parent=self)]
 
     def connect_signals_to_slots(self):
+        # Actions
         self.ui.action_about.triggered.connect(self.handle_action_about_triggered)
+        self.ui.action_export_to_image.triggered.connect(self.handle_action_export_to_image_triggered)
+        self.ui.action_save_config.triggered.connect(self.handle_action_save_config_triggered)
+        self.ui.action_load_config.triggered.connect(self.handle_action_load_config_triggered)
+        self.ui.action_view_settings.triggered.connect(self.handle_action_view_settings_triggered)
+        self.ui.action_view_edit_tools.triggered.connect(self.handle_action_view_edit_tools_triggered)
+        self.ui.action_view_pattern_gallery.triggered.connect(self.handle_action_view_pattern_gallery_triggered)
+        self.ui.action_view_game_statistics.triggered.connect(self.handle_action_view_game_statistics_triggered)
+        self.ui.action_english_US.changed.connect(self.handle_language_changed)
+        self.ui.action_russian_RU.changed.connect(self.handle_language_changed)
+
+        # Dock widgets
+        self.ui.settings_dock_widget.visibilityChanged.connect(
+            lambda is_visible: self.ui.action_view_settings.setChecked(is_visible))
+        self.ui.edit_tools_dock_widget.visibilityChanged.connect(
+            lambda is_visible: self.ui.action_view_edit_tools.setChecked(is_visible))
+        self.ui.pattern_gallery_dock_widget.visibilityChanged.connect(
+            lambda is_visible: self.ui.action_view_pattern_gallery.setChecked(is_visible))
+        self.ui.pattern_gallery_dock_widget.visibilityChanged.connect(
+            lambda is_visible: self.ui.action_view_pattern_gallery.setChecked(is_visible))
+        self.ui.game_statistics_dock_widget.visibilityChanged.connect(
+            lambda is_visible: self.ui.action_view_game_statistics.setChecked(is_visible))
+
+        # Buttons/Toggles
         self.ui.start_button.clicked.connect(self.handle_start_button_clicked)
         self.ui.stop_button.clicked.connect(self.handle_stop_button_clicked)
         self.ui.clear_board_button.clicked.connect(self.handle_clear_board_button_clicked)
@@ -295,23 +334,6 @@ class MainWindow(QMainWindow):
         self.ui.paint_mode_tool_button.toggled.connect(self.handle_paint_mode_tool_button_toggled)
         self.ui.erase_mode_tool_button.toggled.connect(self.handle_erase_mode_tool_button_toggled)
         self.ui.help_button.clicked.connect(self.handle_help_button_clicked)
-
-        self.ui.action_export_to_image.triggered.connect(self.handle_action_export_to_image_triggered)
-        self.ui.action_save_config.triggered.connect(self.handle_action_save_config_triggered)
-        self.ui.action_load_config.triggered.connect(self.handle_action_load_config_triggered)
-        self.ui.settings_dock_widget.visibilityChanged.connect(
-            lambda is_visible: self.ui.action_view_settings.setChecked(is_visible))
-        self.ui.edit_tools_dock_widget.visibilityChanged.connect(
-            lambda is_visible: self.ui.action_view_edit_tools.setChecked(is_visible))
-        self.ui.pattern_gallery_dock_widget.visibilityChanged.connect(
-            lambda is_visible: self.ui.action_view_pattern_gallery.setChecked(is_visible))
-        self.ui.action_view_settings.triggered.connect(self.handle_action_view_settings_triggered)
-        self.ui.action_view_edit_tools.triggered.connect(self.handle_action_view_edit_tools_triggered)
-        self.ui.action_view_pattern_gallery.triggered.connect(self.handle_action_view_pattern_gallery_triggered)
-        self.ui.action_english_US.changed.connect(self.handle_language_changed)
-        self.ui.action_russian_RU.changed.connect(self.handle_language_changed)
-
-        # v0.3+
         self.ui.sync_button.clicked.connect(self.handle_sync_button_clicked)
         self.ui.square_size_constraint_check_box.stateChanged.connect(
             self.handle_square_size_constraint_check_box_state_changed)

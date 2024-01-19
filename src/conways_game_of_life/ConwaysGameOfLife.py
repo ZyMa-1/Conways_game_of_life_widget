@@ -35,6 +35,8 @@ class ConwaysGameOfLife(QWidget):
     property_setter_error_signal = Signal(str, str)
     # Wrapped signals
     turn_number_changed = Signal(int)
+    alive_cells_changed = Signal(int)
+    dead_cells_changed = Signal(int)
     turn_made = Signal()
 
     def __init__(self, parent=None):
@@ -72,6 +74,8 @@ class ConwaysGameOfLife(QWidget):
         self.engine.board_changed.connect(self._handle_board_changed)
         self.engine.turn_made.connect(self.update)
         self.engine.turn_number_changed.connect(self.turn_number_changed)
+        self.engine.alive_cells_changed.connect(self.alive_cells_changed)
+        self.engine.dead_cells_changed.connect(self.dead_cells_changed)
         self.engine.turn_made.connect(self.turn_made)
 
     def _reset_to_defaults(self):
@@ -363,8 +367,8 @@ class ConwaysGameOfLife(QWidget):
     rows = Property(int, lambda self: self.engine.get_rows(), lambda self, val: self.engine.set_rows(val))
     cols = Property(int, lambda self: self.engine.get_cols(), lambda self, val: self.engine.set_cols(val))
     turn_number = Property(int, lambda self: self.engine.get_turn_number(), notify=turn_number_changed)
-    alive_cells = Property(int, lambda self: self.engine.get_alive_cells())
-    dead_cells = Property(int, lambda self: self.engine.get_dead_cells())
+    alive_cells = Property(int, lambda self: self.engine.get_alive_cells(), notify=alive_cells_changed)
+    dead_cells = Property(int, lambda self: self.engine.get_dead_cells(), notify=dead_cells_changed)
 
     # Stuff to json serialize the widget
     _SELF_SAVABLE_PROPERTIES = \
