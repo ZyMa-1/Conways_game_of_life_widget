@@ -57,6 +57,7 @@ class ConwaysGameOfLife(QWidget):
         # Active cell should be (if not messed up) synced with '_is_game_running'
         # (_is_game_running == False) -> _active cell is None, since no editing is allowed
         self._active_cell: Optional[Tuple[int, int]] = (0, 0)
+        self._square_size_constraint = False
 
         # Turn timer
         self._timer = QTimer(self)
@@ -143,6 +144,7 @@ class ConwaysGameOfLife(QWidget):
         self.update()
 
     def set_perfect_size(self):
+        # not used/deprecated
         old_width = self.width()
         old_height = self.height()
         w_border = self._border_thickness * (self.engine.cols + 1)
@@ -151,6 +153,14 @@ class ConwaysGameOfLife(QWidget):
         new_height = (old_height - h_border) // self.engine.rows * self.engine.rows + h_border
         # print(old_width, old_height, new_width, new_height)
         self.resize(new_width, new_height)
+
+    def set_square_size_constraint(self, value: bool):
+        self._square_size_constraint = value
+        if self._square_size_constraint:
+            size = min(self.width(), self.height())
+            self.resize(size, size)
+        self.updateGeometry()
+        self.update()
 
     # Game control methods
     def start_game(self):
@@ -324,11 +334,10 @@ class ConwaysGameOfLife(QWidget):
                      (self._border_thickness + self._cell_height()) * self.engine.cols + self._border_thickness)
 
     def resizeEvent(self, event):
-        ...
-        # Square
-        # size = min(self.width(), self.height())
-        # self.resize(size, size)
-        # super().resizeEvent(event)
+        if self._square_size_constraint:
+            size = min(self.width(), self.height())
+            self.resize(size, size)
+        super().resizeEvent(event)
 
     # Signal suffix for the properties signals
     _SIGNAL_SUFFIX = "_changed"

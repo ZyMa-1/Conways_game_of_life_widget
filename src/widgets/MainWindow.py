@@ -1,6 +1,6 @@
 from typing import List, Tuple, Dict
 
-from PySide6.QtCore import Slot, QObject, QThreadPool
+from PySide6.QtCore import Slot, QObject, QThreadPool, Qt
 from PySide6.QtGui import QActionGroup, QPixmap, QIcon
 from PySide6.QtWidgets import QMainWindow, QLabel, QColorDialog, QPushButton, QButtonGroup
 
@@ -91,9 +91,6 @@ class MainWindow(QMainWindow):
         self.pattern_data_loader = PatternsDataLoader()
         self.pattern_data_loader.signals.data_generated.connect(self.handle_patterns_data_loaded)
         self.thread_pool.start(self.pattern_data_loader)
-
-        # Create Instructions dialog
-        self.instructions_dialog = InstructionsDialog(parent=self)
 
         # Init UI (more like create things I cannot create in Qt-designer)
         self.init_ui()
@@ -233,16 +230,17 @@ class MainWindow(QMainWindow):
 
     @Slot()
     def handle_help_button_clicked(self):
-        if not self.instructions_dialog.isVisible():
-            self.instructions_dialog.show()
+        instructions_dialog = InstructionsDialog(self)
+        instructions_dialog.show()
 
     @Slot()
     def handle_sync_button_clicked(self):
         self.properties_manager.assign_properties_values_to_widgets()
 
-    @Slot()
-    def handle_set_perfect_size_button_clicked(self):
-        self.ui.conways_game_of_life_widget.set_perfect_size()
+    @Slot(bool)
+    def handle_square_size_constraint_check_box_state_changed(self, state):
+        val = (state == Qt.CheckState.Checked.value)
+        self.ui.conways_game_of_life_widget.set_square_size_constraint(val)
 
     # Yeah
     def show_property_signal_collector_errors(self):
@@ -313,6 +311,7 @@ class MainWindow(QMainWindow):
         self.ui.action_english_US.changed.connect(self.handle_language_changed)
         self.ui.action_russian_RU.changed.connect(self.handle_language_changed)
 
-        # v0.3
+        # v0.3+
         self.ui.sync_button.clicked.connect(self.handle_sync_button_clicked)
-        self.ui.set_perfect_size_button.clicked.connect(self.handle_set_perfect_size_button_clicked)
+        self.ui.square_size_constraint_check_box.stateChanged.connect(
+            self.handle_square_size_constraint_check_box_state_changed)

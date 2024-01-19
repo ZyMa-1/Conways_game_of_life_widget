@@ -23,7 +23,7 @@ class Ui_InstructionsDialog(object):
     def setupUi(self, InstructionsDialog):
         if not InstructionsDialog.objectName():
             InstructionsDialog.setObjectName(u"InstructionsDialog")
-        InstructionsDialog.resize(284, 206)
+        InstructionsDialog.resize(284, 250)
         InstructionsDialog.setStyleSheet(u"QWidget {\n"
 "	background-color: rgb(210, 210, 210);\n"
 "}\n"
@@ -71,6 +71,11 @@ class Ui_InstructionsDialog(object):
 
         self.verticalLayout.addWidget(self.label_3)
 
+        self.label_4 = QLabel(InstructionsDialog)
+        self.label_4.setObjectName(u"label_4")
+
+        self.verticalLayout.addWidget(self.label_4)
+
         self.verticalSpacer = QSpacerItem(20, 30, QSizePolicy.Minimum, QSizePolicy.Fixed)
 
         self.verticalLayout.addItem(self.verticalSpacer)
@@ -104,7 +109,9 @@ class Ui_InstructionsDialog(object):
 " press 'Enter' key or click the cell with \n"
 "the left mouse button.", None))
         self.label_3.setText(QCoreApplication.translate("InstructionsDialog", u"\u2022 Use arrow keys on the keyboard\n"
-"to change the current active cell position", None))
+"to change the current active cell position.", None))
+        self.label_4.setText(QCoreApplication.translate("InstructionsDialog", u"\u2022 To gain widget's focus\n"
+"click at any part inside of it.", None))
         self.close_button.setText(QCoreApplication.translate("InstructionsDialog", u"X", None))
     # retranslateUi
 

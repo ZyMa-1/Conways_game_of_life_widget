@@ -4,7 +4,9 @@ from PySide6.QtCore import QObject, Signal
 
 
 class SignalCollector(QObject):
-    """Class for collecting cumulative signal data"""
+    """
+    Class for collecting cumulative signal data.
+    """
 
     def __init__(self, signal: Signal, parent=None):
         super().__init__(parent)

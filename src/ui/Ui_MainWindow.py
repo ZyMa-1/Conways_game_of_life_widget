@@ -16,11 +16,11 @@ from PySide6.QtGui import (QAction, QBrush, QColor, QConicalGradient,
     QIcon, QImage, QKeySequence, QLinearGradient,
     QPainter, QPalette, QPixmap, QRadialGradient,
     QTransform)
-from PySide6.QtWidgets import (QApplication, QButtonGroup, QComboBox, QDockWidget,
-    QGridLayout, QHBoxLayout, QLabel, QLayout,
-    QMainWindow, QMenu, QMenuBar, QPushButton,
-    QSizePolicy, QSpacerItem, QSpinBox, QStatusBar,
-    QToolButton, QVBoxLayout, QWidget)
+from PySide6.QtWidgets import (QApplication, QButtonGroup, QCheckBox, QComboBox,
+    QDockWidget, QGridLayout, QHBoxLayout, QLabel,
+    QLayout, QMainWindow, QMenu, QMenuBar,
+    QPushButton, QSizePolicy, QSpacerItem, QSpinBox,
+    QStatusBar, QToolButton, QVBoxLayout, QWidget)
 
 from src.conways_game_of_life.ConwaysGameOfLife import ConwaysGameOfLife
 import src.resources.rc_resources
@@ -172,18 +172,22 @@ class Ui_MainWindow(object):
         self.horizontalLayout_3 = QHBoxLayout()
         self.horizontalLayout_3.setObjectName(u"horizontalLayout_3")
         self.horizontalLayout_3.setContentsMargins(-1, -1, -1, 0)
+        self.square_size_constraint_check_box = QCheckBox(self.centralwidget)
+        self.square_size_constraint_check_box.setObjectName(u"square_size_constraint_check_box")
+        sizePolicy3 = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
+        sizePolicy3.setHorizontalStretch(0)
+        sizePolicy3.setVerticalStretch(0)
+        sizePolicy3.setHeightForWidth(self.square_size_constraint_check_box.sizePolicy().hasHeightForWidth())
+        self.square_size_constraint_check_box.setSizePolicy(sizePolicy3)
+
+        self.horizontalLayout_3.addWidget(self.square_size_constraint_check_box)
+
         self.reset_to_default_button = QPushButton(self.centralwidget)
         self.reset_to_default_button.setObjectName(u"reset_to_default_button")
         self.reset_to_default_button.setMinimumSize(QSize(0, 30))
         self.reset_to_default_button.setFocusPolicy(Qt.NoFocus)
 
         self.horizontalLayout_3.addWidget(self.reset_to_default_button)
-
-        self.set_perfect_size_button = QPushButton(self.centralwidget)
-        self.set_perfect_size_button.setObjectName(u"set_perfect_size_button")
-        self.set_perfect_size_button.setMinimumSize(QSize(0, 30))
-
-        self.horizontalLayout_3.addWidget(self.set_perfect_size_button)
 
 
         self.verticalLayout.addLayout(self.horizontalLayout_3)
@@ -238,11 +242,11 @@ class Ui_MainWindow(object):
 
         self.border_color_label = QLabel(self.dockWidgetContents_2)
         self.border_color_label.setObjectName(u"border_color_label")
-        sizePolicy3 = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
-        sizePolicy3.setHorizontalStretch(2)
-        sizePolicy3.setVerticalStretch(2)
-        sizePolicy3.setHeightForWidth(self.border_color_label.sizePolicy().hasHeightForWidth())
-        self.border_color_label.setSizePolicy(sizePolicy3)
+        sizePolicy4 = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
+        sizePolicy4.setHorizontalStretch(2)
+        sizePolicy4.setVerticalStretch(2)
+        sizePolicy4.setHeightForWidth(self.border_color_label.sizePolicy().hasHeightForWidth())
+        self.border_color_label.setSizePolicy(sizePolicy4)
         self.border_color_label.setMinimumSize(QSize(20, 20))
         self.border_color_label.setMaximumSize(QSize(16777215, 16777215))
         self.border_color_label.setSizeIncrement(QSize(0, 0))
@@ -281,8 +285,8 @@ class Ui_MainWindow(object):
 
         self.cell_dead_color_label = QLabel(self.dockWidgetContents_2)
         self.cell_dead_color_label.setObjectName(u"cell_dead_color_label")
-        sizePolicy3.setHeightForWidth(self.cell_dead_color_label.sizePolicy().hasHeightForWidth())
-        self.cell_dead_color_label.setSizePolicy(sizePolicy3)
+        sizePolicy4.setHeightForWidth(self.cell_dead_color_label.sizePolicy().hasHeightForWidth())
+        self.cell_dead_color_label.setSizePolicy(sizePolicy4)
         self.cell_dead_color_label.setMinimumSize(QSize(20, 20))
 
         self.layout_settings.addWidget(self.cell_dead_color_label, 9, 2, 1, 1)
@@ -346,8 +350,8 @@ class Ui_MainWindow(object):
 
         self.cell_alive_color_label = QLabel(self.dockWidgetContents_2)
         self.cell_alive_color_label.setObjectName(u"cell_alive_color_label")
-        sizePolicy3.setHeightForWidth(self.cell_alive_color_label.sizePolicy().hasHeightForWidth())
-        self.cell_alive_color_label.setSizePolicy(sizePolicy3)
+        sizePolicy4.setHeightForWidth(self.cell_alive_color_label.sizePolicy().hasHeightForWidth())
+        self.cell_alive_color_label.setSizePolicy(sizePolicy4)
         self.cell_alive_color_label.setMinimumSize(QSize(20, 20))
 
         self.layout_settings.addWidget(self.cell_alive_color_label, 8, 2, 1, 1)
@@ -375,11 +379,11 @@ class Ui_MainWindow(object):
         self.verticalLayout_3.setObjectName(u"verticalLayout_3")
         self.default_mode_tool_button = QToolButton(self.dockWidgetContents_3)
         self.default_mode_tool_button.setObjectName(u"default_mode_tool_button")
-        sizePolicy4 = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Minimum)
-        sizePolicy4.setHorizontalStretch(0)
-        sizePolicy4.setVerticalStretch(0)
-        sizePolicy4.setHeightForWidth(self.default_mode_tool_button.sizePolicy().hasHeightForWidth())
-        self.default_mode_tool_button.setSizePolicy(sizePolicy4)
+        sizePolicy5 = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Minimum)
+        sizePolicy5.setHorizontalStretch(0)
+        sizePolicy5.setVerticalStretch(0)
+        sizePolicy5.setHeightForWidth(self.default_mode_tool_button.sizePolicy().hasHeightForWidth())
+        self.default_mode_tool_button.setSizePolicy(sizePolicy5)
         self.default_mode_tool_button.setMinimumSize(QSize(0, 30))
         self.default_mode_tool_button.setCheckable(True)
         self.default_mode_tool_button.setChecked(True)
@@ -393,8 +397,8 @@ class Ui_MainWindow(object):
         self.tool_button_group.setObjectName(u"tool_button_group")
         self.tool_button_group.addButton(self.paint_mode_tool_button)
         self.paint_mode_tool_button.setObjectName(u"paint_mode_tool_button")
-        sizePolicy4.setHeightForWidth(self.paint_mode_tool_button.sizePolicy().hasHeightForWidth())
-        self.paint_mode_tool_button.setSizePolicy(sizePolicy4)
+        sizePolicy5.setHeightForWidth(self.paint_mode_tool_button.sizePolicy().hasHeightForWidth())
+        self.paint_mode_tool_button.setSizePolicy(sizePolicy5)
         self.paint_mode_tool_button.setMinimumSize(QSize(0, 30))
         self.paint_mode_tool_button.setCheckable(True)
         self.paint_mode_tool_button.setAutoExclusive(True)
@@ -404,8 +408,8 @@ class Ui_MainWindow(object):
         self.erase_mode_tool_button = QToolButton(self.dockWidgetContents_3)
         self.tool_button_group.addButton(self.erase_mode_tool_button)
         self.erase_mode_tool_button.setObjectName(u"erase_mode_tool_button")
-        sizePolicy4.setHeightForWidth(self.erase_mode_tool_button.sizePolicy().hasHeightForWidth())
-        self.erase_mode_tool_button.setSizePolicy(sizePolicy4)
+        sizePolicy5.setHeightForWidth(self.erase_mode_tool_button.sizePolicy().hasHeightForWidth())
+        self.erase_mode_tool_button.setSizePolicy(sizePolicy5)
         self.erase_mode_tool_button.setMinimumSize(QSize(0, 30))
         self.erase_mode_tool_button.setCheckable(True)
         self.erase_mode_tool_button.setAutoExclusive(True)
@@ -536,17 +540,11 @@ class Ui_MainWindow(object):
         self.clear_board_button.setStatusTip(QCoreApplication.translate("MainWindow", u"Clear board button", None))
 #endif // QT_CONFIG(statustip)
         self.clear_board_button.setText(QCoreApplication.translate("MainWindow", u"Clear board", None))
+        self.square_size_constraint_check_box.setText(QCoreApplication.translate("MainWindow", u"Square size constraint", None))
 #if QT_CONFIG(statustip)
         self.reset_to_default_button.setStatusTip(QCoreApplication.translate("MainWindow", u"Reset to default button", None))
 #endif // QT_CONFIG(statustip)
         self.reset_to_default_button.setText(QCoreApplication.translate("MainWindow", u"Reset to default", None))
-#if QT_CONFIG(tooltip)
-        self.set_perfect_size_button.setToolTip("")
-#endif // QT_CONFIG(tooltip)
-#if QT_CONFIG(statustip)
-        self.set_perfect_size_button.setStatusTip(QCoreApplication.translate("MainWindow", u"Set perfect size button", None))
-#endif // QT_CONFIG(statustip)
-        self.set_perfect_size_button.setText(QCoreApplication.translate("MainWindow", u"Set perfect size", None))
         self.menuHelp.setTitle(QCoreApplication.translate("MainWindow", u"About", None))
         self.menuExport.setTitle(QCoreApplication.translate("MainWindow", u"Export", None))
         self.menuSave.setTitle(QCoreApplication.translate("MainWindow", u"Save", None))

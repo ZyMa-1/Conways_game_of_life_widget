@@ -1,3 +1,4 @@
+from PySide6.QtCore import Qt
 from PySide6.QtWidgets import QDialog, QApplication
 
 from src.ui.Ui_AboutDialog import Ui_AboutDialog
@@ -16,16 +17,21 @@ class AboutDialog(QDialog):
         self.ui.setupUi(self)
 
         # Update app_version and app_name labels
-        app_instance = QApplication.instance()
-        app_version = app_instance.applicationVersion()
-        app_name = app_instance.applicationName()
-        app_organization_name = app_instance.organizationName()
-        app_author_name = "Mikhail Ponomaryov"
+        app = QApplication.instance()
+        app_version = app.applicationVersion()
+        app_name = app.applicationName()
+        app_organization_name = app.organizationName()
+        app_author_name = app.property("author_name")
 
         self.ui.app_name_label.setText(app_name)
         self.ui.author_name_label.setText(f"{app_organization_name} ({app_author_name})")
         self.ui.app_version_label.setText(app_version)
-        self.ui.text_label.setText(f"Spend my free time on this project (:\nv{app_version} is for AITU python project.")
+
+        text = (f"Spend my free time on this project (:<br>v{app_version} is for AITU python project.<br><a "
+                f"href='https://github.com/ZyMa-1/Conways_game_of_life_widget/blob/master/LICENCE'>LICENSE</a>")
+        self.ui.text_label.setTextFormat(Qt.TextFormat.RichText)
+        self.ui.text_label.setOpenExternalLinks(True)
+        self.ui.text_label.setText(text)
 
         self.ui.buttonBox.accepted.connect(self.accept)
         self.ui.buttonBox.rejected.connect(self.reject)

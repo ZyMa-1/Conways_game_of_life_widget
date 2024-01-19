@@ -7,7 +7,9 @@ from PySide6.QtWidgets import QWidget
 
 
 class _SlotFactory(QObject):
-    """Class to create unique slots"""
+    """
+    Class to create unique slot methods bounded to the class instance.
+    """
 
     def __init__(self, widget: QWidget, parent=None):
         super().__init__(parent)
@@ -56,7 +58,7 @@ class SlotPropertyConnector(QObject):
 
     def connect_property_to_widget(self, property_name: str, property_value: Any,
                                    widget: QWidget, signal: Optional[Signal]) -> MethodType:
-        slot_factory = _SlotFactory(widget, parent=self.parent())
+        slot_factory = _SlotFactory(widget, parent=self)
         self.slot_factories.append(slot_factory)
         slot = slot_factory.get_slot(property_name)
         slot(property_value)

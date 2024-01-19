@@ -1,19 +1,17 @@
-from PySide6.QtCore import QObject
+from PySide6.QtCore import QObject, QSettings
 
-from src.backend.SettingsManager import SettingsManager
+from src.backend.PathManager import PathManager
 
 
 class UtilsFactory(QObject):
-    settings_manager: SettingsManager
+    _settings: QSettings
 
     @classmethod
     def create_resources(cls, parent=None):
-        cls.settings_manager = SettingsManager(parent=parent)
-
-    @classmethod
-    def get_settings_manager(cls):
-        return cls.settings_manager
+        cls._settings = QSettings(str(PathManager.SETTINGS_INI),
+                                  QSettings.Format.IniFormat)
+        cls._settings.sync()
 
     @classmethod
     def get_settings(cls):
-        return cls.settings_manager.settings_instance()
+        return cls._settings

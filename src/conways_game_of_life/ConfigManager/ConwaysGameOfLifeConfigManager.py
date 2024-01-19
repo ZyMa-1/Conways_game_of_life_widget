@@ -13,7 +13,7 @@ from .QtPropertyJsonConverter import serialize_property, deserialize_property
 
 class ConwaysGameOfLifeConfigManager(QObject):
     """
-    Class for saving and loading widget properties to '.json' format.
+    Class for saving and loading widget properties using '.json' format.
     """
 
     def __init__(self, conways_game_of_life_widget: ConwaysGameOfLife, parent=None):

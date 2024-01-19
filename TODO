@@ -4,4 +4,5 @@
 - Pattern Saving from the state
 - Border annoys
 - Fix unittest tempfiles not creating at all
-- Add notice about focusing
+- Fixing perfect size can be, but kinda not needed
+-

@@ -25,7 +25,11 @@ class ConwaysGameOfLifePropertiesManager(QObject):
     def connect_widget_and_property(self, widget: QWidget, property_name: str,
                                     property_has_signal: bool = False, property_read_only: bool = False):
         """
-        Connecting widget to the property.
+        Connects widget to the property and vice versa.
+        By default, creates a way to convert:
+        'widget value' -> 'property'
+        'property' -> 'widget value'
+
         If 'property_has_signal' is True,
         connect property changed signal to the widget.
 
@@ -46,11 +50,13 @@ class ConwaysGameOfLifePropertiesManager(QObject):
             self._property_to_widget[property_name] = widget
 
     def assign_widget_values_to_properties(self):
+        """Essentially assigns widget values to properties"""
         for name, widget in self._property_to_widget.items():
             value = convert_widget_value(widget, name)
             self.game_widget.setProperty(name, value)
 
     def assign_properties_values_to_widgets(self):
+        """Essentially assigns properties to widget values"""
         for name, slot in self._property_to_widget_slot.items():
             value = self.game_widget.property(name)
             slot(value)

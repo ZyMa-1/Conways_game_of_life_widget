@@ -64,13 +64,25 @@
         <source>• To change the cell state to the opposite,
  press &apos;Enter&apos; key or click the cell with 
 the left mouse button.</source>
-        <translation type="unfinished"></translation>
+        <translation>• Чтобы поменять состояние клетки
+на противоположное, нажмите
+клавишу &apos;Enter&apos; или нажмите на клетку
+левой кнопкой мыши.</translation>
     </message>
     <message>
         <location filename="../../designer/InstructionsDialog.ui" line="85"/>
         <source>• Use arrow keys on the keyboard
-to change the current active cell position</source>
-        <translation type="unfinished"></translation>
+to change the current active cell position.</source>
+        <translation>• Используйте стрелки на клавиатуре
+чтобы поменять позицию 
+активной клетки.</translation>
+    </message>
+    <message>
+        <location filename="../../designer/InstructionsDialog.ui" line="96"/>
+        <source>• To gain widget&apos;s focus
+click at any part inside of it.</source>
+        <translation>• Чтобы ввести виджет в фокус,
+нажмите на любую область внутри него.</translation>
     </message>
     <message>
         <source>• To change cell state to the opposite,
@@ -90,7 +102,7 @@ current active cell position</source>
 активной клетки</translation>
     </message>
     <message>
-        <location filename="../../designer/InstructionsDialog.ui" line="131"/>
+        <location filename="../../designer/InstructionsDialog.ui" line="139"/>
         <source>X</source>
         <translation type="unfinished"></translation>
     </message>
@@ -168,249 +180,248 @@ current active cell position</source>
         <translation>Очистить доску</translation>
     </message>
     <message>
-        <location filename="../../designer/MainWindow.ui" line="266"/>
+        <location filename="../../designer/MainWindow.ui" line="263"/>
+        <source>Square size constraint</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../designer/MainWindow.ui" line="279"/>
         <source>Reset to default button</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../designer/MainWindow.ui" line="269"/>
+        <location filename="../../designer/MainWindow.ui" line="282"/>
         <source>Reset to default</source>
         <translation>Сбросить настройки виджета</translation>
     </message>
     <message>
-        <location filename="../../designer/MainWindow.ui" line="309"/>
-        <location filename="../../designer/MainWindow.ui" line="901"/>
+        <location filename="../../designer/MainWindow.ui" line="303"/>
+        <location filename="../../designer/MainWindow.ui" line="895"/>
         <source>About</source>
         <translation>О</translation>
     </message>
     <message>
-        <location filename="../../designer/MainWindow.ui" line="315"/>
+        <location filename="../../designer/MainWindow.ui" line="309"/>
         <source>Export</source>
         <translation>Экспорт</translation>
     </message>
     <message>
-        <location filename="../../designer/MainWindow.ui" line="321"/>
+        <location filename="../../designer/MainWindow.ui" line="315"/>
         <source>Save</source>
         <translation>Сохранить</translation>
     </message>
     <message>
-        <location filename="../../designer/MainWindow.ui" line="327"/>
+        <location filename="../../designer/MainWindow.ui" line="321"/>
         <source>Load</source>
         <translation>Загрузить</translation>
     </message>
     <message>
-        <location filename="../../designer/MainWindow.ui" line="333"/>
+        <location filename="../../designer/MainWindow.ui" line="327"/>
         <source>View</source>
         <translation>Вид</translation>
     </message>
     <message>
-        <location filename="../../designer/MainWindow.ui" line="341"/>
+        <location filename="../../designer/MainWindow.ui" line="335"/>
         <source>Language</source>
         <translation>Язык</translation>
     </message>
     <message>
-        <location filename="../../designer/MainWindow.ui" line="356"/>
+        <location filename="../../designer/MainWindow.ui" line="350"/>
         <source>Settings dock widget</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../designer/MainWindow.ui" line="371"/>
-        <location filename="../../designer/MainWindow.ui" line="939"/>
+        <location filename="../../designer/MainWindow.ui" line="365"/>
+        <location filename="../../designer/MainWindow.ui" line="933"/>
         <source>Game of life settings</source>
         <translation>Настройки игрового виджета</translation>
     </message>
     <message>
-        <location filename="../../designer/MainWindow.ui" line="616"/>
+        <location filename="../../designer/MainWindow.ui" line="610"/>
         <source>Column count:</source>
         <translation>Количество столбцов:</translation>
     </message>
     <message>
-        <location filename="../../designer/MainWindow.ui" line="392"/>
+        <location filename="../../designer/MainWindow.ui" line="386"/>
         <source>Border thickness:</source>
         <translation>Толщина границы:</translation>
     </message>
     <message>
-        <location filename="../../designer/MainWindow.ui" line="498"/>
+        <location filename="../../designer/MainWindow.ui" line="492"/>
         <source>Turn duration:</source>
         <translation>Длина хода:</translation>
     </message>
     <message>
-        <location filename="../../designer/MainWindow.ui" line="561"/>
+        <location filename="../../designer/MainWindow.ui" line="555"/>
         <source>Apply</source>
         <translation>Применить</translation>
     </message>
     <message>
-        <location filename="../../designer/MainWindow.ui" line="600"/>
+        <location filename="../../designer/MainWindow.ui" line="594"/>
         <source>Turn duration spin box</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../designer/MainWindow.ui" line="603"/>
+        <location filename="../../designer/MainWindow.ui" line="597"/>
         <source> ms</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../designer/MainWindow.ui" line="530"/>
+        <location filename="../../designer/MainWindow.ui" line="524"/>
         <source>Row count spin box</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../designer/MainWindow.ui" line="488"/>
+        <location filename="../../designer/MainWindow.ui" line="482"/>
         <source>Cell alive color button</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../designer/MainWindow.ui" line="458"/>
-        <location filename="../../designer/MainWindow.ui" line="491"/>
-        <location filename="../../designer/MainWindow.ui" line="651"/>
+        <location filename="../../designer/MainWindow.ui" line="452"/>
+        <location filename="../../designer/MainWindow.ui" line="485"/>
+        <location filename="../../designer/MainWindow.ui" line="645"/>
         <source>Choose color...</source>
         <translation>Выберите цвет...</translation>
     </message>
     <message>
-        <location filename="../../designer/MainWindow.ui" line="465"/>
+        <location filename="../../designer/MainWindow.ui" line="459"/>
         <source>Border color:</source>
         <translation>Цвет границы:</translation>
     </message>
     <message>
-        <location filename="../../designer/MainWindow.ui" line="648"/>
+        <location filename="../../designer/MainWindow.ui" line="642"/>
         <source>Border color button</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../designer/MainWindow.ui" line="436"/>
-        <location filename="../../designer/MainWindow.ui" line="517"/>
-        <location filename="../../designer/MainWindow.ui" line="670"/>
+        <location filename="../../designer/MainWindow.ui" line="430"/>
+        <location filename="../../designer/MainWindow.ui" line="511"/>
+        <location filename="../../designer/MainWindow.ui" line="664"/>
         <source>Label displaying color</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../designer/MainWindow.ui" line="399"/>
+        <location filename="../../designer/MainWindow.ui" line="393"/>
         <source>Cell alive color:</source>
         <translation>Цвет живой клетки:</translation>
     </message>
     <message>
-        <location filename="../../designer/MainWindow.ui" line="455"/>
+        <location filename="../../designer/MainWindow.ui" line="449"/>
         <source>Cell dead color button</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../designer/MainWindow.ui" line="590"/>
+        <location filename="../../designer/MainWindow.ui" line="584"/>
         <source>Row count:</source>
         <translation>Количество строк:</translation>
     </message>
     <message>
-        <location filename="../../designer/MainWindow.ui" line="472"/>
+        <location filename="../../designer/MainWindow.ui" line="466"/>
         <source>Cell dead color:</source>
         <translation>Цвет мёртвой клетки:</translation>
     </message>
     <message>
-        <location filename="../../designer/MainWindow.ui" line="285"/>
-        <source>Set perfect size button</source>
-        <translation></translation>
-    </message>
-    <message>
-        <location filename="../../designer/MainWindow.ui" line="288"/>
         <source>Set perfect size</source>
-        <translation>Применить идеальный размер</translation>
+        <translation type="vanished">Применить идеальный размер</translation>
     </message>
     <message>
-        <location filename="../../designer/MainWindow.ui" line="558"/>
+        <location filename="../../designer/MainWindow.ui" line="552"/>
         <source>Apply button</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../designer/MainWindow.ui" line="577"/>
+        <location filename="../../designer/MainWindow.ui" line="571"/>
         <source>Column count spin box</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../designer/MainWindow.ui" line="626"/>
+        <location filename="../../designer/MainWindow.ui" line="620"/>
         <source>Border thickness spin box</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../designer/MainWindow.ui" line="629"/>
+        <location filename="../../designer/MainWindow.ui" line="623"/>
         <source> px</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../designer/MainWindow.ui" line="686"/>
+        <location filename="../../designer/MainWindow.ui" line="680"/>
         <source>Sync button</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../designer/MainWindow.ui" line="689"/>
+        <location filename="../../designer/MainWindow.ui" line="683"/>
         <source>Sync</source>
         <translation>Синхронизировать</translation>
     </message>
     <message>
-        <location filename="../../designer/MainWindow.ui" line="700"/>
+        <location filename="../../designer/MainWindow.ui" line="694"/>
         <source>Edit tools dock widget</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../designer/MainWindow.ui" line="706"/>
+        <location filename="../../designer/MainWindow.ui" line="700"/>
         <source>Edit tools</source>
         <translation>Приборы</translation>
     </message>
     <message>
-        <location filename="../../designer/MainWindow.ui" line="733"/>
+        <location filename="../../designer/MainWindow.ui" line="727"/>
         <source>Default mode - change cell states one by one</source>
         <translation>Обычный режим - Меняй клетки одну за другой</translation>
     </message>
     <message>
-        <location filename="../../designer/MainWindow.ui" line="736"/>
+        <location filename="../../designer/MainWindow.ui" line="730"/>
         <source>&quot;Default&quot; mode</source>
         <translation>&quot;Обычный&quot; режим</translation>
     </message>
     <message>
-        <location filename="../../designer/MainWindow.ui" line="767"/>
+        <location filename="../../designer/MainWindow.ui" line="761"/>
         <source>Paint mode - Create multiple alive cells by dragging your mouse over the widget</source>
         <translation>Режим рисования - Создайте много живих клеток зажав левую кнопку мыши над игрой</translation>
     </message>
     <message>
-        <location filename="../../designer/MainWindow.ui" line="770"/>
+        <location filename="../../designer/MainWindow.ui" line="764"/>
         <source>&quot;Paint&quot; mode</source>
         <translation>&quot;Рисовать&quot; режим</translation>
     </message>
     <message>
-        <location filename="../../designer/MainWindow.ui" line="798"/>
+        <location filename="../../designer/MainWindow.ui" line="792"/>
         <source>Erase mode - Delete multiple alive cells by dragging your mouse over the widget</source>
         <translation>Режим стиралки - Убей множество живых клеток зажав левую кнопку мышки над игрой</translation>
     </message>
     <message>
-        <location filename="../../designer/MainWindow.ui" line="801"/>
+        <location filename="../../designer/MainWindow.ui" line="795"/>
         <source>&quot;Erase&quot; mode</source>
         <translation>&quot;Ластик&quot; режим</translation>
     </message>
     <message>
-        <location filename="../../designer/MainWindow.ui" line="834"/>
+        <location filename="../../designer/MainWindow.ui" line="828"/>
         <source>Pattern gallery dock widget</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../designer/MainWindow.ui" line="840"/>
-        <location filename="../../designer/MainWindow.ui" line="989"/>
+        <location filename="../../designer/MainWindow.ui" line="834"/>
+        <location filename="../../designer/MainWindow.ui" line="983"/>
         <source>Pattern gallery</source>
         <translation>Галлерея паттернов</translation>
     </message>
     <message>
-        <location filename="../../designer/MainWindow.ui" line="862"/>
+        <location filename="../../designer/MainWindow.ui" line="856"/>
         <source>Patterns combo box</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../designer/MainWindow.ui" line="874"/>
+        <location filename="../../designer/MainWindow.ui" line="868"/>
         <source>Choose pattern</source>
         <translation>Выбрать паттерн</translation>
     </message>
     <message>
-        <location filename="../../designer/MainWindow.ui" line="887"/>
+        <location filename="../../designer/MainWindow.ui" line="881"/>
         <source>Insert pattern to a current active cell</source>
         <translation>Вставить паттернн а текущую позицию</translation>
     </message>
     <message>
-        <location filename="../../designer/MainWindow.ui" line="890"/>
+        <location filename="../../designer/MainWindow.ui" line="884"/>
         <source>Insert pattern
 to current 
 position</source>
@@ -419,64 +430,64 @@ position</source>
 позицию</translation>
     </message>
     <message>
-        <location filename="../../designer/MainWindow.ui" line="904"/>
+        <location filename="../../designer/MainWindow.ui" line="898"/>
         <source>About application</source>
         <translation>О приложении</translation>
     </message>
     <message>
-        <location filename="../../designer/MainWindow.ui" line="909"/>
+        <location filename="../../designer/MainWindow.ui" line="903"/>
         <source>Export to image</source>
         <translation>Экспорт в картинку</translation>
     </message>
     <message>
-        <location filename="../../designer/MainWindow.ui" line="912"/>
+        <location filename="../../designer/MainWindow.ui" line="906"/>
         <source>Export game widget to image</source>
         <translation>Экспортировать игровой виджет в картинку</translation>
     </message>
     <message>
-        <location filename="../../designer/MainWindow.ui" line="917"/>
-        <location filename="../../designer/MainWindow.ui" line="920"/>
+        <location filename="../../designer/MainWindow.ui" line="911"/>
+        <location filename="../../designer/MainWindow.ui" line="914"/>
         <source>Save config</source>
         <translation>Сохранить конфиг</translation>
     </message>
     <message>
-        <location filename="../../designer/MainWindow.ui" line="925"/>
-        <location filename="../../designer/MainWindow.ui" line="928"/>
+        <location filename="../../designer/MainWindow.ui" line="919"/>
+        <location filename="../../designer/MainWindow.ui" line="922"/>
         <source>Load config</source>
         <translation>Загрузить конфиг</translation>
     </message>
     <message>
-        <location filename="../../designer/MainWindow.ui" line="942"/>
+        <location filename="../../designer/MainWindow.ui" line="936"/>
         <source>Change Dock widget visibility</source>
         <translation>Изменить видимость Докер виджета</translation>
     </message>
     <message>
-        <location filename="../../designer/MainWindow.ui" line="953"/>
+        <location filename="../../designer/MainWindow.ui" line="947"/>
         <source>English (US)</source>
         <translation>Английский (US)</translation>
     </message>
     <message>
-        <location filename="../../designer/MainWindow.ui" line="956"/>
+        <location filename="../../designer/MainWindow.ui" line="950"/>
         <source>English</source>
         <translation>Английский</translation>
     </message>
     <message>
-        <location filename="../../designer/MainWindow.ui" line="964"/>
+        <location filename="../../designer/MainWindow.ui" line="958"/>
         <source>Russian (RU)</source>
         <translation>Русский (RU)</translation>
     </message>
     <message>
-        <location filename="../../designer/MainWindow.ui" line="967"/>
+        <location filename="../../designer/MainWindow.ui" line="961"/>
         <source>Russian</source>
         <translation>Русский</translation>
     </message>
     <message>
-        <location filename="../../designer/MainWindow.ui" line="978"/>
+        <location filename="../../designer/MainWindow.ui" line="972"/>
         <source>Tools</source>
         <translation>Приборы</translation>
     </message>
     <message>
-        <location filename="../../designer/MainWindow.ui" line="994"/>
+        <location filename="../../designer/MainWindow.ui" line="988"/>
         <source>Export turns to video</source>
         <translation>!!</translation>
     </message>

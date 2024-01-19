@@ -25,7 +25,7 @@ def ensure_if_ok_to_run():
 
 
 def init_language_settings():
-    UtilsFactory.create_resources(app)
+    UtilsFactory.create_resources()
     settings = UtilsFactory.get_settings()
     lang = settings.value("Language", "en", type=str)
     translator = QTranslator(app)
@@ -39,6 +39,7 @@ if __name__ == '__main__':
 
     from src.widgets.MainWindow import MainWindow
     app = QApplication(sys.argv)
+    app.setProperty("author_name", "Mikhail Ponomaryov")
 
     app.setOrganizationName("ZyMa-1")
     app.setApplicationName("Conway's Game Of Life Widget")

@@ -22,7 +22,7 @@ class InstructionsDialog(QDialog):
 
     @Slot()
     def handle_close_button_clicked(self):
-        self.hide()
+        self.close()
 
     def mousePressEvent(self, event):
         if event.button() == Qt.LeftButton:

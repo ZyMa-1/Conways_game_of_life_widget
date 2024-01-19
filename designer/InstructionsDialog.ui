@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>284</width>
-    <height>206</height>
+    <height>250</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -83,10 +83,18 @@ the left mouse button.</string>
          </property>
          <property name="text">
           <string>• Use arrow keys on the keyboard
-to change the current active cell position</string>
+to change the current active cell position.</string>
          </property>
          <property name="margin">
           <number>0</number>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="label_4">
+         <property name="text">
+          <string>• To gain widget's focus
+click at any part inside of it.</string>
          </property>
         </widget>
        </item>
