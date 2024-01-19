@@ -6,7 +6,7 @@ from PySide6.QtGui import QPainter, QColor
 from PySide6.QtWidgets import QWidget
 
 from .utils import property_setter_error_handle, ColorProperty, PatternSchema
-from .ConwaysGameOfLifeEngine import CELL_ALIVE, CELL_DEAD, ConwaysGameOfLifeEngine, StateMatrixT
+from .ConwaysGameOfLifeEngine import CELL_ALIVE, CELL_DEAD, ConwaysGameOfLifeEngine
 
 MINIMUM_SIZE = (240, 240)
 
@@ -33,6 +33,9 @@ class ConwaysGameOfLife(QWidget):
     # Signals:
     # Emits when invalid value passed to property setter
     property_setter_error_signal = Signal(str, str)
+    # Wrapped signals
+    turn_number_changed = Signal(int)
+    turn_made = Signal()
 
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -64,7 +67,7 @@ class ConwaysGameOfLife(QWidget):
 
         # Connect signals to slots
         self._timer.timeout.connect(self.engine.make_turn)
-        # Engine signals connection (wrapping included)
+        # Connect engine signals
         self.engine.property_setter_error_signal.connect(self.property_setter_error_signal)
         self.engine.board_changed.connect(self._handle_board_changed)
         self.engine.turn_made.connect(self.update)
@@ -355,43 +358,13 @@ class ConwaysGameOfLife(QWidget):
     # Read only
     is_game_running = Property(bool, get_is_game_running, notify=is_game_running_changed)
 
-    # Wrapped properties and signals of the engine
-    ##############
-    ##############
-    turn_made = Signal()
-
-    def get_state(self):
-        return self.engine.get_state()
-
-    def set_state(self, value: StateMatrixT):
-        self.engine.set_state(value)
-
-    def get_cols(self):
-        return self.engine.get_cols()
-
-    def set_cols(self, value: int):
-        self.engine.set_cols(value)
-
-    def get_rows(self):
-        return self.engine.get_rows()
-
-    def set_rows(self, value: int):
-        self.engine.set_rows(value)
-
-    def get_turn_number(self):
-        return self.engine.get_turn_number()
-
-    # Properties signals
-    turn_number_changed = Signal(int)
-
-    # Pyqt properties (notify is not 'automatic'):
-    state = Property(list, get_state, set_state)  # Does not work in Qt-Designer for some reason
-    cols = Property(int, get_cols, set_cols)
-    rows = Property(int, get_rows, set_rows)
-    # read_only
-    turn_number = Property(int, get_turn_number, notify=turn_number_changed)
-    ##############
-    ##############
+    # Wrapped properties of the engine (using lambdas)
+    state = Property(list, lambda self: self.engine.get_state(), lambda self, val: self.engine.set_state(val))
+    rows = Property(int, lambda self: self.engine.get_rows(), lambda self, val: self.engine.set_rows(val))
+    cols = Property(int, lambda self: self.engine.get_cols(), lambda self, val: self.engine.set_cols(val))
+    turn_number = Property(int, lambda self: self.engine.get_turn_number(), notify=turn_number_changed)
+    alive_cells = Property(int, lambda self: self.engine.get_alive_cells())
+    dead_cells = Property(int, lambda self: self.engine.get_dead_cells())
 
     # Stuff to json serialize the widget
     _SELF_SAVABLE_PROPERTIES = \

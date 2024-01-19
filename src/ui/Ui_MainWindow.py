@@ -450,6 +450,39 @@ class Ui_MainWindow(object):
 
         self.pattern_gallery_dock_widget.setWidget(self.dockWidgetContents_4)
         MainWindow.addDockWidget(Qt.LeftDockWidgetArea, self.pattern_gallery_dock_widget)
+        self.game_statistics_dock_widget = QDockWidget(MainWindow)
+        self.game_statistics_dock_widget.setObjectName(u"game_statistics_dock_widget")
+        self.dockWidgetContents = QWidget()
+        self.dockWidgetContents.setObjectName(u"dockWidgetContents")
+        self.verticalLayout_8 = QVBoxLayout(self.dockWidgetContents)
+        self.verticalLayout_8.setObjectName(u"verticalLayout_8")
+        self.gridLayout = QGridLayout()
+        self.gridLayout.setObjectName(u"gridLayout")
+        self.label_5 = QLabel(self.dockWidgetContents)
+        self.label_5.setObjectName(u"label_5")
+
+        self.gridLayout.addWidget(self.label_5, 0, 0, 1, 1)
+
+        self.label_10 = QLabel(self.dockWidgetContents)
+        self.label_10.setObjectName(u"label_10")
+
+        self.gridLayout.addWidget(self.label_10, 1, 0, 1, 1)
+
+        self.alive_cells_label = QLabel(self.dockWidgetContents)
+        self.alive_cells_label.setObjectName(u"alive_cells_label")
+
+        self.gridLayout.addWidget(self.alive_cells_label, 0, 1, 1, 1)
+
+        self.dead_cells_label = QLabel(self.dockWidgetContents)
+        self.dead_cells_label.setObjectName(u"dead_cells_label")
+
+        self.gridLayout.addWidget(self.dead_cells_label, 1, 1, 1, 1)
+
+
+        self.verticalLayout_8.addLayout(self.gridLayout)
+
+        self.game_statistics_dock_widget.setWidget(self.dockWidgetContents)
+        MainWindow.addDockWidget(Qt.LeftDockWidgetArea, self.game_statistics_dock_widget)
         QWidget.setTabOrder(self.rows_spin_box, self.cols_spin_box)
         QWidget.setTabOrder(self.cols_spin_box, self.border_thickness_spin_box)
         QWidget.setTabOrder(self.border_thickness_spin_box, self.cell_alive_color_button)
@@ -639,5 +672,19 @@ class Ui_MainWindow(object):
         self.insert_pattern_button.setText(QCoreApplication.translate("MainWindow", u"Insert pattern\n"
 "to current \n"
 "position", None))
+#if QT_CONFIG(statustip)
+        self.game_statistics_dock_widget.setStatusTip(QCoreApplication.translate("MainWindow", u"Game statistics dock widget", None))
+#endif // QT_CONFIG(statustip)
+        self.game_statistics_dock_widget.setWindowTitle(QCoreApplication.translate("MainWindow", u"Game Statistics", None))
+        self.label_5.setText(QCoreApplication.translate("MainWindow", u"Alive cells:", None))
+        self.label_10.setText(QCoreApplication.translate("MainWindow", u"Dead cells:", None))
+#if QT_CONFIG(statustip)
+        self.alive_cells_label.setStatusTip(QCoreApplication.translate("MainWindow", u"Alive cells label", None))
+#endif // QT_CONFIG(statustip)
+        self.alive_cells_label.setText(QCoreApplication.translate("MainWindow", u"0", None))
+#if QT_CONFIG(statustip)
+        self.dead_cells_label.setStatusTip(QCoreApplication.translate("MainWindow", u"Dead cells label", None))
+#endif // QT_CONFIG(statustip)
+        self.dead_cells_label.setText(QCoreApplication.translate("MainWindow", u"a lot", None))
     # retranslateUi
 

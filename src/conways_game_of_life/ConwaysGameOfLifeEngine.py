@@ -93,6 +93,11 @@ class ConwaysGameOfLifeEngine(QObject):
                 if len(value[row][col]) != 1 or (value[row][col] != CELL_DEAD and value[row][col] != CELL_ALIVE):
                     raise ValueError("State value is not correct")
         self._state = value
+        # Calculate alive_cells property from scratch
+        self._alive_cells = 0
+        for row in range(self._rows):
+            for col in range(self._cols):
+                self._alive_cells += self._state[row][col] == CELL_ALIVE
         self.board_changed.emit()
 
     # API functionality to interact with the game
@@ -101,23 +106,29 @@ class ConwaysGameOfLifeEngine(QObject):
         self._cols = DEFAULT_COLS
         self._rows = DEFAULT_ROWS
         self._state = _default_state_matrix(self._rows, self._cols)
+        self._alive_cells = 0
         self.turn_number_changed.emit(self._turn_number)
 
     def clear_state(self):
         self._state = _default_state_matrix(self._rows, self._cols)
+        self._alive_cells = 0
 
     def insert_state_array_at(self, row: int, col: int, state_array: StateMatrixT):
         max_possible_rows = self._rows - row
         max_possible_cols = self._cols - col
         for i in range(min(max_possible_rows, len(state_array))):
             for j in range(min(max_possible_cols, len(state_array[i]))):
+                self._alive_cells -= self._state[i + row][j + col] == CELL_ALIVE
                 self._state[i + row][j + col] = state_array[i][j]
+                self._alive_cells += state_array[i][j] == CELL_ALIVE
 
     # API + Inner logic (mixed)
     def change_cell_state_at(self, row: int, col: int, new_cell_state: str):
         if not (0 <= row < self._rows and 0 <= col < self._cols):
             return
+        self._alive_cells -= self._state[row][col] == CELL_ALIVE
         self._state[row][col] = new_cell_state
+        self._alive_cells += new_cell_state == CELL_ALIVE
 
     def change_cell_state_to_opposite(self, row: int, col: int):
         if self._state[row][col] == CELL_ALIVE:
@@ -137,6 +148,7 @@ class ConwaysGameOfLifeEngine(QObject):
                 if row < rows and col < cols:
                     new_row.append(self._state[row][col])
                 else:
+                    self._alive_cells -= self._state[row][col] == CELL_ALIVE
                     new_row.append(CELL_DEAD)
             new_state.append(new_row)
         self._state = new_state
@@ -154,6 +166,7 @@ class ConwaysGameOfLifeEngine(QObject):
     def make_turn(self):
         start_time = time.perf_counter()
         new_state = []
+        self._alive_cells = 0
         for row in range(self._rows):
             new_row = []
             for col in range(self._cols):
@@ -161,12 +174,12 @@ class ConwaysGameOfLifeEngine(QObject):
                 neighbor_count = self._get_alive_neighbor_count(row, col)
 
                 # Apply the rules of Conway's Game of Life
-                if cell_state == CELL_ALIVE and (neighbor_count < 2 or neighbor_count > 3):
-                    new_row.append(CELL_DEAD)
-                elif cell_state == CELL_DEAD and neighbor_count == 3:
+                if ((cell_state == CELL_ALIVE and neighbor_count in (2, 3)) or
+                        (cell_state == CELL_DEAD and neighbor_count == 3)):
                     new_row.append(CELL_ALIVE)
+                    self._alive_cells += 1
                 else:
-                    new_row.append(cell_state)
+                    new_row.append(CELL_ALIVE)
 
             new_state.append(new_row)
 

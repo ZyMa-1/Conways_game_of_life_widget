@@ -890,6 +890,59 @@ position</string>
     </layout>
    </widget>
   </widget>
+  <widget class="QDockWidget" name="game_statistics_dock_widget">
+   <property name="statusTip">
+    <string>Game statistics dock widget</string>
+   </property>
+   <property name="windowTitle">
+    <string>Game Statistics</string>
+   </property>
+   <attribute name="dockWidgetArea">
+    <number>1</number>
+   </attribute>
+   <widget class="QWidget" name="dockWidgetContents">
+    <layout class="QVBoxLayout" name="verticalLayout_8">
+     <item>
+      <layout class="QGridLayout" name="gridLayout">
+       <item row="0" column="0">
+        <widget class="QLabel" name="label_5">
+         <property name="text">
+          <string>Alive cells:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0">
+        <widget class="QLabel" name="label_10">
+         <property name="text">
+          <string>Dead cells:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QLabel" name="alive_cells_label">
+         <property name="statusTip">
+          <string>Alive cells label</string>
+         </property>
+         <property name="text">
+          <string>0</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <widget class="QLabel" name="dead_cells_label">
+         <property name="statusTip">
+          <string>Dead cells label</string>
+         </property>
+         <property name="text">
+          <string>a lot</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+    </layout>
+   </widget>
+  </widget>
   <action name="action_about">
    <property name="text">
     <string>About</string>
