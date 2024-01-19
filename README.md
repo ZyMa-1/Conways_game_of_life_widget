@@ -25,6 +25,8 @@ Goal of the project was to learn how to build scalable and manageble application
   
 Screenshots of the 'MainWindow' and QtDesigner interface, showcasing the loaded plugin, contains in [/readme_images](/readme_images) directory.
 
+Version 0.4 screenshot:
+
 ![Image 4](/readme_images/4_new.png)
 
 # Blog
