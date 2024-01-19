@@ -69,6 +69,7 @@ class ConwaysGameOfLife(QWidget):
         self.engine.board_changed.connect(self._handle_board_changed)
         self.engine.turn_made.connect(self.update)
         self.engine.turn_number_changed.connect(self.turn_number_changed)
+        self.engine.turn_made.connect(self.turn_made)
 
     def _reset_to_defaults(self):
         self._border_thickness = DEFAULT_BORDER_THICKNESS
@@ -357,6 +358,8 @@ class ConwaysGameOfLife(QWidget):
     # Wrapped properties and signals of the engine
     ##############
     ##############
+    turn_made = Signal()
+
     def get_state(self):
         return self.engine.get_state()
 

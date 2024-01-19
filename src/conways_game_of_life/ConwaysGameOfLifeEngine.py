@@ -1,3 +1,4 @@
+import time
 from typing import List
 
 from PySide6.QtCore import Signal, Property, QObject
@@ -26,7 +27,6 @@ class ConwaysGameOfLifeEngine(QObject):
     # Emits when state of the board or other properties are changed via property setters ONLY
     # Handling board changes is up to the widget class to prevent frequent updates and redraws
     board_changed = Signal()
-    # Back to back
     turn_made = Signal()
     # Emits when invalid value passed to property setter
     property_setter_error_signal = Signal(str, str)
@@ -40,10 +40,22 @@ class ConwaysGameOfLifeEngine(QObject):
         self._rows = DEFAULT_ROWS
         # List[List[str]]
         self._state: StateMatrixT = _default_state_matrix(self._rows, self._cols)
+        self._alive_cells = 0
+        # Performance of the 'make_turn' in ms
+        self._last_turn_performance = 0
 
     # Properties
     def get_turn_number(self):
         return self._turn_number
+
+    def get_alive_cells(self):
+        return self._alive_cells
+
+    def get_dead_cells(self):
+        return self._rows * self._cols - self._alive_cells
+
+    def get_last_turn_performance(self):
+        return self._last_turn_performance
 
     def get_cols(self):
         return self._cols
@@ -140,6 +152,7 @@ class ConwaysGameOfLifeEngine(QObject):
 
     # Make turn
     def make_turn(self):
+        start_time = time.perf_counter()
         new_state = []
         for row in range(self._rows):
             new_row = []
@@ -160,6 +173,8 @@ class ConwaysGameOfLifeEngine(QObject):
         self._state = new_state
         self._turn_number += 1
         self.turn_number_changed.emit(self._turn_number)
+        end_time = time.perf_counter()
+        self._last_turn_performance = end_time - start_time
         self.turn_made.emit()
 
     # Properties signals
@@ -171,3 +186,5 @@ class ConwaysGameOfLifeEngine(QObject):
     rows = Property(int, get_rows, set_rows)
     # read_only
     turn_number = Property(int, get_turn_number, notify=turn_number_changed)
+    alive_cells = Property(int, get_alive_cells)
+    dead_cells = Property(int, get_dead_cells)
