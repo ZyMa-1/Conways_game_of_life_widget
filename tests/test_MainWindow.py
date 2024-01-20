@@ -1,3 +1,4 @@
+import os
 import pathlib
 import sys
 import tempfile
@@ -40,11 +41,9 @@ class MainWindowTest(unittest.TestCase):
 
         PathManager.set_project_root(pathlib.Path(__file__).absolute().parent)
         UtilsFactory.create_resources(cls.app)
-
-        print('wow')
-        cls.temp_dirs = [tempfile.TemporaryDirectory("configs"),
-                         tempfile.TemporaryDirectory("exports"),
-                         tempfile.TemporaryDirectory("pattern_gallery")]
+        os.makedirs('configs', exist_ok=True)
+        os.makedirs('exports', exist_ok=True)
+        os.makedirs('pattern_gallery', exist_ok=True)
 
         cls.settings = SettingsManager(parent=cls.app).settings_instance()
         lang = cls.settings.value("Language", "en", type=str)

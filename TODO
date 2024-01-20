@@ -4,5 +4,4 @@
 - Pattern Saving from the state
 - Border annoys
 - Fix unittest tempfiles not creating at all
-- Fixing perfect size can be, but kinda not needed
-- Remove 'turn_changed' signal and use turn_made instead with a combination of PropertyManager assign values
+- Fix 'set_perfect_size', but kinda not needed
