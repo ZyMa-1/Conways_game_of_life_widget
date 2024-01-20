@@ -31,7 +31,7 @@ Version 0.4 screenshot:
 
 # Blog
 
-I have written a detailed blog covering all aspects of the application. You can find it [right here](https://zyma-1.github.io/technical/2023/06/26/Conways-game-of-life-as-a-PySide6-widget.html).
+I have written a detailed blog covering all aspects of the application. You can(not) find it [right here](https://zyma-1.github.io/technical/2023/06/26/Conways-game-of-life-as-a-PySide6-widget.html).
 
 # Thanks to qtforpython-6 documentation:
  1. https://doc.qt.io/qt-6/designer-using-custom-widgets.html
