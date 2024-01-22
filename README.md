@@ -6,7 +6,7 @@
 [![Licence MIT](https://img.shields.io/badge/License-MIT-purple.svg)](/LICENCE)
 ![Test Status](https://github.com/ZyMa-1/Conways_game_of_life_widget/actions/workflows/tests.yml/badge.svg?branch=master)
 
-Custom widget made using PySide6 and Python 3.10 version.  
+Custom widget made using PySide version 6 and Python 3.10 version.  
 Integratable with Qt Designer.  
   
 The project includes a ConfigManager that enables the saving of game widget properties to a JSON file and subsequently loading them back into a widget.  
