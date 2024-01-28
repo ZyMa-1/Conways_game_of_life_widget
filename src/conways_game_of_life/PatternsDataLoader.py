@@ -44,15 +44,12 @@ class PatternsDataLoader(QRunnable):
             try:
                 with open(file_path, "r") as json_file:
                     data = json.load(json_file)
-            except JSONDecodeError:
+                    validators.validate(data, pattern_json_schema)
+                    parsed_data = data  # Type casting handled by json schema
+                    if self.validate_data_on_widget(parsed_data):
+                        self.result_data.append((parsed_data, self.generate_pixmap(parsed_data)))
+            except (JSONDecodeError, ValidationError):
                 continue
-            if not self.validate_json_data(data):
-                continue
-            parsed_data = self.parse_data(data)
-            if not self.validate_data_on_widget(parsed_data):
-                continue
-
-            self.result_data.append((parsed_data, self.generate_pixmap(parsed_data)))
 
         self.signals.finished.emit()
         self.signals.data_generated.emit(self.result_data)
@@ -97,23 +94,6 @@ class PatternsDataLoader(QRunnable):
 
             del game_widget
             return resized_pixmap
-
-    @staticmethod
-    def parse_data(data: dict) -> dict:
-        """Type casting can be handled entirely by json schema"""
-        # return {"rows": int(data["rows"]),
-        #         "cols": int(data["cols"]),
-        #         "state": data["state"],
-        #         "pattern_name": str(data["pattern_name"])}
-        return data
-
-    @staticmethod
-    def validate_json_data(data: dict) -> bool:
-        try:
-            validators.validate(data, pattern_json_schema)
-            return True
-        except ValidationError:
-            return False
 
     def load_file_paths(self):
         json_file_paths = []

@@ -1,5 +1,3 @@
-from copy import copy
-
 from PySide6.QtCore import QObject, Signal
 
 
@@ -14,7 +12,7 @@ class SignalCollector(QObject):
         signal.connect(self._handle_signal)
 
     def collect_signal_data(self):
-        res = copy(self.signal_cumulative_data)
+        res = self.signal_cumulative_data.copy()
         self.signal_cumulative_data.clear()
         return res
 

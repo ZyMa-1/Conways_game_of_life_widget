@@ -38,6 +38,9 @@ class ConwaysGameOfLife(QWidget):
     alive_cells_changed = Signal(int)
     dead_cells_changed = Signal(int)
     turn_made = Signal()
+    # 1. Create wrapped signals
+    # 2. Connect them in __init__
+    # 3. Put them as notify signals
 
     def __init__(self, parent=None):
         super().__init__(parent)

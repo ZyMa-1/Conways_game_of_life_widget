@@ -12,7 +12,7 @@ class InstructionsDialog(QDialog):
         self.ui = Ui_InstructionsDialog()
         self.ui.setupUi(self)
         self.setVisible(False)
-        self.setWindowFlags(Qt.FramelessWindowHint | Qt.Dialog)
+        self.setWindowFlags(Qt.WindowType.FramelessWindowHint | Qt.WindowType.Dialog)
 
         # Connect signals to slots
         self.ui.close_button.clicked.connect(self.handle_close_button_clicked)
@@ -25,7 +25,7 @@ class InstructionsDialog(QDialog):
         self.close()
 
     def mousePressEvent(self, event):
-        if event.button() == Qt.LeftButton:
+        if event.button() == Qt.MouseButton.LeftButton:
             self.draggable = True
             self.offset = event.pos()
 
@@ -34,5 +34,5 @@ class InstructionsDialog(QDialog):
             self.move(self.pos() + event.pos() - self.offset)
 
     def mouseReleaseEvent(self, event):
-        if event.button() == Qt.LeftButton:
+        if event.button() == Qt.MouseButton.LeftButton:
             self.draggable = False
