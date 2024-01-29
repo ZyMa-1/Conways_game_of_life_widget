@@ -5,3 +5,4 @@
 - Border annoys
 - Fix unittest tempfiles not creating at all
 - Fix 'set_perfect_size', but kinda not needed
+- Add last turn performance property to statistics

@@ -104,7 +104,9 @@ class MainWindow(QMainWindow):
         # Init UI (more like create things I cannot create in Qt-designer)
         self.init_ui()
 
+        # Connect signals to slots
         self.connect_signals_to_slots()
+        self.ui.conways_game_of_life_widget.turn_made.connect(self.handle_turn_made)
 
     # Outer Handlers
     @Slot(list)
@@ -117,6 +119,11 @@ class MainWindow(QMainWindow):
                                                userData=pattern_data[0])
 
     # Inner handlers
+    @Slot()
+    def handle_turn_made(self):
+        self.ui.avg_turn_performance_label.setText(
+            f"{self.ui.conways_game_of_life_widget.engine.get_avg_turn_performance() * 1000:1f} ms")
+
     @Slot()
     def handle_start_button_clicked(self):
         self.ui.conways_game_of_life_widget.start_game()
@@ -286,12 +293,12 @@ class MainWindow(QMainWindow):
         self.ui.action_russian_RU.changed.connect(self.handle_language_changed)
 
         # Dock widgets
-        utils.connect_action_to_dock_widget(self.ui.action_view_settings, self.ui.settings_dock_widget)
-        utils.connect_action_to_dock_widget(self.ui.action_view_game_statistics, self.ui.game_statistics_dock_widget)
-        utils.connect_action_to_dock_widget(self.ui.action_view_pattern_gallery, self.ui.pattern_gallery_dock_widget)
-        utils.connect_action_to_dock_widget(self.ui.action_view_edit_tools, self.ui.edit_tools_dock_widget)
-        utils.connect_action_to_dock_widget(self.ui.action_view_game_size_constraints,
-                                            self.ui.game_size_constraints_dock_widget)
+        utils.connect_action_and_dock_widget(self.ui.action_view_settings, self.ui.settings_dock_widget)
+        utils.connect_action_and_dock_widget(self.ui.action_view_game_statistics, self.ui.game_statistics_dock_widget)
+        utils.connect_action_and_dock_widget(self.ui.action_view_pattern_gallery, self.ui.pattern_gallery_dock_widget)
+        utils.connect_action_and_dock_widget(self.ui.action_view_edit_tools, self.ui.edit_tools_dock_widget)
+        utils.connect_action_and_dock_widget(self.ui.action_view_game_size_constraints,
+                                             self.ui.game_size_constraints_dock_widget)
 
         # Buttons/Toggles
         self.ui.start_button.clicked.connect(self.handle_start_button_clicked)

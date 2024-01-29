@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>645</width>
+    <width>670</width>
     <height>463</height>
    </rect>
   </property>
@@ -281,7 +281,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>645</width>
+     <width>670</width>
      <height>22</height>
     </rect>
    </property>
@@ -893,17 +893,27 @@ position</string>
     <layout class="QVBoxLayout" name="verticalLayout_8">
      <item>
       <layout class="QGridLayout" name="gridLayout">
-       <item row="0" column="0">
-        <widget class="QLabel" name="label_5">
-         <property name="text">
-          <string>Alive cells:</string>
-         </property>
-        </widget>
-       </item>
        <item row="1" column="0">
         <widget class="QLabel" name="label_10">
          <property name="text">
           <string>Dead cells:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <widget class="QLabel" name="dead_cells_label">
+         <property name="statusTip">
+          <string>Dead cells label</string>
+         </property>
+         <property name="text">
+          <string>a lot</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="0">
+        <widget class="QLabel" name="label_5">
+         <property name="text">
+          <string>Alive cells:</string>
          </property>
         </widget>
        </item>
@@ -917,13 +927,20 @@ position</string>
          </property>
         </widget>
        </item>
-       <item row="1" column="1">
-        <widget class="QLabel" name="dead_cells_label">
+       <item row="2" column="0">
+        <widget class="QLabel" name="label_11">
+         <property name="text">
+          <string>Avg turn time:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="1">
+        <widget class="QLabel" name="avg_turn_performance_label">
          <property name="statusTip">
-          <string>Dead cells label</string>
+          <string>Avg turn performance label</string>
          </property>
          <property name="text">
-          <string>a lot</string>
+          <string>0 ms</string>
          </property>
         </widget>
        </item>

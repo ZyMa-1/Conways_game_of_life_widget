@@ -1,6 +1,7 @@
 import time
 from typing import List
 
+import numpy as np
 from PySide6.QtCore import Signal, Property, QObject
 
 from .utils import property_setter_error_handle
@@ -10,11 +11,12 @@ DEFAULT_ROWS = 10  # px (assigned to attribute)
 CELL_ALIVE = '*'  # (used)
 CELL_DEAD = '.'  # (used)
 
-StateMatrixT = List[List[str]]
+StateT = np.ndarray
+StatePropertyT = List[List[str]]
 
 
-def _default_state_matrix(rows: int, cols: int) -> StateMatrixT:
-    return [[CELL_DEAD for _ in range(cols)] for _ in range(rows)]
+def _default_state_array(rows: int, cols: int) -> StateT:
+    return np.full((rows, cols), CELL_DEAD)
 
 
 class ConwaysGameOfLifeEngine(QObject):
@@ -38,11 +40,14 @@ class ConwaysGameOfLifeEngine(QObject):
         self._turn_number = 0
         self._cols = DEFAULT_COLS
         self._rows = DEFAULT_ROWS
-        # List[List[str]]
-        self._state: StateMatrixT = _default_state_matrix(self._rows, self._cols)
+        self._state: StateT = _default_state_array(self._rows, self._cols)
         self._alive_cells = 0
         # Performance of the 'make_turn' in ms
-        self._last_turn_performance = 0
+        self._sum_turn_performance = 0
+
+        # Connect signals to slots
+        self.alive_cells_changed.connect(lambda val:
+                                         self.dead_cells_changed.emit(self._rows * self._cols - val))
 
     # Properties
     def get_turn_number(self):
@@ -54,8 +59,8 @@ class ConwaysGameOfLifeEngine(QObject):
     def get_dead_cells(self):
         return self._rows * self._cols - self._alive_cells
 
-    def get_last_turn_performance(self):
-        return self._last_turn_performance
+    def get_avg_turn_performance(self):
+        return self._sum_turn_performance / self._turn_number
 
     def get_cols(self):
         return self._cols
@@ -79,11 +84,11 @@ class ConwaysGameOfLifeEngine(QObject):
         self._adjust_state()
         self.board_changed.emit()
 
-    def get_state(self):
-        return self._state
+    def get_state(self) -> StatePropertyT:
+        return self._state.tolist()
 
     @property_setter_error_handle
-    def set_state(self, value: StateMatrixT):
+    def set_state(self, value: StatePropertyT):
         if not isinstance(value, list) or len(value) != self._rows:
             raise ValueError("State value is not correct")
         for row in range(self._rows):
@@ -92,14 +97,10 @@ class ConwaysGameOfLifeEngine(QObject):
             for col in range(self._cols):
                 if len(value[row][col]) != 1 or (value[row][col] != CELL_DEAD and value[row][col] != CELL_ALIVE):
                     raise ValueError("State value is not correct")
-        self._state = value
+        self._state = np.array(value)
         # Calculate alive_cells property from scratch
-        self._alive_cells = 0
-        for row in range(self._rows):
-            for col in range(self._cols):
-                self._alive_cells += self._state[row][col] == CELL_ALIVE
+        self._alive_cells = np.sum(self._state == CELL_ALIVE)
         self.alive_cells_changed.emit(self._alive_cells)
-        self.dead_cells_changed.emit(self._rows * self._cols - self._alive_cells)
         self.board_changed.emit()
 
     # API functionality to interact with the game
@@ -107,102 +108,87 @@ class ConwaysGameOfLifeEngine(QObject):
         self._turn_number = 0
         self._cols = DEFAULT_COLS
         self._rows = DEFAULT_ROWS
-        self._state = _default_state_matrix(self._rows, self._cols)
+        self._state = _default_state_array(self._rows, self._cols)
         self._alive_cells = 0
+        self._sum_turn_performance = 0
         self.alive_cells_changed.emit(self._alive_cells)
-        self.dead_cells_changed.emit(self._rows * self._cols - self._alive_cells)
         self.turn_number_changed.emit(self._turn_number)
 
     def clear_state(self):
-        self._state = _default_state_matrix(self._rows, self._cols)
+        self._state = _default_state_array(self._rows, self._cols)
         self._alive_cells = 0
         self.alive_cells_changed.emit(self._alive_cells)
-        self.dead_cells_changed.emit(self._rows * self._cols - self._alive_cells)
 
-    def insert_state_array_at(self, row: int, col: int, state_array: StateMatrixT):
+    def insert_state_array_at(self, row: int, col: int, state_array: StatePropertyT):
+        state_array = np.array(state_array)
         max_possible_rows = self._rows - row
         max_possible_cols = self._cols - col
-        for i in range(min(max_possible_rows, len(state_array))):
-            for j in range(min(max_possible_cols, len(state_array[i]))):
-                self._alive_cells -= self._state[i + row][j + col] == CELL_ALIVE
-                self._state[i + row][j + col] = state_array[i][j]
-                self._alive_cells += state_array[i][j] == CELL_ALIVE
+        clipped_state_array = state_array[
+                              :min(max_possible_rows, state_array.shape[0]),
+                              :min(max_possible_cols, state_array.shape[1])]
+
+        self._alive_cells -= np.sum(self._state[row:row + clipped_state_array.shape[0],
+                                    col:col + clipped_state_array.shape[1]] == CELL_ALIVE)
+
+        self._state[row:row + clipped_state_array.shape[0],
+                    col:col + clipped_state_array.shape[1]] = clipped_state_array
+
+        self._alive_cells += np.sum(clipped_state_array == CELL_ALIVE)
         self.alive_cells_changed.emit(self._alive_cells)
-        self.dead_cells_changed.emit(self._rows * self._cols - self._alive_cells)
 
     # API + Inner logic (mixed)
     def change_cell_state_at(self, row: int, col: int, new_cell_state: str):
         if not (0 <= row < self._rows and 0 <= col < self._cols):
             return
-        self._alive_cells -= self._state[row][col] == CELL_ALIVE
-        self._state[row][col] = new_cell_state
+        self._alive_cells -= self._state[row, col] == CELL_ALIVE
+        self._state[row, col] = new_cell_state
         self._alive_cells += new_cell_state == CELL_ALIVE
         self.alive_cells_changed.emit(self._alive_cells)
-        self.dead_cells_changed.emit(self._rows * self._cols - self._alive_cells)
 
     def change_cell_state_to_opposite(self, row: int, col: int):
-        if self._state[row][col] == CELL_ALIVE:
+        if self._state[row, col] == CELL_ALIVE:
             self.change_cell_state_at(row, col, CELL_DEAD)
-        elif self._state[row][col] == CELL_DEAD:
+        elif self._state[row, col] == CELL_DEAD:
             self.change_cell_state_at(row, col, CELL_ALIVE)
 
     # Inner logic
     def _adjust_state(self):
         """Adjusts state when number of rows or cols changes"""
-        rows = len(self._state)
-        cols = len(self._state[0])
-        new_state = []
-        self._alive_cells = 0
-        for row in range(self._rows):
-            new_row = []
-            for col in range(self._cols):
-                if row < rows and col < cols:
-                    new_row.append(self._state[row][col])
-                    self._alive_cells += self._state[row][col] == CELL_ALIVE
-                else:
-                    new_row.append(CELL_DEAD)
-            new_state.append(new_row)
+        new_state = _default_state_array(self._rows, self._cols)
+        new_state[:min(self._rows, self._state.shape[0]), :min(self._cols, self._state.shape[1])] \
+            = self._state[:min(self._rows, self._state.shape[0]), :min(self._cols, self._state.shape[1])]
+
+        self._alive_cells = np.sum(new_state == CELL_ALIVE)
         self._state = new_state
         self.alive_cells_changed.emit(self._alive_cells)
-        self.dead_cells_changed.emit(self._rows * self._cols - self._alive_cells)
-
-    def _get_alive_neighbor_count(self, row: int, col: int):
-        count = 0
-        for i in range(row - 1, row + 2):
-            for j in range(col - 1, col + 2):
-                if (i != row or j != col) and 0 <= i < self._rows and 0 <= j < self._cols:
-                    if self._state[i][j] == CELL_ALIVE:
-                        count += 1
-        return count
 
     # Make turn
     def make_turn(self):
         start_time = time.perf_counter()
-        new_state = []
-        self._alive_cells = 0
-        for row in range(self._rows):
-            new_row = []
-            for col in range(self._cols):
-                cell_state = self._state[row][col]
-                neighbor_count = self._get_alive_neighbor_count(row, col)
+        neighbor_counts = np.zeros_like(self._state, dtype=int)
 
-                # Apply the rules of Conway's Game of Life
-                if ((cell_state == CELL_ALIVE and neighbor_count in (2, 3)) or
-                        (cell_state == CELL_DEAD and neighbor_count == 3)):
-                    new_row.append(CELL_ALIVE)
-                    self._alive_cells += 1
-                else:
-                    new_row.append(CELL_DEAD)
+        for i in range(self._rows):
+            for j in range(self._cols):
+                # Use max/min to ensure we don't go out of bounds
+                neighbor_counts[i, j] = np.sum(
+                    self._state[max(0, i - 1):min(i + 2, self._rows),
+                                max(0, j - 1):min(j + 2, self._cols)] == CELL_ALIVE
+                )
+                neighbor_counts[i, j] -= self._state[i, j] == CELL_ALIVE
 
-            new_state.append(new_row)
+        # Duh.
+        # Apply rules of Conway's Game Of Life.
+        new_state = np.where((self._state == CELL_ALIVE) & ((neighbor_counts == 2) | (neighbor_counts == 3)) |
+                             (self._state == CELL_DEAD) & (neighbor_counts == 3),
+                             CELL_ALIVE, CELL_DEAD)
 
+        self._alive_cells = np.sum(new_state == CELL_ALIVE)
         self._state = new_state
         self._turn_number += 1
         self.turn_number_changed.emit(self._turn_number)
         self.alive_cells_changed.emit(self._alive_cells)
-        self.dead_cells_changed.emit(self._rows * self._cols - self._alive_cells)
         end_time = time.perf_counter()
-        self._last_turn_performance = end_time - start_time
+        self._sum_turn_performance += (end_time - start_time)
         self.turn_made.emit()
 
     # Properties signals

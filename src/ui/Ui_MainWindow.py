@@ -29,7 +29,7 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
-        MainWindow.resize(645, 463)
+        MainWindow.resize(670, 463)
         sizePolicy = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -197,7 +197,7 @@ class Ui_MainWindow(object):
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QMenuBar(MainWindow)
         self.menubar.setObjectName(u"menubar")
-        self.menubar.setGeometry(QRect(0, 0, 645, 22))
+        self.menubar.setGeometry(QRect(0, 0, 670, 22))
         self.menuHelp = QMenu(self.menubar)
         self.menuHelp.setObjectName(u"menuHelp")
         self.menuExport = QMenu(self.menubar)
@@ -457,25 +457,35 @@ class Ui_MainWindow(object):
         self.verticalLayout_8.setObjectName(u"verticalLayout_8")
         self.gridLayout = QGridLayout()
         self.gridLayout.setObjectName(u"gridLayout")
-        self.label_5 = QLabel(self.dockWidgetContents)
-        self.label_5.setObjectName(u"label_5")
-
-        self.gridLayout.addWidget(self.label_5, 0, 0, 1, 1)
-
         self.label_10 = QLabel(self.dockWidgetContents)
         self.label_10.setObjectName(u"label_10")
 
         self.gridLayout.addWidget(self.label_10, 1, 0, 1, 1)
+
+        self.dead_cells_label = QLabel(self.dockWidgetContents)
+        self.dead_cells_label.setObjectName(u"dead_cells_label")
+
+        self.gridLayout.addWidget(self.dead_cells_label, 1, 1, 1, 1)
+
+        self.label_5 = QLabel(self.dockWidgetContents)
+        self.label_5.setObjectName(u"label_5")
+
+        self.gridLayout.addWidget(self.label_5, 0, 0, 1, 1)
 
         self.alive_cells_label = QLabel(self.dockWidgetContents)
         self.alive_cells_label.setObjectName(u"alive_cells_label")
 
         self.gridLayout.addWidget(self.alive_cells_label, 0, 1, 1, 1)
 
-        self.dead_cells_label = QLabel(self.dockWidgetContents)
-        self.dead_cells_label.setObjectName(u"dead_cells_label")
+        self.label_11 = QLabel(self.dockWidgetContents)
+        self.label_11.setObjectName(u"label_11")
 
-        self.gridLayout.addWidget(self.dead_cells_label, 1, 1, 1, 1)
+        self.gridLayout.addWidget(self.label_11, 2, 0, 1, 1)
+
+        self.avg_turn_performance_label = QLabel(self.dockWidgetContents)
+        self.avg_turn_performance_label.setObjectName(u"avg_turn_performance_label")
+
+        self.gridLayout.addWidget(self.avg_turn_performance_label, 2, 1, 1, 1)
 
 
         self.verticalLayout_8.addLayout(self.gridLayout)
@@ -701,16 +711,21 @@ class Ui_MainWindow(object):
         self.game_statistics_dock_widget.setStatusTip(QCoreApplication.translate("MainWindow", u"Game statistics dock widget", None))
 #endif // QT_CONFIG(statustip)
         self.game_statistics_dock_widget.setWindowTitle(QCoreApplication.translate("MainWindow", u"Game Statistics", None))
-        self.label_5.setText(QCoreApplication.translate("MainWindow", u"Alive cells:", None))
         self.label_10.setText(QCoreApplication.translate("MainWindow", u"Dead cells:", None))
-#if QT_CONFIG(statustip)
-        self.alive_cells_label.setStatusTip(QCoreApplication.translate("MainWindow", u"Alive cells label", None))
-#endif // QT_CONFIG(statustip)
-        self.alive_cells_label.setText(QCoreApplication.translate("MainWindow", u"0", None))
 #if QT_CONFIG(statustip)
         self.dead_cells_label.setStatusTip(QCoreApplication.translate("MainWindow", u"Dead cells label", None))
 #endif // QT_CONFIG(statustip)
         self.dead_cells_label.setText(QCoreApplication.translate("MainWindow", u"a lot", None))
+        self.label_5.setText(QCoreApplication.translate("MainWindow", u"Alive cells:", None))
+#if QT_CONFIG(statustip)
+        self.alive_cells_label.setStatusTip(QCoreApplication.translate("MainWindow", u"Alive cells label", None))
+#endif // QT_CONFIG(statustip)
+        self.alive_cells_label.setText(QCoreApplication.translate("MainWindow", u"0", None))
+        self.label_11.setText(QCoreApplication.translate("MainWindow", u"Avg turn time:", None))
+#if QT_CONFIG(statustip)
+        self.avg_turn_performance_label.setStatusTip(QCoreApplication.translate("MainWindow", u"Avg turn performance label", None))
+#endif // QT_CONFIG(statustip)
+        self.avg_turn_performance_label.setText(QCoreApplication.translate("MainWindow", u"0 ms", None))
 #if QT_CONFIG(statustip)
         self.game_size_constraints_dock_widget.setStatusTip(QCoreApplication.translate("MainWindow", u"Game size constraints dock widget", None))
 #endif // QT_CONFIG(statustip)
