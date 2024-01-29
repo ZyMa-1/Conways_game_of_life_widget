@@ -43,7 +43,7 @@ if __name__ == '__main__':
 
     app.setOrganizationName("ZyMa-1")
     app.setApplicationName("Conway's Game Of Life Widget")
-    app.setApplicationVersion("0.5")
+    app.setApplicationVersion("0.6")
 
     # Retrieving language value from settings
     init_language_settings()

@@ -21,7 +21,7 @@ def create_app():
 
     app.setOrganizationName("ZyMa-1")
     app.setApplicationName("Conway's Game Of Life Widget")
-    app.setApplicationVersion("0.5")
+    app.setApplicationVersion("0.6")
     return app
 
 
