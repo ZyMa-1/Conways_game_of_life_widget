@@ -156,17 +156,6 @@ class ConwaysGameOfLife(QWidget):
                                           pattern_data["state"])
         self.update()
 
-    def set_perfect_size(self):
-        # not used/deprecated
-        old_width = self.width()
-        old_height = self.height()
-        w_border = self._border_thickness * (self.engine.cols + 1)
-        h_border = self._border_thickness * (self.engine.rows + 1)
-        new_width = (old_width - w_border) // self.engine.cols * self.engine.cols + w_border
-        new_height = (old_height - h_border) // self.engine.rows * self.engine.rows + h_border
-        # print(old_width, old_height, new_width, new_height)
-        self.resize(new_width, new_height)
-
     def set_square_size_constraint(self, value: bool):
         self._square_size_constraint = value
         cur_size = self.size()
@@ -275,50 +264,41 @@ class ConwaysGameOfLife(QWidget):
 
     # Widget's geometry/paint methods
     def _cell_coordinates_from_point(self, point: QPoint) -> Optional[Tuple[int, int]]:
-        row = int((point.y() - self._border_thickness) / (self._border_thickness + self._cell_height()))
-        col = int((point.x() - self._border_thickness) / (self._border_thickness + self._cell_width()))
-        cell = self._cell_rect(row, col)
+        cell_size = self._cell_size()
+        row = int(point.y() / cell_size.height())
+        col = int(point.x() / cell_size.width())
+        h_margin = row * cell_size.height()
+        w_margin = col * cell_size.width()
+        pos = QPointF(w_margin, h_margin)
+        cell = QRectF(pos, cell_size)
         if cell.contains(point) and 0 <= row < self.engine.rows and 0 <= col <= self.engine.cols:
             return row, col
         return None
 
     def _cell_width(self) -> float:
-        return (self.width() - (self.engine.cols + 1) * self._border_thickness) / self.engine.cols
+        return self.width() / self.engine.cols
 
     def _cell_height(self) -> float:
-        return (self.height() - (self.engine.rows + 1) * self._border_thickness) / self.engine.rows
+        return self.height() / self.engine.rows
+
+    def _cell_size(self) -> QSizeF:
+        return QSizeF(self._cell_width(), self._cell_height())
 
     def _cell_top_left_point(self, row: int, col: int) -> QPointF:
-        h_margin = row * (self._border_thickness + self._cell_height()) + self._border_thickness
-        w_margin = col * (self._border_thickness + self._cell_width()) + self._border_thickness
+        h_margin = row * self._cell_height()
+        w_margin = col * self._cell_width()
         return QPointF(w_margin, h_margin)
 
-    def _cell_rect(self, row, col) -> QRectF:
-        h_margin = row * (self._border_thickness + self._cell_height()) + self._border_thickness
-        w_margin = col * (self._border_thickness + self._cell_width()) + self._border_thickness
-        pos = QPoint(w_margin, h_margin)
-        size = QSizeF(self._cell_width(), self._cell_height())
-        return QRectF(pos, size)
+    def _cell_rect(self, row: int, col: int) -> QRectF:
+        cell_size = self._cell_size()
+        h_margin = row * cell_size.height()
+        w_margin = col * cell_size.width()
+        pos = QPointF(w_margin, h_margin)
+        return QRectF(pos, cell_size)
 
     def paintEvent(self, event):
         with QPainter(self) as painter:
             painter.setRenderHint(QPainter.RenderHint.Antialiasing)
-
-            # Draw borders
-            for row in range(self.engine.rows + 1):
-                cell_point = self._cell_top_left_point(row, 0)
-                line_rect = QRectF(cell_point.x() - self._border_thickness,
-                                   cell_point.y() - self._border_thickness,
-                                   self.width(),
-                                   self._border_thickness)
-                painter.fillRect(line_rect, self._border_color.color)
-            for col in range(self.engine.cols + 1):
-                cell_point = self._cell_top_left_point(0, col)
-                line_rect = QRectF(cell_point.x() - self._border_thickness,
-                                   cell_point.y() - self._border_thickness,
-                                   self._border_thickness,
-                                   self.height())
-                painter.fillRect(line_rect, self._border_color.color)
 
             # Draw cells
             game_state = self.engine.state
@@ -331,6 +311,36 @@ class ConwaysGameOfLife(QWidget):
                         painter.fillRect(cell, self._cell_alive_color.color)
                     else:
                         painter.fillRect(cell, self._cell_dead_color.color)
+
+            # Draw borders
+            thickness_half = self._border_thickness // 2
+            for row in range(self.engine.rows + 1):
+                cell_point = self._cell_top_left_point(row + 1, 0)
+                line_rect = QRectF(0,
+                                   cell_point.y() - thickness_half,
+                                   self.width(),
+                                   self._border_thickness)
+                painter.fillRect(line_rect, self._border_color.color)
+            for col in range(self.engine.cols + 1):
+                cell_point = self._cell_top_left_point(0, col + 1)
+                line_rect = QRectF(cell_point.x() - thickness_half,
+                                   0,
+                                   self._border_thickness,
+                                   self.height())
+                painter.fillRect(line_rect, self._border_color.color)
+
+            # Row top
+            line_rect = QRectF(0, 0, self.width(), thickness_half)
+            painter.fillRect(line_rect, self._border_color.color)
+            # Row bottom
+            line_rect = QRectF(0, self.height() - thickness_half, self.width(), thickness_half)
+            painter.fillRect(line_rect, self._border_color.color)
+            # Col left
+            line_rect = QRectF(0, 0, thickness_half, self.height())
+            painter.fillRect(line_rect, self._border_color.color)
+            # Col right
+            line_rect = QRectF(self.width() - thickness_half, 0, thickness_half, self.height())
+            painter.fillRect(line_rect, self._border_color.color)
 
     # Handlers for the inner signals
     @Slot()
@@ -349,15 +359,13 @@ class ConwaysGameOfLife(QWidget):
         return QSize(*MINIMUM_SIZE)
 
     def sizeHint(self):
-        return QSize((self._border_thickness + self._cell_width()) * self.engine.rows + self._border_thickness,
-                     (self._border_thickness + self._cell_height()) * self.engine.cols + self._border_thickness)
+        return QSize(self._cell_width() * self.engine.rows,
+                     self._cell_height() * self.engine.cols)
 
     def _get_perfect_size(self, old_size: QSize) -> QSize:
         old_width, old_height = old_size.width(), old_size.height()
-        w_border = self._border_thickness * (self.engine.cols + 1)
-        h_border = self._border_thickness * (self.engine.rows + 1)
-        new_width = (old_width - w_border) // self.engine.cols * self.engine.cols + w_border
-        new_height = (old_height - h_border) // self.engine.rows * self.engine.rows + h_border
+        new_width = old_width - old_width % self.engine.rows
+        new_height = old_height - old_height % self.engine.cols
         return QSize(new_width, new_height)
 
     @staticmethod
