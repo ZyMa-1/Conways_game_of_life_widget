@@ -303,13 +303,12 @@ class ConwaysGameOfLife(QWidget):
             painter.setRenderHint(QPainter.RenderHint.Antialiasing)
 
             # Draw cells
-            game_state = self.engine.state
             for row in range(self.engine.rows):
                 for col in range(self.engine.cols):
                     cell = self._cell_rect(row, col)
                     if self._active_cell == (row, col):
                         painter.fillRect(cell, DEFAULT_ACTIVE_CELL_COLOR)
-                    elif game_state[row][col] == CELL_ALIVE:
+                    elif self.engine._state[row, col] == CELL_ALIVE:
                         painter.fillRect(cell, self._cell_alive_color.color)
                     else:
                         painter.fillRect(cell, self._cell_dead_color.color)
