@@ -698,7 +698,7 @@
      </property>
      <item>
       <layout class="QVBoxLayout" name="verticalLayout_3">
-       <item alignment="Qt::AlignVCenter">
+       <item alignment="Qt::AlignHCenter|Qt::AlignVCenter">
         <widget class="QToolButton" name="default_mode_tool_button">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Fixed" vsizetype="Minimum">

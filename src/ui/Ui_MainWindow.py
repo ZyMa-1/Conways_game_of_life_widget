@@ -389,7 +389,7 @@ class Ui_MainWindow(object):
         self.default_mode_tool_button.setAutoExclusive(True)
         self.default_mode_tool_button.setAutoRaise(False)
 
-        self.verticalLayout_3.addWidget(self.default_mode_tool_button, 0, Qt.AlignVCenter)
+        self.verticalLayout_3.addWidget(self.default_mode_tool_button, 0, Qt.AlignHCenter|Qt.AlignVCenter)
 
         self.paint_mode_tool_button = QToolButton(self.dockWidgetContents_3)
         self.tool_button_group = QButtonGroup(MainWindow)

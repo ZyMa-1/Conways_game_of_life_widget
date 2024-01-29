@@ -2,6 +2,7 @@ import time
 from typing import List
 
 import numpy as np
+from scipy.signal import convolve2d
 from PySide6.QtCore import Signal, Property, QObject
 
 from .utils import property_setter_error_handle
@@ -165,25 +166,22 @@ class ConwaysGameOfLifeEngine(QObject):
     # Make turn
     def make_turn(self):
         start_time = time.perf_counter()
-        neighbor_counts = np.zeros_like(self._state, dtype=int)
 
-        for i in range(self._rows):
-            for j in range(self._cols):
-                # Use max/min to ensure we don't go out of bounds
-                neighbor_counts[i, j] = np.sum(
-                    self._state[max(0, i - 1):min(i + 2, self._rows),
-                                max(0, j - 1):min(j + 2, self._cols)] == CELL_ALIVE
-                )
-                neighbor_counts[i, j] -= self._state[i, j] == CELL_ALIVE
+        # Create binary grid, padded grid and count neighbors using convolution
+        binary_grid = np.where(self._state == CELL_DEAD, 0, 1)
+        padded_grid = np.pad(binary_grid, 1, constant_values=0)
+        kernel = np.array([[1, 1, 1], [1, 0, 1], [1, 1, 1]])
+        neighbor_counts = convolve2d(padded_grid, kernel, mode="same")
 
-        # Duh.
-        # Apply rules of Conway's Game Of Life.
-        new_state = np.where((self._state == CELL_ALIVE) & ((neighbor_counts == 2) | (neighbor_counts == 3)) |
-                             (self._state == CELL_DEAD) & (neighbor_counts == 3),
-                             CELL_ALIVE, CELL_DEAD)
+        # Apply rules of Conway's Game Of Life (using vectorized operations)
+        new_grid = (neighbor_counts == 3) | ((padded_grid == 1) & (neighbor_counts == 2))
+        new_grid = new_grid[1:-1, 1:-1]
 
-        self._alive_cells = np.sum(new_state == CELL_ALIVE)
+        # Convert grid back to the CELL_DEAD/CELL_ALIVE format
+        new_state = np.where(new_grid == 0, CELL_DEAD, CELL_ALIVE)
+
         self._state = new_state
+        self._alive_cells = np.sum(new_state == CELL_ALIVE)
         self._turn_number += 1
         self.turn_number_changed.emit(self._turn_number)
         self.alive_cells_changed.emit(self._alive_cells)
