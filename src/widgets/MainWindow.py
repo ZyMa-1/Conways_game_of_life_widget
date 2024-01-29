@@ -122,7 +122,7 @@ class MainWindow(QMainWindow):
     @Slot()
     def handle_turn_made(self):
         self.ui.avg_turn_performance_label.setText(
-            f"{self.ui.conways_game_of_life_widget.engine.get_avg_turn_performance() * 1000:1f} ms")
+            f"{round(self.ui.conways_game_of_life_widget.engine.get_avg_turn_performance() * 1000, 1)} ms")
 
     @Slot()
     def handle_start_button_clicked(self):

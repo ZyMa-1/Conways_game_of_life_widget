@@ -1,3 +1,4 @@
+import time
 from enum import Enum
 from typing import Optional, Tuple, List
 
@@ -68,6 +69,7 @@ class ConwaysGameOfLife(QWidget):
         self._active_cell: Optional[Tuple[int, int]] = (0, 0)
         self._square_size_constraint = False
         self._perfect_size_constraint = False
+        self._last_update_time = time.perf_counter()
 
         # Turn timer
         self._timer = QTimer(self)
@@ -355,6 +357,14 @@ class ConwaysGameOfLife(QWidget):
         self.update()
 
     # Miscellaneous stuff
+    def update(self):
+        # Small optimization
+        cur_time = time.perf_counter()
+        if cur_time - self._last_update_time < 0.05:
+            return
+        self._last_update_time = cur_time
+        super().update()
+
     def minimumSizeHint(self):
         return QSize(*MINIMUM_SIZE)
 
