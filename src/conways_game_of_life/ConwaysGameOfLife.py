@@ -8,7 +8,7 @@ from PySide6.QtWidgets import QWidget
 from .utils import property_setter_error_handle, ColorProperty, PatternSchema
 from .ConwaysGameOfLifeEngine import CELL_ALIVE, CELL_DEAD, ConwaysGameOfLifeEngine
 
-MINIMUM_SIZE = (240, 240)
+MINIMUM_SIZE = (264, 264)
 
 DEFAULT_CELL_WIDTH = 30  # px (used only in size hints)
 DEFAULT_BORDER_THICKNESS = 2  # (assigned to attribute)
@@ -38,6 +38,7 @@ class ConwaysGameOfLife(QWidget):
     alive_cells_changed = Signal(int)
     dead_cells_changed = Signal(int)
     turn_made = Signal()
+
     # 1. Create wrapped signals
     # 2. Connect them in __init__
     # 3. Put them as notify signals
@@ -48,7 +49,7 @@ class ConwaysGameOfLife(QWidget):
         # Set strong focus policy
         self.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
 
-        # Set mouse tracking for better edit mode experience (it is not helping much)
+        # Set mouse tracking true
         self.setMouseTracking(True)
 
         # Create game engine
@@ -66,6 +67,7 @@ class ConwaysGameOfLife(QWidget):
         # (_is_game_running == False) -> _active cell is None, since no editing is allowed
         self._active_cell: Optional[Tuple[int, int]] = (0, 0)
         self._square_size_constraint = False
+        self._perfect_size_constraint = False
 
         # Turn timer
         self._timer = QTimer(self)
@@ -167,11 +169,17 @@ class ConwaysGameOfLife(QWidget):
 
     def set_square_size_constraint(self, value: bool):
         self._square_size_constraint = value
-        if self._square_size_constraint:
-            size = min(self.width(), self.height())
-            self.resize(size, size)
-        self.updateGeometry()
-        self.update()
+        cur_size = self.size()
+        if value:
+            cur_size = self._get_square_size(cur_size)
+        self.resize(cur_size)
+
+    def set_perfect_size_constraint(self, value: bool):
+        self._perfect_size_constraint = value
+        cur_size = self.size()
+        if value:
+            cur_size = self._get_perfect_size(cur_size)
+        self.resize(cur_size)
 
     # Game control methods
     def start_game(self):
@@ -344,10 +352,31 @@ class ConwaysGameOfLife(QWidget):
         return QSize((self._border_thickness + self._cell_width()) * self.engine.rows + self._border_thickness,
                      (self._border_thickness + self._cell_height()) * self.engine.cols + self._border_thickness)
 
+    def _get_perfect_size(self, old_size: QSize) -> QSize:
+        old_width, old_height = old_size.width(), old_size.height()
+        w_border = self._border_thickness * (self.engine.cols + 1)
+        h_border = self._border_thickness * (self.engine.rows + 1)
+        new_width = (old_width - w_border) // self.engine.cols * self.engine.cols + w_border
+        new_height = (old_height - h_border) // self.engine.rows * self.engine.rows + h_border
+        return QSize(new_width, new_height)
+
+    @staticmethod
+    def _get_square_size(old_size: QSize) -> QSize:
+        old_width, old_height = old_size.width(), old_size.height()
+        size = min(old_width, old_height)
+        return QSize(size, size)
+
     def resizeEvent(self, event):
+        cur_size = self.size()
+        resize_needed = False
+        if self._perfect_size_constraint:
+            cur_size = self._get_perfect_size(cur_size)
+            resize_needed = True
         if self._square_size_constraint:
-            size = min(self.width(), self.height())
-            self.resize(size, size)
+            cur_size = self._get_square_size(cur_size)
+            resize_needed = True
+        if resize_needed:
+            self.resize(cur_size)
         super().resizeEvent(event)
 
     # Signal suffix for the properties signals

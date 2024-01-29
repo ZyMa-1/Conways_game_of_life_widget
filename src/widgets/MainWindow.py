@@ -15,6 +15,7 @@ from src.conways_game_of_life.PropertiesManager.ConwaysGameOfLifePropertiesManag
 from src.conways_game_of_life.PatternsDataLoader import PatternsDataLoader
 from src.ui.Ui_MainWindow import Ui_MainWindow
 from src.widgets.AboutDialog import AboutDialog
+from src.widgets import utils
 
 
 class ColorDialogHandler(QObject):
@@ -168,34 +169,6 @@ class MainWindow(QMainWindow):
             message_box.exec()
             self.show_property_signal_collector_errors()
 
-    @Slot(bool)
-    def handle_action_view_settings_triggered(self, is_checked: bool):
-        if is_checked:
-            self.ui.settings_dock_widget.show()
-        else:
-            self.ui.settings_dock_widget.hide()
-
-    @Slot(bool)
-    def handle_action_view_edit_tools_triggered(self, is_checked: bool):
-        if is_checked:
-            self.ui.edit_tools_dock_widget.show()
-        else:
-            self.ui.edit_tools_dock_widget.hide()
-
-    @Slot(bool)
-    def handle_action_view_pattern_gallery_triggered(self, is_checked: bool):
-        if is_checked:
-            self.ui.pattern_gallery_dock_widget.show()
-        else:
-            self.ui.pattern_gallery_dock_widget.hide()
-
-    @Slot(bool)
-    def handle_action_view_game_statistics_triggered(self, is_checked: bool):
-        if is_checked:
-            self.ui.game_statistics_dock_widget.show()
-        else:
-            self.ui.game_statistics_dock_widget.hide()
-
     @Slot()
     def handle_language_changed(self):
         sender = self.sender()
@@ -258,6 +231,11 @@ class MainWindow(QMainWindow):
         val = (state == Qt.CheckState.Checked.value)
         self.ui.conways_game_of_life_widget.set_square_size_constraint(val)
 
+    @Slot(bool)
+    def handle_perfect_size_constraint_check_box_state_changed(self, state):
+        val = (state == Qt.CheckState.Checked.value)
+        self.ui.conways_game_of_life_widget.set_perfect_size_constraint(val)
+
     # Yeah
     def show_property_signal_collector_errors(self):
         signal_data = self.property_setter_signal_collector.collect_signal_data()
@@ -304,24 +282,16 @@ class MainWindow(QMainWindow):
         self.ui.action_export_to_image.triggered.connect(self.handle_action_export_to_image_triggered)
         self.ui.action_save_config.triggered.connect(self.handle_action_save_config_triggered)
         self.ui.action_load_config.triggered.connect(self.handle_action_load_config_triggered)
-        self.ui.action_view_settings.triggered.connect(self.handle_action_view_settings_triggered)
-        self.ui.action_view_edit_tools.triggered.connect(self.handle_action_view_edit_tools_triggered)
-        self.ui.action_view_pattern_gallery.triggered.connect(self.handle_action_view_pattern_gallery_triggered)
-        self.ui.action_view_game_statistics.triggered.connect(self.handle_action_view_game_statistics_triggered)
         self.ui.action_english_US.changed.connect(self.handle_language_changed)
         self.ui.action_russian_RU.changed.connect(self.handle_language_changed)
 
         # Dock widgets
-        self.ui.settings_dock_widget.visibilityChanged.connect(
-            lambda is_visible: self.ui.action_view_settings.setChecked(is_visible))
-        self.ui.edit_tools_dock_widget.visibilityChanged.connect(
-            lambda is_visible: self.ui.action_view_edit_tools.setChecked(is_visible))
-        self.ui.pattern_gallery_dock_widget.visibilityChanged.connect(
-            lambda is_visible: self.ui.action_view_pattern_gallery.setChecked(is_visible))
-        self.ui.pattern_gallery_dock_widget.visibilityChanged.connect(
-            lambda is_visible: self.ui.action_view_pattern_gallery.setChecked(is_visible))
-        self.ui.game_statistics_dock_widget.visibilityChanged.connect(
-            lambda is_visible: self.ui.action_view_game_statistics.setChecked(is_visible))
+        utils.connect_action_to_dock_widget(self.ui.action_view_settings, self.ui.settings_dock_widget)
+        utils.connect_action_to_dock_widget(self.ui.action_view_game_statistics, self.ui.game_statistics_dock_widget)
+        utils.connect_action_to_dock_widget(self.ui.action_view_pattern_gallery, self.ui.pattern_gallery_dock_widget)
+        utils.connect_action_to_dock_widget(self.ui.action_view_edit_tools, self.ui.edit_tools_dock_widget)
+        utils.connect_action_to_dock_widget(self.ui.action_view_game_size_constraints,
+                                            self.ui.game_size_constraints_dock_widget)
 
         # Buttons/Toggles
         self.ui.start_button.clicked.connect(self.handle_start_button_clicked)
@@ -337,3 +307,5 @@ class MainWindow(QMainWindow):
         self.ui.sync_button.clicked.connect(self.handle_sync_button_clicked)
         self.ui.square_size_constraint_check_box.stateChanged.connect(
             self.handle_square_size_constraint_check_box_state_changed)
+        self.ui.perfect_size_constraint_check_box.stateChanged.connect(
+            self.handle_perfect_size_constraint_check_box_state_changed)
