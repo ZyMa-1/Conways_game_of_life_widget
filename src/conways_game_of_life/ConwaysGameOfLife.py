@@ -92,6 +92,8 @@ class ConwaysGameOfLife(QWidget, MySerializable, MyPropertySignalAccessor, metac
         # self._edit_mode = ConwaysGameOfLife.EditMode.DEFAULT
         self._turn_duration = DEFAULT_TURN_DURATION
         self._active_cell = (0, 0)
+        self._sum_paint_performance = 0
+        self._paint_count = 0
 
         self._engine.reset_to_defaults()
 
