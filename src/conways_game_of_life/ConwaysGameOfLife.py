@@ -40,6 +40,8 @@ class ConwaysGameOfLife(QWidget, MySerializable, MyPropertySignalAccessor, metac
     # Signals:
     # Emits when invalid value passed to property setter
     property_setter_error_signal = Signal(str, str)
+    # Emits after every paintEvent method
+    paint_event_signal = Signal()
 
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -67,6 +69,8 @@ class ConwaysGameOfLife(QWidget, MySerializable, MyPropertySignalAccessor, metac
         self._square_size_constraint = False
         self._perfect_size_constraint = False
         self._last_update_time = time.perf_counter()
+        self._sum_paint_performance = 0
+        self._paint_count = 0
 
         # Turn timer
         self._timer = QTimer(self)
@@ -138,7 +142,13 @@ class ConwaysGameOfLife(QWidget, MySerializable, MyPropertySignalAccessor, metac
         self._cell_alive_color.set_color(value)
         self.update()
 
-    # API functionality to interact with the widget
+    # Public stuff
+    def engine(self):
+        return self._engine
+
+    def get_avg_paint_performance(self):
+        return self._sum_paint_performance / self._paint_count
+
     def set_edit_mode(self, value: EditMode):
         self._edit_mode = value
 
@@ -292,6 +302,8 @@ class ConwaysGameOfLife(QWidget, MySerializable, MyPropertySignalAccessor, metac
         return QRectF(pos, cell_size)
 
     def paintEvent(self, event):
+        start_time = time.perf_counter()
+
         with QPainter(self) as painter:
             painter.setRenderHint(QPainter.RenderHint.Antialiasing)
 
@@ -335,6 +347,11 @@ class ConwaysGameOfLife(QWidget, MySerializable, MyPropertySignalAccessor, metac
             # Col right
             line_rect = QRectF(self.width() - thickness_half, 0, thickness_half, self.height())
             painter.fillRect(line_rect, self._border_color.color)
+
+        end_time = time.perf_counter()
+        self._sum_paint_performance += (end_time - start_time)
+        self._paint_count += 1
+        self.paint_event_signal.emit()
 
     # Handlers for the inner signals
     @Slot()
@@ -400,9 +417,6 @@ class ConwaysGameOfLife(QWidget, MySerializable, MyPropertySignalAccessor, metac
     cell_alive_color = Property(QColor, get_cell_alive_color, set_cell_alive_color)
     # Read only
     is_game_running = Property(bool, get_is_game_running, notify=is_game_running_changed)
-
-    def engine(self):
-        return self._engine
 
     # Abstract methods implementation
     _SAVABLE_PROPERTIES = \

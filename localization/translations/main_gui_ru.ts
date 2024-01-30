@@ -126,7 +126,7 @@ current active cell position</source>
     </message>
     <message>
         <location filename="../../designer/MainWindow.ui" line="78"/>
-        <location filename="../../designer/MainWindow.ui" line="926"/>
+        <location filename="../../designer/MainWindow.ui" line="949"/>
         <source>0</source>
         <translation></translation>
     </message>
@@ -181,12 +181,13 @@ current active cell position</source>
         <translation>Очистить доску</translation>
     </message>
     <message>
-        <location filename="../../designer/MainWindow.ui" line="943"/>
+        <location filename="../../designer/MainWindow.ui" line="922"/>
+        <location filename="../../designer/MainWindow.ui" line="963"/>
         <source>0 ms</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../designer/MainWindow.ui" line="976"/>
+        <location filename="../../designer/MainWindow.ui" line="996"/>
         <source>Square size constraint</source>
         <translation>Ограничение до размера квадрата</translation>
     </message>
@@ -202,7 +203,7 @@ current active cell position</source>
     </message>
     <message>
         <location filename="../../designer/MainWindow.ui" line="290"/>
-        <location filename="../../designer/MainWindow.ui" line="995"/>
+        <location filename="../../designer/MainWindow.ui" line="1015"/>
         <source>About</source>
         <translation>О</translation>
     </message>
@@ -238,7 +239,7 @@ current active cell position</source>
     </message>
     <message>
         <location filename="../../designer/MainWindow.ui" line="354"/>
-        <location filename="../../designer/MainWindow.ui" line="1033"/>
+        <location filename="../../designer/MainWindow.ui" line="1053"/>
         <source>Game of life settings</source>
         <translation>Настройки игрового виджета</translation>
     </message>
@@ -407,7 +408,7 @@ current active cell position</source>
     </message>
     <message>
         <location filename="../../designer/MainWindow.ui" line="823"/>
-        <location filename="../../designer/MainWindow.ui" line="1086"/>
+        <location filename="../../designer/MainWindow.ui" line="1106"/>
         <source>Pattern gallery</source>
         <translation>Галлерея паттернов</translation>
     </message>
@@ -436,136 +437,141 @@ position</source>
 позицию</translation>
     </message>
     <message>
-        <location filename="../../designer/MainWindow.ui" line="884"/>
+        <location filename="../../designer/MainWindow.ui" line="890"/>
         <source>Game statistics dock widget</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../designer/MainWindow.ui" line="887"/>
-        <location filename="../../designer/MainWindow.ui" line="1102"/>
+        <location filename="../../designer/MainWindow.ui" line="893"/>
+        <location filename="../../designer/MainWindow.ui" line="1122"/>
         <source>Game Statistics</source>
         <translation>Статистика игры</translation>
     </message>
     <message>
-        <location filename="../../designer/MainWindow.ui" line="916"/>
+        <location filename="../../designer/MainWindow.ui" line="929"/>
         <source>Alive cells:</source>
         <translation>Живие клетки:</translation>
     </message>
     <message>
-        <location filename="../../designer/MainWindow.ui" line="899"/>
+        <location filename="../../designer/MainWindow.ui" line="905"/>
         <source>Dead cells:</source>
         <translation>Мёртвые клетки:</translation>
     </message>
     <message>
-        <location filename="../../designer/MainWindow.ui" line="923"/>
+        <location filename="../../designer/MainWindow.ui" line="946"/>
         <source>Alive cells label</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../designer/MainWindow.ui" line="906"/>
+        <location filename="../../designer/MainWindow.ui" line="936"/>
         <source>Dead cells label</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../designer/MainWindow.ui" line="909"/>
+        <location filename="../../designer/MainWindow.ui" line="939"/>
         <source>a lot</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../designer/MainWindow.ui" line="933"/>
+        <location filename="../../designer/MainWindow.ui" line="912"/>
         <source>Avg turn time:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../designer/MainWindow.ui" line="940"/>
+        <location filename="../../designer/MainWindow.ui" line="919"/>
         <source>Avg turn performance label</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../designer/MainWindow.ui" line="954"/>
+        <location filename="../../designer/MainWindow.ui" line="956"/>
+        <source>Avg paint time:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../designer/MainWindow.ui" line="974"/>
         <source>Game size constraints dock widget</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../designer/MainWindow.ui" line="957"/>
-        <location filename="../../designer/MainWindow.ui" line="1113"/>
+        <location filename="../../designer/MainWindow.ui" line="977"/>
+        <location filename="../../designer/MainWindow.ui" line="1133"/>
         <source>Game size constraints</source>
         <translation>Ограничения размера игрового поля</translation>
     </message>
     <message>
-        <location filename="../../designer/MainWindow.ui" line="973"/>
+        <location filename="../../designer/MainWindow.ui" line="993"/>
         <source>Square size constraint check box</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../designer/MainWindow.ui" line="983"/>
+        <location filename="../../designer/MainWindow.ui" line="1003"/>
         <source>Perfect size constraint check box</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../designer/MainWindow.ui" line="986"/>
+        <location filename="../../designer/MainWindow.ui" line="1006"/>
         <source>Perfect size constraint</source>
         <translation>Ограничение до идеального размера</translation>
     </message>
     <message>
-        <location filename="../../designer/MainWindow.ui" line="998"/>
+        <location filename="../../designer/MainWindow.ui" line="1018"/>
         <source>About application</source>
         <translation>О приложении</translation>
     </message>
     <message>
-        <location filename="../../designer/MainWindow.ui" line="1003"/>
+        <location filename="../../designer/MainWindow.ui" line="1023"/>
         <source>Export to image</source>
         <translation>Экспорт в картинку</translation>
     </message>
     <message>
-        <location filename="../../designer/MainWindow.ui" line="1006"/>
+        <location filename="../../designer/MainWindow.ui" line="1026"/>
         <source>Export game widget to image</source>
         <translation>Экспортировать игровой виджет в картинку</translation>
     </message>
     <message>
-        <location filename="../../designer/MainWindow.ui" line="1011"/>
-        <location filename="../../designer/MainWindow.ui" line="1014"/>
+        <location filename="../../designer/MainWindow.ui" line="1031"/>
+        <location filename="../../designer/MainWindow.ui" line="1034"/>
         <source>Save config</source>
         <translation>Сохранить конфиг</translation>
     </message>
     <message>
-        <location filename="../../designer/MainWindow.ui" line="1019"/>
-        <location filename="../../designer/MainWindow.ui" line="1022"/>
+        <location filename="../../designer/MainWindow.ui" line="1039"/>
+        <location filename="../../designer/MainWindow.ui" line="1042"/>
         <source>Load config</source>
         <translation>Загрузить конфиг</translation>
     </message>
     <message>
-        <location filename="../../designer/MainWindow.ui" line="1036"/>
+        <location filename="../../designer/MainWindow.ui" line="1056"/>
         <source>Change Dock widget visibility</source>
         <translation>Изменить видимость Докер виджета</translation>
     </message>
     <message>
-        <location filename="../../designer/MainWindow.ui" line="1047"/>
+        <location filename="../../designer/MainWindow.ui" line="1067"/>
         <source>English (US)</source>
         <translation>Английский (US)</translation>
     </message>
     <message>
-        <location filename="../../designer/MainWindow.ui" line="1050"/>
+        <location filename="../../designer/MainWindow.ui" line="1070"/>
         <source>English</source>
         <translation>Английский</translation>
     </message>
     <message>
-        <location filename="../../designer/MainWindow.ui" line="1058"/>
+        <location filename="../../designer/MainWindow.ui" line="1078"/>
         <source>Russian (RU)</source>
         <translation>Русский (RU)</translation>
     </message>
     <message>
-        <location filename="../../designer/MainWindow.ui" line="1061"/>
+        <location filename="../../designer/MainWindow.ui" line="1081"/>
         <source>Russian</source>
         <translation>Русский</translation>
     </message>
     <message>
-        <location filename="../../designer/MainWindow.ui" line="1075"/>
+        <location filename="../../designer/MainWindow.ui" line="1095"/>
         <source>Tools</source>
         <translation>Приборы</translation>
     </message>
     <message>
-        <location filename="../../designer/MainWindow.ui" line="1091"/>
+        <location filename="../../designer/MainWindow.ui" line="1111"/>
         <source>Export turns to video</source>
         <translation>!!</translation>
     </message>

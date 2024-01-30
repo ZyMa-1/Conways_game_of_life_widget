@@ -117,6 +117,7 @@ class MainWindow(QMainWindow):
         # Connect signals to slots
         self.connect_signals_to_slots()
         self.ui.conways_game_of_life_widget.engine().turn_made.connect(self.handle_turn_made)
+        self.ui.conways_game_of_life_widget.engine().turn_made.connect(self.handle_game_updated)
 
     # Outer Handlers
     @Slot(list)
@@ -133,6 +134,11 @@ class MainWindow(QMainWindow):
     def handle_turn_made(self):
         self.ui.avg_turn_performance_label.setText(
             f"{round(self.ui.conways_game_of_life_widget.engine().get_avg_turn_performance() * 1000, 2)} ms")
+
+    @Slot()
+    def handle_game_updated(self):
+        self.ui.avg_paint_performance_label.setText(
+            f"{round(self.ui.conways_game_of_life_widget.get_avg_paint_performance() * 1000, 2)} ms")
 
     @Slot()
     def handle_start_button_clicked(self):

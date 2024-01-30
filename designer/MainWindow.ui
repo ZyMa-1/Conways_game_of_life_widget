@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>647</width>
-    <height>463</height>
+    <width>690</width>
+    <height>467</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -281,7 +281,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>647</width>
+     <width>690</width>
      <height>22</height>
     </rect>
    </property>
@@ -880,6 +880,12 @@ position</string>
    </widget>
   </widget>
   <widget class="QDockWidget" name="game_statistics_dock_widget">
+   <property name="minimumSize">
+    <size>
+     <width>170</width>
+     <height>126</height>
+    </size>
+   </property>
    <property name="statusTip">
     <string>Game statistics dock widget</string>
    </property>
@@ -900,13 +906,20 @@ position</string>
          </property>
         </widget>
        </item>
-       <item row="1" column="1">
-        <widget class="QLabel" name="dead_cells_label">
+       <item row="2" column="0">
+        <widget class="QLabel" name="label_11">
+         <property name="text">
+          <string>Avg turn time:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="1">
+        <widget class="QLabel" name="avg_turn_performance_label">
          <property name="statusTip">
-          <string>Dead cells label</string>
+          <string>Avg turn performance label</string>
          </property>
          <property name="text">
-          <string>a lot</string>
+          <string>0 ms</string>
          </property>
         </widget>
        </item>
@@ -914,6 +927,16 @@ position</string>
         <widget class="QLabel" name="label_5">
          <property name="text">
           <string>Alive cells:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <widget class="QLabel" name="dead_cells_label">
+         <property name="statusTip">
+          <string>Dead cells label</string>
+         </property>
+         <property name="text">
+          <string>a lot</string>
          </property>
         </widget>
        </item>
@@ -927,18 +950,15 @@ position</string>
          </property>
         </widget>
        </item>
-       <item row="2" column="0">
-        <widget class="QLabel" name="label_11">
+       <item row="3" column="0">
+        <widget class="QLabel" name="label_12">
          <property name="text">
-          <string>Avg turn time:</string>
+          <string>Avg paint time:</string>
          </property>
         </widget>
        </item>
-       <item row="2" column="1">
-        <widget class="QLabel" name="avg_turn_performance_label">
-         <property name="statusTip">
-          <string>Avg turn performance label</string>
-         </property>
+       <item row="3" column="1">
+        <widget class="QLabel" name="avg_paint_performance_label">
          <property name="text">
           <string>0 ms</string>
          </property>

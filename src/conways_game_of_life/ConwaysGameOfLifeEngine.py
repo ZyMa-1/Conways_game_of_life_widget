@@ -4,7 +4,7 @@ from typing import List
 
 import numpy as np
 from scipy.signal import convolve2d
-from PySide6.QtCore import Signal, Property, QObject
+from PySide6.QtCore import Signal, Property, QObject, Slot
 
 from .abcs import MySerializable, MyPropertySignalAccessor
 from .utils import property_setter_error_handle
@@ -53,8 +53,11 @@ class ConwaysGameOfLifeEngine(QObject, MySerializable, MyPropertySignalAccessor,
         self._sum_turn_performance = 0
 
         # Connect signals to slots
-        self.alive_cells_changed.connect(lambda val:
-                                         self.dead_cells_changed.emit(self._rows * self._cols - val))
+        self.alive_cells_changed.connect(self.handle_alive_cells_changed)
+
+    @Slot(int)
+    def handle_alive_cells_changed(self, val: int):
+        self.dead_cells_changed.emit(self._rows * self._cols - val)
 
     # Properties
     def get_turn_number(self):
