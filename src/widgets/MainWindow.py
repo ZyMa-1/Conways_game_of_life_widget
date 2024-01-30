@@ -15,7 +15,6 @@ from src.conways_game_of_life.PropertiesManager.ConwaysGameOfLifePropertiesManag
 from src.conways_game_of_life.PatternsDataLoader import PatternsDataLoader
 from src.ui.Ui_MainWindow import Ui_MainWindow
 from src.widgets.AboutDialog import AboutDialog
-from src.widgets import utils
 
 
 class ColorDialogHandler(QObject):
@@ -309,12 +308,16 @@ class MainWindow(QMainWindow):
         self.ui.action_russian_RU.changed.connect(self.handle_language_changed)
 
         # Dock widgets
-        utils.connect_action_and_dock_widget(self.ui.action_view_settings, self.ui.settings_dock_widget)
-        utils.connect_action_and_dock_widget(self.ui.action_view_game_statistics, self.ui.game_statistics_dock_widget)
-        utils.connect_action_and_dock_widget(self.ui.action_view_pattern_gallery, self.ui.pattern_gallery_dock_widget)
-        utils.connect_action_and_dock_widget(self.ui.action_view_edit_tools, self.ui.edit_tools_dock_widget)
-        utils.connect_action_and_dock_widget(self.ui.action_view_game_size_constraints,
-                                             self.ui.game_size_constraints_dock_widget)
+        self.main_window_utils.connect_action_and_dock_widget(self.ui.action_view_settings,
+                                                              self.ui.settings_dock_widget)
+        self.main_window_utils.connect_action_and_dock_widget(self.ui.action_view_game_statistics,
+                                                              self.ui.game_statistics_dock_widget)
+        self.main_window_utils.connect_action_and_dock_widget(self.ui.action_view_pattern_gallery,
+                                                              self.ui.pattern_gallery_dock_widget)
+        self.main_window_utils.connect_action_and_dock_widget(self.ui.action_view_edit_tools,
+                                                              self.ui.edit_tools_dock_widget)
+        self.main_window_utils.connect_action_and_dock_widget(self.ui.action_view_game_size_constraints,
+                                                              self.ui.game_size_constraints_dock_widget)
 
         # Buttons/Toggles
         self.ui.start_button.clicked.connect(self.handle_start_button_clicked)

@@ -8,33 +8,16 @@ pip3 install nuitka
 
 **Building standalone:**  
 
-Run following command:
-```bash
-nuitka --standalone --follow-imports --quiet --disable-console --plugin-enable=pyside6 --output-filename=conways_game_of_life_v0.2.2.exe .\main.py
-```
-Executing this command will generate two directories: `main.build/` and `main.dist/`. The dist directory holds the executable file and other necessary components of the application.
-<br>  
-**Building one file:** (not working with keeping dynamic resources)
+Executing the nuitka with `--standalone` flag will generate two directories: `main.build/` and `main.dist/`.   
+The dist directory holds the executable file and other necessary components of the application.
 <br>
-Run following command:
-```bash
-nuitka --onefile --follow-imports --quiet --disable-console --plugin-enable=pyside6 --output-filename=conways_game_of_life_v0.2.2.exe .\main.py
-```
-This will create `main.oneilfe-build/` directory and an executable file in a project root directory.
-
-<br>
-
-P.S. to add certain directories with some data to the project build use `--include-data-dir` parameter.
 
 *Full command for standalone*:
 ```bash
-nuitka --include-data-dir=.\pattern_gallery\=.\pattern_gallery\ --standalone --follow-imports --quiet --disable-console --plugin-enable=pyside6 --output-filename=conways_game_of_life_v0.2.2.exe .\main.py
+nuitka --standalone --quiet --disable-console --enable-plugin=pyside6 --output-filename=conways_game_of_life_v0.6.exe .\main.py
 ```
 
-*Full command for onefile*:
-```bash
-nuitka --include-data-dir=.\pattern_gallery\=.\pattern_gallery\ --onefile --follow-imports --quiet --disable-console --plugin-enable=pyside6 --output-filename=conways_game_of_life_v0.2.2.exe .\main.py
-```
-
-### Notes:
-- `--include-data-dir` works as expected.
+### Notes on flags:
+- `--include-data-dir` Includes data directory to the distribution.
+- `--follow-imports` Enabled by default for standalone. Descends into all imported modules.
+- `--enable-plugin=pyside6` Required by the PySide6 package for standalone mode.
