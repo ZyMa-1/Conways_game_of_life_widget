@@ -1,10 +1,12 @@
 import time
+from abc import ABCMeta
 from typing import List
 
 import numpy as np
 from scipy.signal import convolve2d
 from PySide6.QtCore import Signal, Property, QObject
 
+from .abcs import MySerializable, MyPropertySignalAccessor
 from .utils import property_setter_error_handle
 
 DEFAULT_COLS = 10  # px (assigned to attribute)
@@ -20,7 +22,11 @@ def _default_state_array(rows: int, cols: int) -> StateT:
     return np.full((rows, cols), CELL_DEAD)
 
 
-class ConwaysGameOfLifeEngine(QObject):
+class _MyMeta(type(QObject), ABCMeta):
+    pass
+
+
+class ConwaysGameOfLifeEngine(QObject, MySerializable, MyPropertySignalAccessor, metaclass=_MyMeta):
     """
     Engine class that represents the Conway's Game Of Life 2D board.
     Provides a viable way to interact with the game, encapsulating the logic.
@@ -132,15 +138,16 @@ class ConwaysGameOfLifeEngine(QObject):
                                     col:col + clipped_state_array.shape[1]] == CELL_ALIVE)
 
         self._state[row:row + clipped_state_array.shape[0],
-                    col:col + clipped_state_array.shape[1]] = clipped_state_array
+        col:col + clipped_state_array.shape[1]] = clipped_state_array
 
         self._alive_cells += np.sum(clipped_state_array == CELL_ALIVE)
         self.alive_cells_changed.emit(self._alive_cells)
 
+    def get_cell_state_at(self, row: int, col: int):
+        return self._state[row, col]
+
     # API + Inner logic (mixed)
     def change_cell_state_at(self, row: int, col: int, new_cell_state: str):
-        if not (0 <= row < self._rows and 0 <= col < self._cols):
-            return
         self._alive_cells -= self._state[row, col] == CELL_ALIVE
         self._state[row, col] = new_cell_state
         self._alive_cells += new_cell_state == CELL_ALIVE
@@ -202,3 +209,21 @@ class ConwaysGameOfLifeEngine(QObject):
     turn_number = Property(int, get_turn_number, notify=turn_number_changed)
     alive_cells = Property(int, get_alive_cells, notify=alive_cells_changed)
     dead_cells = Property(int, get_dead_cells, notify=dead_cells_changed)
+
+    # Abstract methods implementation
+    _SAVABLE_PROPERTIES = \
+        ["rows",
+         "cols",
+         "state"]
+
+    @classmethod
+    def savable_properties_names(cls) -> List[str]:
+        return cls._SAVABLE_PROPERTIES
+
+    _SIGNAL_SUFFIX = "_changed"
+
+    def get_property_changed_signal(self, name: str) -> Signal:
+        name += self._SIGNAL_SUFFIX
+        if isinstance(signal := getattr(self, name, None), Signal):
+            return signal
+        raise ValueError

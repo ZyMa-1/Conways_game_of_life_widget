@@ -8,7 +8,10 @@ from PySide6.QtWidgets import QFileDialog
 
 from src.backend.PathManager import PathManager
 from src.conways_game_of_life.ConwaysGameOfLife import ConwaysGameOfLife
+from src.conways_game_of_life.ConwaysGameOfLifeEngine import ConwaysGameOfLifeEngine
 from .QtPropertyJsonConverter import serialize_property, deserialize_property
+
+_objT = ConwaysGameOfLife | ConwaysGameOfLifeEngine
 
 
 class ConwaysGameOfLifeConfigManager(QObject):
@@ -36,7 +39,9 @@ class ConwaysGameOfLifeConfigManager(QObject):
         file_dialog.setNameFilters(["JSON Files (*.json)"])
         file_dialog.setWindowTitle("Save Config")
         if file_dialog.exec() == QFileDialog.DialogCode.Accepted:
-            self._save_properties()
+            self._property_dict.clear()
+            self._save_obj_properties("widget", self.conways_game_of_life_widget)
+            self._save_obj_properties("engine", self.conways_game_of_life_widget.engine())
             file_path = pathlib.Path(file_dialog.selectedFiles()[0])
             with open(file_path, 'w') as file:
                 json.dump(self._property_dict, file, indent=4)
@@ -62,17 +67,21 @@ class ConwaysGameOfLifeConfigManager(QObject):
             except JSONDecodeError:
                 return None
 
-            self._load_properties()
+            widget_properties = self._property_dict["widget"]
+            engine_properties = self._property_dict["engine"]
+            self._load_obj_properties(self.conways_game_of_life_widget, widget_properties)
+            self._load_obj_properties(self.conways_game_of_life_widget.engine(), engine_properties)
             return file_path.name
 
-    def _save_properties(self):
-        self._property_dict.clear()
-        for name in self.conways_game_of_life_widget.savable_properties_names():
-            value = self.conways_game_of_life_widget.property(name)
+    def _save_obj_properties(self, key: str, obj: _objT):
+        self._property_dict[key] = {}
+        for name in obj.savable_properties_names():
+            value = obj.property(name)
             value = serialize_property(value)
-            self._property_dict[name] = value
+            self._property_dict[key][name] = value
 
-    def _load_properties(self):
-        for name, value in self._property_dict.items():
+    @staticmethod
+    def _load_obj_properties(obj: _objT, properties: dict):
+        for name, value in properties.items():
             value = deserialize_property(value)
-            self.conways_game_of_life_widget.setProperty(name, value)
+            obj.setProperty(name, value)

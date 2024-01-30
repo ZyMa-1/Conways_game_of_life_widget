@@ -49,44 +49,54 @@ class MainWindow(QMainWindow):
             parent=self)
 
         # Create PropertiesManager
-        self.properties_manager = ConwaysGameOfLifePropertiesManager(
-            self.ui.conways_game_of_life_widget,
-            parent=self)
+        self.properties_manager = ConwaysGameOfLifePropertiesManager(parent=self)
 
         # Create MainWindowUtils
         self.main_window_utils = MainWindowUtils(self)
 
         # Link widget and game properties
-        self.properties_manager.connect_widget_and_property(self.ui.is_game_running_label,
-                                                            "is_game_running",
-                                                            property_has_signal=True,
-                                                            property_read_only=True)
-        self.properties_manager.connect_widget_and_property(self.ui.turn_number_label,
-                                                            "turn_number",
-                                                            property_has_signal=True,
-                                                            property_read_only=True)
-        self.properties_manager.connect_widget_and_property(self.ui.alive_cells_label,
-                                                            "alive_cells",
-                                                            property_has_signal=True,
-                                                            property_read_only=True)
-        self.properties_manager.connect_widget_and_property(self.ui.dead_cells_label,
-                                                            "dead_cells",
-                                                            property_has_signal=True,
-                                                            property_read_only=True)
-        self.properties_manager.connect_widget_and_property(self.ui.rows_spin_box,
-                                                            "rows")
-        self.properties_manager.connect_widget_and_property(self.ui.cols_spin_box,
-                                                            "cols")
-        self.properties_manager.connect_widget_and_property(self.ui.turn_duration_spin_box,
-                                                            "turn_duration")
-        self.properties_manager.connect_widget_and_property(self.ui.border_thickness_spin_box,
-                                                            "border_thickness")
-        self.properties_manager.connect_widget_and_property(self.ui.border_color_label,
-                                                            "border_color")
-        self.properties_manager.connect_widget_and_property(self.ui.cell_alive_color_label,
-                                                            "cell_alive_color")
-        self.properties_manager.connect_widget_and_property(self.ui.cell_dead_color_label,
-                                                            "cell_dead_color")
+        _connect_prop = self.properties_manager.connect_widget_and_obj_property
+        _connect_prop(self.ui.is_game_running_label,
+                      self.ui.conways_game_of_life_widget,
+                      "is_game_running",
+                      property_has_signal=True,
+                      property_read_only=True)
+        _connect_prop(self.ui.turn_duration_spin_box,
+                      self.ui.conways_game_of_life_widget,
+                      "turn_duration")
+        _connect_prop(self.ui.border_thickness_spin_box,
+                      self.ui.conways_game_of_life_widget,
+                      "border_thickness")
+        _connect_prop(self.ui.border_color_label,
+                      self.ui.conways_game_of_life_widget,
+                      "border_color")
+        _connect_prop(self.ui.cell_alive_color_label,
+                      self.ui.conways_game_of_life_widget,
+                      "cell_alive_color")
+        _connect_prop(self.ui.cell_dead_color_label,
+                      self.ui.conways_game_of_life_widget,
+                      "cell_dead_color")
+        _connect_prop(self.ui.turn_number_label,
+                      self.ui.conways_game_of_life_widget.engine(),
+                      "turn_number",
+                      property_has_signal=True,
+                      property_read_only=True)
+        _connect_prop(self.ui.alive_cells_label,
+                      self.ui.conways_game_of_life_widget.engine(),
+                      "alive_cells",
+                      property_has_signal=True,
+                      property_read_only=True)
+        _connect_prop(self.ui.dead_cells_label,
+                      self.ui.conways_game_of_life_widget.engine(),
+                      "dead_cells",
+                      property_has_signal=True,
+                      property_read_only=True)
+        _connect_prop(self.ui.rows_spin_box,
+                      self.ui.conways_game_of_life_widget.engine(),
+                      "rows")
+        _connect_prop(self.ui.cols_spin_box,
+                      self.ui.conways_game_of_life_widget.engine(),
+                      "cols")
 
         # Get settings from UtilsFactory
         self.settings = UtilsFactory.get_settings()
@@ -106,7 +116,7 @@ class MainWindow(QMainWindow):
 
         # Connect signals to slots
         self.connect_signals_to_slots()
-        self.ui.conways_game_of_life_widget.turn_made.connect(self.handle_turn_made)
+        self.ui.conways_game_of_life_widget.engine().turn_made.connect(self.handle_turn_made)
 
     # Outer Handlers
     @Slot(list)
@@ -122,7 +132,7 @@ class MainWindow(QMainWindow):
     @Slot()
     def handle_turn_made(self):
         self.ui.avg_turn_performance_label.setText(
-            f"{round(self.ui.conways_game_of_life_widget.engine.get_avg_turn_performance() * 1000, 2)} ms")
+            f"{round(self.ui.conways_game_of_life_widget.engine().get_avg_turn_performance() * 1000, 2)} ms")
 
     @Slot()
     def handle_start_button_clicked(self):

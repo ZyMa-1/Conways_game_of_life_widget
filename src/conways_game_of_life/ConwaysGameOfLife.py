@@ -1,4 +1,5 @@
 import time
+from abc import ABCMeta
 from enum import Enum
 from typing import Optional, Tuple, List
 
@@ -6,6 +7,7 @@ from PySide6.QtCore import QPoint, QTimer, Qt, Signal, Slot, Property, QPointF, 
 from PySide6.QtGui import QPainter, QColor
 from PySide6.QtWidgets import QWidget
 
+from .abcs import MySerializable, MyPropertySignalAccessor
 from .utils import property_setter_error_handle, ColorProperty, PatternSchema
 from .ConwaysGameOfLifeEngine import CELL_ALIVE, CELL_DEAD, ConwaysGameOfLifeEngine
 
@@ -20,7 +22,11 @@ DEFAULT_BORDER_COLOR = QColor(192, 192, 192)  # (assigned to attribute)
 DEFAULT_ACTIVE_CELL_COLOR = QColor(235, 235, 235)  # (used)
 
 
-class ConwaysGameOfLife(QWidget):
+class _MyMeta(type(QWidget), ABCMeta):
+    pass
+
+
+class ConwaysGameOfLife(QWidget, MySerializable, MyPropertySignalAccessor, metaclass=_MyMeta):
     """
     The main game widget class.
     Uses 'ConwaysGameOfLifeEngine' as an engine of the game.
@@ -34,15 +40,6 @@ class ConwaysGameOfLife(QWidget):
     # Signals:
     # Emits when invalid value passed to property setter
     property_setter_error_signal = Signal(str, str)
-    # Wrapped signals
-    turn_number_changed = Signal(int)
-    alive_cells_changed = Signal(int)
-    dead_cells_changed = Signal(int)
-    turn_made = Signal()
-
-    # 1. Create wrapped signals
-    # 2. Connect them in __init__
-    # 3. Put them as notify signals
 
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -54,7 +51,7 @@ class ConwaysGameOfLife(QWidget):
         self.setMouseTracking(True)
 
         # Create game engine
-        self.engine = ConwaysGameOfLifeEngine(parent)
+        self._engine = ConwaysGameOfLifeEngine(parent)
 
         # Create widget attributes
         self._border_thickness = DEFAULT_BORDER_THICKNESS
@@ -75,15 +72,11 @@ class ConwaysGameOfLife(QWidget):
         self._timer = QTimer(self)
 
         # Connect signals to slots
-        self._timer.timeout.connect(self.engine.make_turn)
+        self._timer.timeout.connect(self._engine.make_turn)
         # Connect engine signals
-        self.engine.property_setter_error_signal.connect(self.property_setter_error_signal)
-        self.engine.board_changed.connect(self._handle_board_changed)
-        self.engine.turn_made.connect(self.update)
-        self.engine.turn_number_changed.connect(self.turn_number_changed)
-        self.engine.alive_cells_changed.connect(self.alive_cells_changed)
-        self.engine.dead_cells_changed.connect(self.dead_cells_changed)
-        self.engine.turn_made.connect(self.turn_made)
+        self._engine.property_setter_error_signal.connect(self.property_setter_error_signal)
+        self._engine.board_changed.connect(self._handle_board_changed)
+        self._engine.turn_made.connect(self.update)
 
     def _reset_to_defaults(self):
         self._border_thickness = DEFAULT_BORDER_THICKNESS
@@ -96,7 +89,7 @@ class ConwaysGameOfLife(QWidget):
         self._turn_duration = DEFAULT_TURN_DURATION
         self._active_cell = (0, 0)
 
-        self.engine.reset_to_defaults()
+        self._engine.reset_to_defaults()
 
     # Properties
     def get_is_game_running(self):
@@ -153,9 +146,9 @@ class ConwaysGameOfLife(QWidget):
         if self._is_game_running:
             return
 
-        self.engine.insert_state_array_at(self._active_cell[0],
-                                          self._active_cell[1],
-                                          pattern_data["state"])
+        self._engine.insert_state_array_at(self._active_cell[0],
+                                           self._active_cell[1],
+                                           pattern_data["state"])
         self.update()
 
     def set_square_size_constraint(self, value: bool):
@@ -197,7 +190,7 @@ class ConwaysGameOfLife(QWidget):
         self.update()
 
     def clear_state(self):
-        self.engine.clear_state()
+        self._engine.clear_state()
         self.update()
 
     def reset_to_default(self):
@@ -215,11 +208,11 @@ class ConwaysGameOfLife(QWidget):
             row, col = res
             match self._edit_mode:
                 case ConwaysGameOfLife.EditMode.DEFAULT:
-                    self.engine.change_cell_state_to_opposite(row, col)
+                    self._engine.change_cell_state_to_opposite(row, col)
                 case ConwaysGameOfLife.EditMode.PAINT:
-                    self.engine.change_cell_state_at(row, col, CELL_ALIVE)
+                    self._engine.change_cell_state_at(row, col, CELL_ALIVE)
                 case ConwaysGameOfLife.EditMode.ERASE:
-                    self.engine.change_cell_state_at(row, col, CELL_DEAD)
+                    self._engine.change_cell_state_at(row, col, CELL_DEAD)
 
             self.update()
 
@@ -231,10 +224,10 @@ class ConwaysGameOfLife(QWidget):
         if res is not None:
             row, col = res
             if self._edit_mode == ConwaysGameOfLife.EditMode.PAINT:
-                self.engine.change_cell_state_at(row, col, CELL_ALIVE)
+                self._engine.change_cell_state_at(row, col, CELL_ALIVE)
                 self.update()
             elif self._edit_mode == ConwaysGameOfLife.EditMode.ERASE:
-                self.engine.change_cell_state_at(row, col, CELL_DEAD)
+                self._engine.change_cell_state_at(row, col, CELL_DEAD)
                 self.update()
 
     def keyPressEvent(self, event):
@@ -254,13 +247,13 @@ class ConwaysGameOfLife(QWidget):
             self._handle_arrow_key(0, 1)
 
     def _handle_enter_key(self):
-        self.engine.change_cell_state_to_opposite(*self._active_cell)
+        self._engine.change_cell_state_to_opposite(*self._active_cell)
         self.update()
 
     def _handle_arrow_key(self, row_delta: int, col_delta: int):
         new_row = self._active_cell[0] + row_delta
         new_col = self._active_cell[1] + col_delta
-        if 0 <= new_row < self.engine.rows and 0 <= new_col < self.engine.cols:
+        if 0 <= new_row < self._engine.rows and 0 <= new_col < self._engine.cols:
             self._active_cell = (new_row, new_col)
             self.update()
 
@@ -273,15 +266,15 @@ class ConwaysGameOfLife(QWidget):
         w_margin = col * cell_size.width()
         pos = QPointF(w_margin, h_margin)
         cell = QRectF(pos, cell_size)
-        if cell.contains(point) and 0 <= row < self.engine.rows and 0 <= col <= self.engine.cols:
+        if cell.contains(point) and 0 <= row < self._engine.rows and 0 <= col < self._engine.cols:
             return row, col
         return None
 
     def _cell_width(self) -> float:
-        return self.width() / self.engine.cols
+        return self.width() / self._engine.cols
 
     def _cell_height(self) -> float:
-        return self.height() / self.engine.rows
+        return self.height() / self._engine.rows
 
     def _cell_size(self) -> QSizeF:
         return QSizeF(self._cell_width(), self._cell_height())
@@ -303,26 +296,26 @@ class ConwaysGameOfLife(QWidget):
             painter.setRenderHint(QPainter.RenderHint.Antialiasing)
 
             # Draw cells
-            for row in range(self.engine.rows):
-                for col in range(self.engine.cols):
+            for row in range(self._engine.rows):
+                for col in range(self._engine.cols):
                     cell = self._cell_rect(row, col)
                     if self._active_cell == (row, col):
                         painter.fillRect(cell, DEFAULT_ACTIVE_CELL_COLOR)
-                    elif self.engine._state[row, col] == CELL_ALIVE:
+                    elif self._engine.get_cell_state_at(row, col) == CELL_ALIVE:
                         painter.fillRect(cell, self._cell_alive_color.color)
                     else:
                         painter.fillRect(cell, self._cell_dead_color.color)
 
             # Draw borders
             thickness_half = self._border_thickness // 2
-            for row in range(self.engine.rows + 1):
+            for row in range(self._engine.rows + 1):
                 cell_point = self._cell_top_left_point(row + 1, 0)
                 line_rect = QRectF(0,
                                    cell_point.y() - thickness_half,
                                    self.width(),
                                    self._border_thickness)
                 painter.fillRect(line_rect, self._border_color.color)
-            for col in range(self.engine.cols + 1):
+            for col in range(self._engine.cols + 1):
                 cell_point = self._cell_top_left_point(0, col + 1)
                 line_rect = QRectF(cell_point.x() - thickness_half,
                                    0,
@@ -348,10 +341,10 @@ class ConwaysGameOfLife(QWidget):
     def _handle_board_changed(self):
         """Handles 'board_changed' signal of the engine"""
         if self._active_cell is not None:
-            if self._active_cell[0] >= self.engine.rows:
-                self._active_cell = (self.engine.rows - 1, self._active_cell[1])
-            if self._active_cell[1] >= self.engine.cols:
-                self._active_cell = (self._active_cell[0], self.engine.cols - 1)
+            if self._active_cell[0] >= self._engine.rows:
+                self._active_cell = (self._engine.rows - 1, self._active_cell[1])
+            if self._active_cell[1] >= self._engine.cols:
+                self._active_cell = (self._active_cell[0], self._engine.cols - 1)
 
         self.update()
 
@@ -368,13 +361,13 @@ class ConwaysGameOfLife(QWidget):
         return QSize(*MINIMUM_SIZE)
 
     def sizeHint(self):
-        return QSize(self._cell_width() * self.engine.rows,
-                     self._cell_height() * self.engine.cols)
+        return QSize(self._cell_width() * self._engine.rows,
+                     self._cell_height() * self._engine.cols)
 
     def _get_perfect_size(self, old_size: QSize) -> QSize:
         old_width, old_height = old_size.width(), old_size.height()
-        new_width = old_width - old_width % self.engine.rows
-        new_height = old_height - old_height % self.engine.cols
+        new_width = old_width - old_width % self._engine.rows
+        new_height = old_height - old_height % self._engine.cols
         return QSize(new_width, new_height)
 
     @staticmethod
@@ -396,9 +389,6 @@ class ConwaysGameOfLife(QWidget):
             self.resize(cur_size)
         super().resizeEvent(event)
 
-    # Signal suffix for the properties signals
-    _SIGNAL_SUFFIX = "_changed"
-
     # Properties signals
     is_game_running_changed = Signal(bool)
 
@@ -411,35 +401,25 @@ class ConwaysGameOfLife(QWidget):
     # Read only
     is_game_running = Property(bool, get_is_game_running, notify=is_game_running_changed)
 
-    # Wrapped properties of the engine (using lambdas)
-    state = Property(list, lambda self: self.engine.get_state(), lambda self, val: self.engine.set_state(val))
-    rows = Property(int, lambda self: self.engine.get_rows(), lambda self, val: self.engine.set_rows(val))
-    cols = Property(int, lambda self: self.engine.get_cols(), lambda self, val: self.engine.set_cols(val))
-    turn_number = Property(int, lambda self: self.engine.get_turn_number(), notify=turn_number_changed)
-    alive_cells = Property(int, lambda self: self.engine.get_alive_cells(), notify=alive_cells_changed)
-    dead_cells = Property(int, lambda self: self.engine.get_dead_cells(), notify=dead_cells_changed)
+    def engine(self):
+        return self._engine
 
-    # Stuff to json serialize the widget
-    _SELF_SAVABLE_PROPERTIES = \
+    # Abstract methods implementation
+    _SAVABLE_PROPERTIES = \
         ["turn_duration",
          "border_thickness",
          "border_color",
          "cell_dead_color",
          "cell_alive_color"]
-    _ENGINE_SAVABLE_PROPERTIES = \
-        ["cols",
-         "rows",
-         "state"]
-    _SAVABLE_PROPERTIES = _SELF_SAVABLE_PROPERTIES + _ENGINE_SAVABLE_PROPERTIES
 
-    # Extra methods regarding properties and their signals
+    @classmethod
+    def savable_properties_names(cls) -> List[str]:
+        return cls._SAVABLE_PROPERTIES
+
+    _SIGNAL_SUFFIX = "_changed"
+
     def get_property_changed_signal(self, name: str) -> Signal:
         name += self._SIGNAL_SUFFIX
         if isinstance(signal := getattr(self, name, None), Signal):
             return signal
         raise ValueError
-
-    @classmethod
-    def savable_properties_names(cls) -> List[str]:
-        """Returns list of savable properties associated specifically with this widget"""
-        return cls._SAVABLE_PROPERTIES
