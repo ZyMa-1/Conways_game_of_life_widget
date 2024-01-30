@@ -184,7 +184,7 @@ current active cell position</source>
         <location filename="../../designer/MainWindow.ui" line="922"/>
         <location filename="../../designer/MainWindow.ui" line="963"/>
         <source>0 ms</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../../designer/MainWindow.ui" line="996"/>
@@ -475,17 +475,17 @@ position</source>
     <message>
         <location filename="../../designer/MainWindow.ui" line="912"/>
         <source>Avg turn time:</source>
-        <translation type="unfinished"></translation>
+        <translation>Среднее время хода:</translation>
     </message>
     <message>
         <location filename="../../designer/MainWindow.ui" line="919"/>
         <source>Avg turn performance label</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../../designer/MainWindow.ui" line="956"/>
         <source>Avg paint time:</source>
-        <translation type="unfinished"></translation>
+        <translation>Среднее время рендера:</translation>
     </message>
     <message>
         <location filename="../../designer/MainWindow.ui" line="974"/>
