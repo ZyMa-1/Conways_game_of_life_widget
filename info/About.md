@@ -31,23 +31,23 @@ keeping track of the turn cycle with a QTimer.
 
 Engine and Widget classes have implementation and conceptual similarities.
 First off, they both inherit from abc classes that are used to create interface to indicate that the class can safely be used with
-'ConwaysGameOfLifeConfigManager' (Config Manager) and 'ConwaysGameOfLifePropertiesManager' (Properties Manager).  
+'ConwaysGameOfLifeConfigManager' (Config Manager) and 'ConwaysGameOfLifePropertiesManager' (Properties Manager) classes.  
 Then there are similarities between Model-View and Engine-Widget approaches.
-Engine acts as a model, providing information to the view.
+Engine acts as a model, providing information to the Widget.
 While Widget communicates with the model  to obtain information from it and display it to the user!
 
 
 ### ABCs
 
 `class MySerializable(ABC)` is used to ensure the `savable_properties_names` method is implemented. It is used
-to obtain properties that are essential If the widget's configuration is intended to be saved into JSON format.
+to obtain properties that are essential for saving widget's configuration into JSON format.
 
 `class MyPropertySignalAccessor(ABC)` is used to ensure the `get_property_changed_signal` method is implemented.
 The story with this is quite different. 
 The `QtCore.Property` class, which is the Qt equivalent to python's `property` accepts `notify` keyword argument,
-but has NO WAY of obtaining it back from thee `Property` object.
+but has NO WAY of obtaining it back from `Property` object.
 So the `get_property_changed_signal` method is used to obtain such signals.
-Mostly it is implemented by enforcing fixed name convention for all the notify signals.
+It is implemented by enforcing fixed name convention for all the notify signals.
 
 ```python
 _SIGNAL_SUFFIX = "_changed"
@@ -79,19 +79,19 @@ which are created MANUALLY (seriously why, +1 for custom conversion) to convert 
 ## Properties Manager
 
 The Properties Manager requires more complex approach in order to handle read only properties, 
-properties without notify signal and so on.
+properties without a notify signal and so on.
 To convert property and set it to the widget value,
 ANOTHER manual conversion needs to be done (+1 for custom conversion).
 And to convert widget value to property supported value
-ANOTHER ONE (+1 for custom conversion) have to be done.
+ANOTHER ONE (+1 for custom conversion) have to be done. (In total 3 convertors are created)
 
 ### Dynamic Slot Creation
 
 Speaking of connecting the notify signals to the dynamically created slots,
 strange approach was taken... (no other was discovered)
-1. Create `SlotFactory(QObject)` class (assign parent or keep at least one reference to the object (not sure about this, hehe...))
+1. Create `SlotFactory(QObject)` class (assign parent to it upon creation or keep at least one reference to the object (not sure about this, hehe...))
 2. Create desired slot methods
-3. Return the slot as `MethodType` object like this:
+3. Return the slot as `MethodType` object like in the folliwing code:
 ```python
 def get_slot(self, property_name: str):
     method = self.SLOTS[property_name]
@@ -107,10 +107,9 @@ But that works, so who cares.
 
 There is much dynamic and flexible design was done to this point,
 so the main widget can relax and just take it easy.
-Use available methods and classes to easily connect one object to another in the desired way, 
-essentially act like a controller between objects connecting them to each other using some mediate method or function.
+Use available methods and classes to easily connect one object to another in the desired way, to essentially act like a controller between objects connecting them to each other using some mediate method or function.
 
 ## Outro
 
 Project seems to be almost logically complete, so would work on it some more and maybe try
-to get some feedback, but afraid to do so, I am probably wasted.
+to get some feedback, but afraid to do so, I am probably wasted..
