@@ -16,7 +16,7 @@ The project also includes a PropertiesManager that facilitates communication bet
 Goal of the project was to learn how to build scalable and manageble application.
   
 # Info
-- [Main.md](/info/Main.md)
+- [Script.md](/info/Script.md)
 - [Build.md](/info/Build.md)
 - [Localization.md](/info/Localization.md)
 - [Resources.md](/info/Resources.md)
