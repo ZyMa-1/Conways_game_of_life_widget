@@ -30,7 +30,7 @@ To wrap up, widget is responsible to handle some of engine's signals, rendering 
 keeping track of the turn cycle with a QTimer.
 
 Engine and Widget classes have implementation and conceptual similarities.
-First off, they both inherit from abc classes that are used to create interface to indicate that the class can safely be used with
+First off, they both inherit from ABC classes that are used to create interfaces indicating that the class can safely be used with
 'ConwaysGameOfLifeConfigManager' (Config Manager) and 'ConwaysGameOfLifePropertiesManager' (Properties Manager) classes.  
 Then there are similarities between Model-View and Engine-Widget approaches.
 Engine acts as a model, providing information to the Widget.
