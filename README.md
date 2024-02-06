@@ -6,24 +6,25 @@
 [![Licence MIT](https://img.shields.io/badge/License-MIT-purple.svg)](/LICENCE)
 ![Test Status](https://github.com/ZyMa-1/Conways_game_of_life_widget/actions/workflows/tests.yml/badge.svg?branch=master)
 
-Custom widget made using PySide version 6 and Python 3.10 version.  
+Custom widget made using PySide version 6 and Python 3.10.  
 Was integratable with Qt Designer, but the intentions changed.  
   
-The project includes a ConfigManager that enables the saving of game widget properties to a JSON file and subsequently loading them back into a widget.  
+The project includes a ConfigManager that allows to save properties of the game widget into a JSON file and subsequently load them back into a widget.  
   
 The project also includes a PropertiesManager that facilitates communication between widgets and game widget properties, ensuring that any changes made to one are appropriately reflected in the other.
 
 Goal of the project was to learn how to build scalable and manageble application.
   
 # Info
-- [Main.md](/info/Main.md)
+- [Script.md](/info/Script.md)
 - [Build.md](/info/Build.md)
 - [Localization.md](/info/Localization.md)
 - [Resources.md](/info/Resources.md)
+- [About.md](/info/About.md)
 
 # Showcase  
   
-Screenshots of the 'MainWindow' and QtDesigner interface, showcasing the loaded plugin, contains in [/readme_images](/readme_images) directory.
+Screenshots of the 'MainWindow', showcasing it, are contained in [/readme_images](/readme_images) directory.
 
 Version 0.4 screenshot:
 
