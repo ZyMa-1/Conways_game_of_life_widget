@@ -19,10 +19,15 @@ from PySide6.QtGui import (QAction, QBrush, QColor, QConicalGradient,
 from PySide6.QtWidgets import (QApplication, QButtonGroup, QCheckBox, QComboBox,
     QDockWidget, QGridLayout, QHBoxLayout, QLabel,
     QLayout, QMainWindow, QMenu, QMenuBar,
-    QPushButton, QSizePolicy, QSpacerItem, QSpinBox,
-    QStatusBar, QToolButton, QVBoxLayout, QWidget)
+    QPushButton, QSizePolicy, QSpacerItem, QStatusBar,
+    QToolButton, QVBoxLayout, QWidget)
 
 from src.conways_game_of_life.ConwaysGameOfLife import ConwaysGameOfLife
+from src.conways_game_of_life.PropertiesManager.promoted_widgets.LabelColor import LabelColor
+from src.conways_game_of_life.PropertiesManager.promoted_widgets.LabelGameRunning import LabelGameRunning
+from src.conways_game_of_life.PropertiesManager.promoted_widgets.LabelInt import LabelInt
+from src.conways_game_of_life.PropertiesManager.promoted_widgets.SpinBoxInt import SpinBoxInt
+from src.widgets.promoted.ChooseColorPushButton import ChooseColorPushButton
 import src.resources.rc_resources
 
 class Ui_MainWindow(object):
@@ -63,8 +68,6 @@ class Ui_MainWindow(object):
         self.action_view_pattern_gallery.setObjectName(u"action_view_pattern_gallery")
         self.action_view_pattern_gallery.setCheckable(True)
         self.action_view_pattern_gallery.setChecked(True)
-        self.actionExport_turns_to_video = QAction(MainWindow)
-        self.actionExport_turns_to_video.setObjectName(u"actionExport_turns_to_video")
         self.action_view_game_statistics = QAction(MainWindow)
         self.action_view_game_statistics.setObjectName(u"action_view_game_statistics")
         self.action_view_game_statistics.setCheckable(True)
@@ -100,13 +103,13 @@ class Ui_MainWindow(object):
 
         self.layout_top.addWidget(self.label, 0, Qt.AlignBottom)
 
-        self.turn_number_label = QLabel(self.centralwidget)
+        self.turn_number_label = LabelInt(self.centralwidget)
         self.turn_number_label.setObjectName(u"turn_number_label")
         self.turn_number_label.setFont(font)
 
         self.layout_top.addWidget(self.turn_number_label, 0, Qt.AlignBottom)
 
-        self.is_game_running_label = QLabel(self.centralwidget)
+        self.is_game_running_label = LabelGameRunning(self.centralwidget)
         self.is_game_running_label.setObjectName(u"is_game_running_label")
         sizePolicy1.setHeightForWidth(self.is_game_running_label.sizePolicy().hasHeightForWidth())
         self.is_game_running_label.setSizePolicy(sizePolicy1)
@@ -239,7 +242,7 @@ class Ui_MainWindow(object):
 
         self.layout_settings.addWidget(self.label_7, 8, 0, 1, 1)
 
-        self.border_color_label = QLabel(self.dockWidgetContents_2)
+        self.border_color_label = LabelColor(self.dockWidgetContents_2)
         self.border_color_label.setObjectName(u"border_color_label")
         sizePolicy3 = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
         sizePolicy3.setHorizontalStretch(2)
@@ -253,7 +256,7 @@ class Ui_MainWindow(object):
 
         self.layout_settings.addWidget(self.border_color_label, 7, 2, 1, 1)
 
-        self.cell_dead_color_button = QPushButton(self.dockWidgetContents_2)
+        self.cell_dead_color_button = ChooseColorPushButton(self.dockWidgetContents_2)
         self.cell_dead_color_button.setObjectName(u"cell_dead_color_button")
         self.cell_dead_color_button.setMinimumSize(QSize(0, 0))
         self.cell_dead_color_button.setFocusPolicy(Qt.NoFocus)
@@ -270,7 +273,7 @@ class Ui_MainWindow(object):
 
         self.layout_settings.addWidget(self.label_8, 9, 0, 1, 1)
 
-        self.cell_alive_color_button = QPushButton(self.dockWidgetContents_2)
+        self.cell_alive_color_button = ChooseColorPushButton(self.dockWidgetContents_2)
         self.cell_alive_color_button.setObjectName(u"cell_alive_color_button")
         self.cell_alive_color_button.setMinimumSize(QSize(0, 0))
         self.cell_alive_color_button.setFocusPolicy(Qt.NoFocus)
@@ -282,7 +285,7 @@ class Ui_MainWindow(object):
 
         self.layout_settings.addWidget(self.label_2, 5, 0, 1, 1)
 
-        self.cell_dead_color_label = QLabel(self.dockWidgetContents_2)
+        self.cell_dead_color_label = LabelColor(self.dockWidgetContents_2)
         self.cell_dead_color_label.setObjectName(u"cell_dead_color_label")
         sizePolicy3.setHeightForWidth(self.cell_dead_color_label.sizePolicy().hasHeightForWidth())
         self.cell_dead_color_label.setSizePolicy(sizePolicy3)
@@ -290,7 +293,7 @@ class Ui_MainWindow(object):
 
         self.layout_settings.addWidget(self.cell_dead_color_label, 9, 2, 1, 1)
 
-        self.rows_spin_box = QSpinBox(self.dockWidgetContents_2)
+        self.rows_spin_box = SpinBoxInt(self.dockWidgetContents_2)
         self.rows_spin_box.setObjectName(u"rows_spin_box")
         self.rows_spin_box.setFocusPolicy(Qt.ClickFocus)
         self.rows_spin_box.setMinimum(-100)
@@ -307,7 +310,7 @@ class Ui_MainWindow(object):
 
         self.layout_settings.addWidget(self.apply_button, 10, 1, 1, 2)
 
-        self.cols_spin_box = QSpinBox(self.dockWidgetContents_2)
+        self.cols_spin_box = SpinBoxInt(self.dockWidgetContents_2)
         self.cols_spin_box.setObjectName(u"cols_spin_box")
         self.cols_spin_box.setFocusPolicy(Qt.ClickFocus)
         self.cols_spin_box.setMinimum(-100)
@@ -320,7 +323,7 @@ class Ui_MainWindow(object):
 
         self.layout_settings.addWidget(self.label_3, 3, 0, 1, 1)
 
-        self.turn_duration_spin_box = QSpinBox(self.dockWidgetContents_2)
+        self.turn_duration_spin_box = SpinBoxInt(self.dockWidgetContents_2)
         self.turn_duration_spin_box.setObjectName(u"turn_duration_spin_box")
         self.turn_duration_spin_box.setFocusPolicy(Qt.ClickFocus)
         self.turn_duration_spin_box.setMinimum(-10000)
@@ -333,21 +336,21 @@ class Ui_MainWindow(object):
 
         self.layout_settings.addWidget(self.label_4, 4, 0, 1, 1)
 
-        self.border_thickness_spin_box = QSpinBox(self.dockWidgetContents_2)
+        self.border_thickness_spin_box = SpinBoxInt(self.dockWidgetContents_2)
         self.border_thickness_spin_box.setObjectName(u"border_thickness_spin_box")
         self.border_thickness_spin_box.setFocusPolicy(Qt.ClickFocus)
         self.border_thickness_spin_box.setMinimum(-100)
 
         self.layout_settings.addWidget(self.border_thickness_spin_box, 6, 1, 1, 2)
 
-        self.border_color_button = QPushButton(self.dockWidgetContents_2)
+        self.border_color_button = ChooseColorPushButton(self.dockWidgetContents_2)
         self.border_color_button.setObjectName(u"border_color_button")
         self.border_color_button.setMinimumSize(QSize(0, 0))
         self.border_color_button.setFocusPolicy(Qt.NoFocus)
 
         self.layout_settings.addWidget(self.border_color_button, 7, 1, 1, 1)
 
-        self.cell_alive_color_label = QLabel(self.dockWidgetContents_2)
+        self.cell_alive_color_label = LabelColor(self.dockWidgetContents_2)
         self.cell_alive_color_label.setObjectName(u"cell_alive_color_label")
         sizePolicy3.setHeightForWidth(self.cell_alive_color_label.sizePolicy().hasHeightForWidth())
         self.cell_alive_color_label.setSizePolicy(sizePolicy3)
@@ -478,12 +481,12 @@ class Ui_MainWindow(object):
 
         self.gridLayout.addWidget(self.label_5, 0, 0, 1, 1)
 
-        self.dead_cells_label = QLabel(self.dockWidgetContents)
+        self.dead_cells_label = LabelInt(self.dockWidgetContents)
         self.dead_cells_label.setObjectName(u"dead_cells_label")
 
         self.gridLayout.addWidget(self.dead_cells_label, 1, 1, 1, 1)
 
-        self.alive_cells_label = QLabel(self.dockWidgetContents)
+        self.alive_cells_label = LabelInt(self.dockWidgetContents)
         self.alive_cells_label.setObjectName(u"alive_cells_label")
 
         self.gridLayout.addWidget(self.alive_cells_label, 0, 1, 1, 1)
@@ -589,7 +592,6 @@ class Ui_MainWindow(object):
 #endif // QT_CONFIG(statustip)
         self.action_view_edit_tools.setText(QCoreApplication.translate("MainWindow", u"Tools", None))
         self.action_view_pattern_gallery.setText(QCoreApplication.translate("MainWindow", u"Pattern gallery", None))
-        self.actionExport_turns_to_video.setText(QCoreApplication.translate("MainWindow", u"Export turns to video", None))
         self.action_view_game_statistics.setText(QCoreApplication.translate("MainWindow", u"Game Statistics", None))
         self.action_view_game_size_constraints.setText(QCoreApplication.translate("MainWindow", u"Game size constraints", None))
         self.label.setText(QCoreApplication.translate("MainWindow", u"Turn number:", None))

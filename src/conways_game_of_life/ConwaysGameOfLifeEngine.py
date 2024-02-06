@@ -1,12 +1,11 @@
 import time
-from abc import ABCMeta
 from typing import List
 
 import numpy as np
 from scipy.signal import convolve2d
 from PySide6.QtCore import Signal, Property, QObject, Slot
 
-from .abcs import MySerializable, MyPropertySignalAccessor
+from .abcs import IMySerializable, IMyPropertySignalAccessor, QAbcMeta
 from .utils import property_setter_error_handle
 
 DEFAULT_COLS = 10  # px (assigned to attribute)
@@ -22,11 +21,7 @@ def _default_state_array(rows: int, cols: int) -> StateT:
     return np.full((rows, cols), CELL_DEAD)
 
 
-class _MyMeta(type(QObject), ABCMeta):
-    pass
-
-
-class ConwaysGameOfLifeEngine(QObject, MySerializable, MyPropertySignalAccessor, metaclass=_MyMeta):
+class ConwaysGameOfLifeEngine(QObject, IMySerializable, IMyPropertySignalAccessor, metaclass=QAbcMeta):
     """
     Engine class that represents the Conway's Game Of Life 2D board.
     Provides a viable way to interact with the game, encapsulating the logic.

@@ -65,7 +65,7 @@
          </widget>
         </item>
         <item alignment="Qt::AlignBottom">
-         <widget class="QLabel" name="turn_number_label">
+         <widget class="LabelInt" name="turn_number_label">
           <property name="font">
            <font>
             <pointsize>11</pointsize>
@@ -80,7 +80,7 @@
          </widget>
         </item>
         <item alignment="Qt::AlignBottom">
-         <widget class="QLabel" name="is_game_running_label">
+         <widget class="LabelGameRunning" name="is_game_running_label">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
             <horstretch>0</horstretch>
@@ -384,7 +384,7 @@
         </widget>
        </item>
        <item row="7" column="2">
-        <widget class="QLabel" name="border_color_label">
+        <widget class="LabelColor" name="border_color_label">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
            <horstretch>2</horstretch>
@@ -424,7 +424,7 @@
         </widget>
        </item>
        <item row="9" column="1">
-        <widget class="QPushButton" name="cell_dead_color_button">
+        <widget class="ChooseColorPushButton" name="cell_dead_color_button">
          <property name="minimumSize">
           <size>
            <width>0</width>
@@ -457,7 +457,7 @@
         </widget>
        </item>
        <item row="8" column="1">
-        <widget class="QPushButton" name="cell_alive_color_button">
+        <widget class="ChooseColorPushButton" name="cell_alive_color_button">
          <property name="minimumSize">
           <size>
            <width>0</width>
@@ -483,7 +483,7 @@
         </widget>
        </item>
        <item row="9" column="2">
-        <widget class="QLabel" name="cell_dead_color_label">
+        <widget class="LabelColor" name="cell_dead_color_label">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
            <horstretch>2</horstretch>
@@ -505,7 +505,7 @@
         </widget>
        </item>
        <item row="3" column="1" colspan="2">
-        <widget class="QSpinBox" name="rows_spin_box">
+        <widget class="SpinBoxInt" name="rows_spin_box">
          <property name="focusPolicy">
           <enum>Qt::ClickFocus</enum>
          </property>
@@ -552,7 +552,7 @@
         </widget>
        </item>
        <item row="4" column="1" colspan="2">
-        <widget class="QSpinBox" name="cols_spin_box">
+        <widget class="SpinBoxInt" name="cols_spin_box">
          <property name="focusPolicy">
           <enum>Qt::ClickFocus</enum>
          </property>
@@ -575,7 +575,7 @@
         </widget>
        </item>
        <item row="5" column="1" colspan="2">
-        <widget class="QSpinBox" name="turn_duration_spin_box">
+        <widget class="SpinBoxInt" name="turn_duration_spin_box">
          <property name="focusPolicy">
           <enum>Qt::ClickFocus</enum>
          </property>
@@ -601,7 +601,7 @@
         </widget>
        </item>
        <item row="6" column="1" colspan="2">
-        <widget class="QSpinBox" name="border_thickness_spin_box">
+        <widget class="SpinBoxInt" name="border_thickness_spin_box">
          <property name="focusPolicy">
           <enum>Qt::ClickFocus</enum>
          </property>
@@ -617,7 +617,7 @@
         </widget>
        </item>
        <item row="7" column="1">
-        <widget class="QPushButton" name="border_color_button">
+        <widget class="ChooseColorPushButton" name="border_color_button">
          <property name="minimumSize">
           <size>
            <width>0</width>
@@ -636,7 +636,7 @@
         </widget>
        </item>
        <item row="8" column="2">
-        <widget class="QLabel" name="cell_alive_color_label">
+        <widget class="LabelColor" name="cell_alive_color_label">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
            <horstretch>2</horstretch>
@@ -931,7 +931,7 @@ position</string>
         </widget>
        </item>
        <item row="1" column="1">
-        <widget class="QLabel" name="dead_cells_label">
+        <widget class="LabelInt" name="dead_cells_label">
          <property name="statusTip">
           <string>Dead cells label</string>
          </property>
@@ -941,7 +941,7 @@ position</string>
         </widget>
        </item>
        <item row="0" column="1">
-        <widget class="QLabel" name="alive_cells_label">
+        <widget class="LabelInt" name="alive_cells_label">
          <property name="statusTip">
           <string>Alive cells label</string>
          </property>
@@ -1106,11 +1106,6 @@ position</string>
     <string>Pattern gallery</string>
    </property>
   </action>
-  <action name="actionExport_turns_to_video">
-   <property name="text">
-    <string>Export turns to video</string>
-   </property>
-  </action>
   <action name="action_view_game_statistics">
    <property name="checkable">
     <bool>true</bool>
@@ -1140,6 +1135,31 @@ position</string>
    <extends>QWidget</extends>
    <header>src/conways_game_of_life/ConwaysGameOfLife</header>
    <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>LabelColor</class>
+   <extends>QLabel</extends>
+   <header>src/conways_game_of_life/PropertiesManager/widgets/LabelColor</header>
+  </customwidget>
+  <customwidget>
+   <class>LabelGameRunning</class>
+   <extends>QLabel</extends>
+   <header>src/conways_game_of_life/PropertiesManager/widgets/LabelGameRunning</header>
+  </customwidget>
+  <customwidget>
+   <class>LabelInt</class>
+   <extends>QLabel</extends>
+   <header>src/conways_game_of_life/PropertiesManager/widgets/LabelInt</header>
+  </customwidget>
+  <customwidget>
+   <class>SpinBoxInt</class>
+   <extends>QSpinBox</extends>
+   <header>src/conways_game_of_life/PropertiesManager/widgets/SpinBoxInt</header>
+  </customwidget>
+  <customwidget>
+   <class>ChooseColorPushButton</class>
+   <extends>QPushButton</extends>
+   <header>src/widgets/promoted/ChooseColorPushButton</header>
   </customwidget>
  </customwidgets>
  <tabstops>

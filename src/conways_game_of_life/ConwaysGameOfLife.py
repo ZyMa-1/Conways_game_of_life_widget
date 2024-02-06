@@ -1,5 +1,4 @@
 import time
-from abc import ABCMeta
 from enum import Enum
 from typing import Optional, Tuple, List
 
@@ -7,7 +6,7 @@ from PySide6.QtCore import QPoint, QTimer, Qt, Signal, Slot, Property, QPointF, 
 from PySide6.QtGui import QPainter, QColor
 from PySide6.QtWidgets import QWidget
 
-from .abcs import MySerializable, MyPropertySignalAccessor
+from .abcs import IMySerializable, IMyPropertySignalAccessor, QAbcMeta
 from .utils import property_setter_error_handle, ColorProperty, PatternSchema
 from .ConwaysGameOfLifeEngine import CELL_ALIVE, CELL_DEAD, ConwaysGameOfLifeEngine
 
@@ -22,11 +21,7 @@ DEFAULT_BORDER_COLOR = QColor(192, 192, 192)  # (assigned to attribute)
 DEFAULT_ACTIVE_CELL_COLOR = QColor(235, 235, 235)  # (used)
 
 
-class _MyMeta(type(QWidget), ABCMeta):
-    pass
-
-
-class ConwaysGameOfLife(QWidget, MySerializable, MyPropertySignalAccessor, metaclass=_MyMeta):
+class ConwaysGameOfLife(QWidget, IMySerializable, IMyPropertySignalAccessor, metaclass=QAbcMeta):
     """
     The main game widget class.
     Uses 'ConwaysGameOfLifeEngine' as an engine of the game.
@@ -68,7 +63,6 @@ class ConwaysGameOfLife(QWidget, MySerializable, MyPropertySignalAccessor, metac
         self._active_cell: Optional[Tuple[int, int]] = (0, 0)
         self._square_size_constraint = False
         self._perfect_size_constraint = False
-        self._last_update_time = time.perf_counter()
         self._sum_paint_performance = 0
         self._paint_count = 0
 
@@ -165,17 +159,19 @@ class ConwaysGameOfLife(QWidget, MySerializable, MyPropertySignalAccessor, metac
 
     def set_square_size_constraint(self, value: bool):
         self._square_size_constraint = value
-        cur_size = self.size()
         if value:
-            cur_size = self._get_square_size(cur_size)
-        self.resize(cur_size)
+            new_size = self._get_square_size(self.size())
+            self.resize(new_size)
+        else:
+            self.updateGeometry()
 
     def set_perfect_size_constraint(self, value: bool):
         self._perfect_size_constraint = value
-        cur_size = self.size()
         if value:
-            cur_size = self._get_perfect_size(cur_size)
-        self.resize(cur_size)
+            new_size = self._get_perfect_size(self.size())
+            self.resize(new_size)
+        else:
+            self.updateGeometry()
 
     # Game control methods
     def start_game(self):
@@ -212,6 +208,7 @@ class ConwaysGameOfLife(QWidget, MySerializable, MyPropertySignalAccessor, metac
 
     # Event handlers
     def mousePressEvent(self, event):
+        super().mousePressEvent(event)
         if self._is_game_running or event.buttons() != Qt.MouseButton.LeftButton:
             return
 
@@ -229,6 +226,7 @@ class ConwaysGameOfLife(QWidget, MySerializable, MyPropertySignalAccessor, metac
             self.update()
 
     def mouseMoveEvent(self, event):
+        super().mouseMoveEvent(event)
         if self._is_game_running or event.buttons() != Qt.MouseButton.LeftButton:
             return
 
@@ -243,6 +241,7 @@ class ConwaysGameOfLife(QWidget, MySerializable, MyPropertySignalAccessor, metac
                 self.update()
 
     def keyPressEvent(self, event):
+        super().keyPressEvent(event)
         if self._is_game_running:
             return
 
@@ -304,6 +303,7 @@ class ConwaysGameOfLife(QWidget, MySerializable, MyPropertySignalAccessor, metac
         return QRectF(pos, cell_size)
 
     def paintEvent(self, event):
+        super().paintEvent(event)
         start_time = time.perf_counter()
 
         with QPainter(self) as painter:
@@ -368,14 +368,6 @@ class ConwaysGameOfLife(QWidget, MySerializable, MyPropertySignalAccessor, metac
         self.update()
 
     # Miscellaneous stuff
-    def update(self):
-        # Small optimization
-        cur_time = time.perf_counter()
-        if cur_time - self._last_update_time < 0.05:
-            return
-        self._last_update_time = cur_time
-        super().update()
-
     def minimumSizeHint(self):
         return QSize(*MINIMUM_SIZE)
 
@@ -396,17 +388,13 @@ class ConwaysGameOfLife(QWidget, MySerializable, MyPropertySignalAccessor, metac
         return QSize(size, size)
 
     def resizeEvent(self, event):
-        cur_size = self.size()
-        resize_needed = False
+        cur_size = event.size()
         if self._perfect_size_constraint:
             cur_size = self._get_perfect_size(cur_size)
-            resize_needed = True
         if self._square_size_constraint:
             cur_size = self._get_square_size(cur_size)
-            resize_needed = True
-        if resize_needed:
+        if cur_size != event.size():
             self.resize(cur_size)
-        super().resizeEvent(event)
 
     # Properties signals
     is_game_running_changed = Signal(bool)

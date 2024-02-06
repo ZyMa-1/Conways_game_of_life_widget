@@ -7,9 +7,9 @@ from PySide6.QtCore import QObject
 from PySide6.QtWidgets import QFileDialog
 
 from src.backend.PathManager import PathManager
-from src.conways_game_of_life.ConwaysGameOfLife import ConwaysGameOfLife
-from src.conways_game_of_life.ConwaysGameOfLifeEngine import ConwaysGameOfLifeEngine
-from .QtPropertyJsonConverter import serialize_property, deserialize_property
+from src.conways_game_of_life.ConwaysGameOfLife import ConwaysGameOfLife  # type: ignore
+from src.conways_game_of_life.ConwaysGameOfLifeEngine import ConwaysGameOfLifeEngine  # type: ignore
+from .json_serialization import ConfigDecoder, ConfigEncoder
 
 _objT = ConwaysGameOfLife | ConwaysGameOfLifeEngine
 
@@ -44,7 +44,7 @@ class ConwaysGameOfLifeConfigManager(QObject):
             self._save_obj_properties("engine", self.conways_game_of_life_widget.engine())
             file_path = pathlib.Path(file_dialog.selectedFiles()[0])
             with open(file_path, 'w') as file:
-                json.dump(self._property_dict, file, indent=4)
+                json.dump(self._property_dict, file, cls=ConfigEncoder, indent=4)
 
             return file_path.name
 
@@ -63,7 +63,7 @@ class ConwaysGameOfLifeConfigManager(QObject):
             file_path = pathlib.Path(file_dialog.selectedFiles()[0])
             try:
                 with open(file_path, 'r') as file:
-                    self._property_dict = json.load(file)
+                    self._property_dict = json.load(file, cls=ConfigDecoder)
             except JSONDecodeError:
                 return None
 
@@ -77,11 +77,9 @@ class ConwaysGameOfLifeConfigManager(QObject):
         self._property_dict[key] = {}
         for name in obj.savable_properties_names():
             value = obj.property(name)
-            value = serialize_property(value)
             self._property_dict[key][name] = value
 
     @staticmethod
     def _load_obj_properties(obj: _objT, properties: dict):
         for name, value in properties.items():
-            value = deserialize_property(value)
             obj.setProperty(name, value)

@@ -1,8 +1,8 @@
 from typing import List, Tuple, Dict
 
-from PySide6.QtCore import Slot, QObject, QThreadPool, Qt
+from PySide6.QtCore import Slot, QThreadPool, Qt
 from PySide6.QtGui import QActionGroup, QPixmap, QIcon
-from PySide6.QtWidgets import QMainWindow, QLabel, QColorDialog, QPushButton, QButtonGroup
+from PySide6.QtWidgets import QMainWindow, QButtonGroup
 
 from src.backend.MainWindowUtils import MainWindowUtils
 from src.backend.SignalCollector import SignalCollector
@@ -15,19 +15,7 @@ from src.conways_game_of_life.PropertiesManager.ConwaysGameOfLifePropertiesManag
 from src.conways_game_of_life.PatternsDataLoader import PatternsDataLoader
 from src.ui.Ui_MainWindow import Ui_MainWindow
 from src.widgets.AboutDialog import AboutDialog
-
-
-class ColorDialogHandler(QObject):
-    def __init__(self, button: QPushButton, label: QLabel, parent=None):
-        super().__init__(parent)
-        self._label = label
-        button.clicked.connect(self.open_color_dialog)
-
-    @Slot()
-    def open_color_dialog(self):
-        color = QColorDialog.getColor(parent=self.parent())
-        if color.isValid():
-            self._label.setStyleSheet(f"background-color: rgb({color.red()},{color.green()},{color.blue()});")
+from src.widgets.helpers import DockWidgetActionBinder
 
 
 class MainWindow(QMainWindow):
@@ -53,7 +41,7 @@ class MainWindow(QMainWindow):
         # Create MainWindowUtils
         self.main_window_utils = MainWindowUtils(self)
 
-        # Link widget and game properties
+        # Link widgets and game properties
         _connect_prop = self.properties_manager.connect_widget_and_obj_property
         _connect_prop(self.ui.is_game_running_label,
                       self.ui.conways_game_of_life_widget,
@@ -268,7 +256,7 @@ class MainWindow(QMainWindow):
 
     # Init methods
     def init_ui(self):
-        # Create action groups
+        # Create groups
         _lang_action_group = QActionGroup(self)
         _lang_action_group.setExclusive(True)
         _lang_action_group.addAction(self.ui.action_english_US)
@@ -280,23 +268,29 @@ class MainWindow(QMainWindow):
         _tools_action_group.addButton(self.ui.paint_mode_tool_button)
         _tools_action_group.addButton(self.ui.erase_mode_tool_button)
 
+        # Dock widget visibility - Checkable actions
+        _binder1 = DockWidgetActionBinder(self,
+                                          self.ui.action_view_settings,
+                                          self.ui.settings_dock_widget)
+        _binder2 = DockWidgetActionBinder(self,
+                                          self.ui.action_view_game_statistics,
+                                          self.ui.game_statistics_dock_widget)
+        _binder3 = DockWidgetActionBinder(self,
+                                          self.ui.action_view_pattern_gallery,
+                                          self.ui.pattern_gallery_dock_widget)
+        _binder4 = DockWidgetActionBinder(self,
+                                          self.ui.action_view_edit_tools,
+                                          self.ui.edit_tools_dock_widget)
+        _binder5 = DockWidgetActionBinder(self,
+                                          self.ui.action_view_game_size_constraints,
+                                          self.ui.game_size_constraints_dock_widget)
+
         # Change language check box
         lang = self.settings.value("Language", "en", type=str)
         if lang == "ru":
             self.ui.action_russian_RU.setChecked(True)
         elif lang == "en":
             self.ui.action_english_US.setChecked(True)
-
-        # Create color dialog handlers
-        _color_dialog_handlers = [ColorDialogHandler(button=self.ui.border_color_button,
-                                                     label=self.ui.border_color_label,
-                                                     parent=self),
-                                  ColorDialogHandler(button=self.ui.cell_alive_color_button,
-                                                     label=self.ui.cell_alive_color_label,
-                                                     parent=self),
-                                  ColorDialogHandler(button=self.ui.cell_dead_color_button,
-                                                     label=self.ui.cell_dead_color_label,
-                                                     parent=self)]
 
     def connect_signals_to_slots(self):
         # Actions
@@ -306,18 +300,6 @@ class MainWindow(QMainWindow):
         self.ui.action_load_config.triggered.connect(self.handle_action_load_config_triggered)
         self.ui.action_english_US.changed.connect(self.handle_language_changed)
         self.ui.action_russian_RU.changed.connect(self.handle_language_changed)
-
-        # Dock widgets
-        self.main_window_utils.connect_action_and_dock_widget(self.ui.action_view_settings,
-                                                              self.ui.settings_dock_widget)
-        self.main_window_utils.connect_action_and_dock_widget(self.ui.action_view_game_statistics,
-                                                              self.ui.game_statistics_dock_widget)
-        self.main_window_utils.connect_action_and_dock_widget(self.ui.action_view_pattern_gallery,
-                                                              self.ui.pattern_gallery_dock_widget)
-        self.main_window_utils.connect_action_and_dock_widget(self.ui.action_view_edit_tools,
-                                                              self.ui.edit_tools_dock_widget)
-        self.main_window_utils.connect_action_and_dock_widget(self.ui.action_view_game_size_constraints,
-                                                              self.ui.game_size_constraints_dock_widget)
 
         # Buttons/Toggles
         self.ui.start_button.clicked.connect(self.handle_start_button_clicked)
@@ -335,3 +317,8 @@ class MainWindow(QMainWindow):
             self.handle_square_size_constraint_check_box_state_changed)
         self.ui.perfect_size_constraint_check_box.stateChanged.connect(
             self.handle_perfect_size_constraint_check_box_state_changed)
+
+        # Connect ChooseColor buttons and LabelColor
+        self.ui.border_color_button.connect_label(self.ui.border_color_label)
+        self.ui.cell_alive_color_button.connect_label(self.ui.cell_alive_color_label)
+        self.ui.cell_dead_color_button.connect_label(self.ui.cell_dead_color_label)

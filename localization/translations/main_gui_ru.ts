@@ -443,7 +443,7 @@ position</source>
     </message>
     <message>
         <location filename="../../designer/MainWindow.ui" line="893"/>
-        <location filename="../../designer/MainWindow.ui" line="1122"/>
+        <location filename="../../designer/MainWindow.ui" line="1117"/>
         <source>Game Statistics</source>
         <translation>Статистика игры</translation>
     </message>
@@ -494,7 +494,7 @@ position</source>
     </message>
     <message>
         <location filename="../../designer/MainWindow.ui" line="977"/>
-        <location filename="../../designer/MainWindow.ui" line="1133"/>
+        <location filename="../../designer/MainWindow.ui" line="1128"/>
         <source>Game size constraints</source>
         <translation>Ограничения размера игрового поля</translation>
     </message>
@@ -571,9 +571,8 @@ position</source>
         <translation>Приборы</translation>
     </message>
     <message>
-        <location filename="../../designer/MainWindow.ui" line="1111"/>
         <source>Export turns to video</source>
-        <translation>!!</translation>
+        <translation type="vanished">!!</translation>
     </message>
 </context>
 </TS>

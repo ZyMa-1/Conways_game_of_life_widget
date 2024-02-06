@@ -7,7 +7,7 @@ class UtilsFactory(QObject):
     _settings: QSettings
 
     @classmethod
-    def create_resources(cls, parent=None):
+    def create_resources(cls):
         cls._settings = QSettings(str(PathManager.SETTINGS_INI),
                                   QSettings.Format.IniFormat)
         cls._settings.sync()

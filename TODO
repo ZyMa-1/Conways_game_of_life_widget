@@ -1,9 +1,10 @@
-- Zoom in/Zoom out (idk)
-- Statistics (alive cells, dead cells, cells died, cells born)
+- Zoom in/Zoom out (idk) (QGraphicsView's job)
 - Make class for Pattern or naah
-- Pattern Saving from the state
 - Border annoys
 - Fix unittest tempfiles not creating at all
-- Fix 'set_perfect_size', but kinda not needed
-- Add last turn performance property to statistics
 - v0.6
+- Remove SlotFactory approaches completely
+- Create the PropertyView widgets subclassed from QSpinBox, QLabel, etc with desired slots.
+- mypy type checks
+- consider temporary stuff like avg performance
+- consider Graphics framework to boost paint performance and user interaction delay
