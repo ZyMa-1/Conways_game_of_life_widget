@@ -48,6 +48,8 @@ class ConwaysGameOfLifeConfigManager(QObject):
 
             return file_path.name
 
+        return None
+
     def load_config(self) -> Optional[str]:
         """
         Loads widget properties from '.json' file.
@@ -72,6 +74,8 @@ class ConwaysGameOfLifeConfigManager(QObject):
             self._load_obj_properties(self.conways_game_of_life_widget, widget_properties)
             self._load_obj_properties(self.conways_game_of_life_widget.engine(), engine_properties)
             return file_path.name
+
+        return None
 
     def _save_obj_properties(self, key: str, obj: _objT):
         self._property_dict[key] = {}

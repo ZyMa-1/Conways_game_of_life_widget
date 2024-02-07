@@ -15,6 +15,7 @@ class LabelColor(QLabel, IMyPropertyWidget, metaclass=QAbcMeta):
     def property_slot(self, value: QColor):
         r, g, b, a = value.getRgb()
         self.setStyleSheet(f"background-color: rgba({r},{g},{b},{a});")
+        self.bg_color_changed.emit(value)
 
     def to_property_value(self) -> QColor:
         return self.palette().color(self.backgroundRole())

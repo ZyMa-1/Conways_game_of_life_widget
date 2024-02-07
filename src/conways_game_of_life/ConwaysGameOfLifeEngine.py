@@ -125,12 +125,12 @@ class ConwaysGameOfLifeEngine(QObject, IMySerializable, IMyPropertySignalAccesso
         self.alive_cells_changed.emit(self._alive_cells)
 
     def insert_state_array_at(self, row: int, col: int, state_array: StatePropertyT):
-        state_array = np.array(state_array)
+        np_state_array = np.array(state_array)
         max_possible_rows = self._rows - row
         max_possible_cols = self._cols - col
-        clipped_state_array = state_array[
-                              :min(max_possible_rows, state_array.shape[0]),
-                              :min(max_possible_cols, state_array.shape[1])]
+        clipped_state_array = np_state_array[
+                              :min(max_possible_rows, np_state_array.shape[0]),
+                              :min(max_possible_cols, np_state_array.shape[1])]
 
         self._alive_cells -= np.sum(self._state[row:row + clipped_state_array.shape[0],
                                     col:col + clipped_state_array.shape[1]] == CELL_ALIVE)

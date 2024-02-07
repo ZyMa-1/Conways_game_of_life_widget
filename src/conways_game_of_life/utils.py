@@ -22,10 +22,6 @@ class ColorProperty:
         self._color = color
 
     @property
-    def rgb(self):
-        return self._color.red(), self._color.green(), self._color.blue()
-
-    @property
     def color(self):
         return self._color
 

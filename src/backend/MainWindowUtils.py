@@ -35,6 +35,8 @@ class MainWindowUtils(QObject):
             pixmap.save(str(file_path))
             return file_path.name
 
+        return None
+
     def create_warning_msg_box(self, text: str) -> QMessageBox:
         self.warning_msg_box.setText(text)
         return self.warning_msg_box

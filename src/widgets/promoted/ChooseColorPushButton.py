@@ -16,7 +16,10 @@ class ChooseColorPushButton(QPushButton):
         self._selected_color: Optional[QColor] = None
 
     def open_color_dialog(self):
-        color = QColorDialog.getColor(self.get_selected_color(), self.parentWidget())
+        if self.get_selected_color():
+            color = QColorDialog.getColor(initial=self.get_selected_color(), parent=self.parentWidget())
+        else:
+            color = QColorDialog.getColor(parent=self.parentWidget())
         if color.isValid():
             self._selected_color = color
             self.selected_color_changed.emit(color)
@@ -26,7 +29,7 @@ class ChooseColorPushButton(QPushButton):
 
     @Slot(QColor)
     def handle_label_bg_color_changed(self, color: QColor):
-        self.selected_color_changed = color
+        self._selected_color = color
 
     def connect_label(self, label: LabelColor):
         self.selected_color_changed.connect(label.property_slot)
