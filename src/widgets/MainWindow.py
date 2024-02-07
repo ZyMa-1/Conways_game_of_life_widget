@@ -95,20 +95,21 @@ class MainWindow(QMainWindow):
         # Create thread pool and start patterns loader thread
         self.thread_pool = QThreadPool.globalInstance()
         self.pattern_data_loader = PatternsDataLoader()
-        self.pattern_data_loader.signals.data_generated.connect(self.handle_patterns_data_loaded)
+        self.pattern_data_loader.signals.data_generated.connect(self.handle_patterns_data_generated)
         self.thread_pool.start(self.pattern_data_loader)
 
-        # Init UI (more like create things I cannot create in Qt-designer)
+        # Init UI (more like create things Qt-designer cannot handle)
         self.init_ui()
 
         # Connect signals to slots
         self.connect_signals_to_slots()
+        # extra signal stuff
         self.ui.conways_game_of_life_widget.engine().turn_made.connect(self.handle_turn_made)
-        self.ui.conways_game_of_life_widget.engine().turn_made.connect(self.handle_game_updated)
+        self.ui.conways_game_of_life_widget.painted.connect(self.handle_game_painted)
 
     # Outer Handlers
     @Slot(list)
-    def handle_patterns_data_loaded(self, patterns_data: List[Tuple[Dict, QPixmap]]):
+    def handle_patterns_data_generated(self, patterns_data: List[Tuple[Dict, QPixmap]]):
         self.ui.patterns_combo_box.setEnabled(True)
         self.ui.insert_pattern_button.setEnabled(True)
         self.ui.patterns_combo_box.clear()
@@ -123,7 +124,7 @@ class MainWindow(QMainWindow):
             f"{round(self.ui.conways_game_of_life_widget.engine().get_avg_turn_performance() * 1000, 2)} ms")
 
     @Slot()
-    def handle_game_updated(self):
+    def handle_game_painted(self):
         self.ui.avg_paint_performance_label.setText(
             f"{round(self.ui.conways_game_of_life_widget.get_avg_paint_performance() * 1000, 2)} ms")
 
@@ -246,7 +247,7 @@ class MainWindow(QMainWindow):
         val = (state == Qt.CheckState.Checked.value)
         self.ui.conways_game_of_life_widget.set_perfect_size_constraint(val)
 
-    # Yeah
+    # Errors collector
     def show_property_signal_collector_errors(self):
         signal_data = self.property_setter_signal_collector.collect_signal_data()
         if signal_data:
@@ -318,7 +319,7 @@ class MainWindow(QMainWindow):
         self.ui.perfect_size_constraint_check_box.stateChanged.connect(
             self.handle_perfect_size_constraint_check_box_state_changed)
 
-        # Connect ChooseColor buttons and LabelColor
+        # ChooseColor buttons and LabelColors
         self.ui.border_color_button.connect_label(self.ui.border_color_label)
         self.ui.cell_alive_color_button.connect_label(self.ui.cell_alive_color_label)
         self.ui.cell_dead_color_button.connect_label(self.ui.cell_dead_color_label)

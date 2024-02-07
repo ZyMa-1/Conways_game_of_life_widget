@@ -44,7 +44,7 @@ class ConwaysGameOfLifePropertiesManager(QObject):
         self._property_to_widget_slot[(obj, property_name)] = widget.property_slot
 
         if property_has_signal:
-            signal = obj.get_property_changed_signal(property_name)
+            signal = obj.get_property_notify_signal(property_name)
             signal.connect(widget.property_slot)
 
         if not property_read_only:

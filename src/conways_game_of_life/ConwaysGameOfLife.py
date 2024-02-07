@@ -35,8 +35,8 @@ class ConwaysGameOfLife(QWidget, IMySerializable, IMyPropertySignalAccessor, met
     # Signals:
     # Emits when invalid value passed to property setter
     property_setter_error_signal = Signal(str, str)
-    # Emits after every paintEvent method
-    paint_event_signal = Signal()
+    # Emits after paintEvent method is done
+    painted = Signal()
 
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -353,7 +353,7 @@ class ConwaysGameOfLife(QWidget, IMySerializable, IMyPropertySignalAccessor, met
         end_time = time.perf_counter()
         self._sum_paint_performance += (end_time - start_time)
         self._paint_count += 1
-        self.paint_event_signal.emit()
+        self.painted.emit()
 
     # Handlers for the inner signals
     @Slot()
@@ -388,6 +388,7 @@ class ConwaysGameOfLife(QWidget, IMySerializable, IMyPropertySignalAccessor, met
         return QSize(size, size)
 
     def resizeEvent(self, event):
+        super().resizeEvent(event)
         cur_size = event.size()
         if self._perfect_size_constraint:
             cur_size = self._get_perfect_size(cur_size)
@@ -420,10 +421,10 @@ class ConwaysGameOfLife(QWidget, IMySerializable, IMyPropertySignalAccessor, met
     def savable_properties_names(cls) -> List[str]:
         return cls._SAVABLE_PROPERTIES
 
-    _SIGNAL_SUFFIX = "_changed"
+    _NOTIFY_SIGNAL_SUFFIX = "_changed"
 
-    def get_property_changed_signal(self, name: str) -> Signal:
-        name += self._SIGNAL_SUFFIX
+    def get_property_notify_signal(self, name: str) -> Signal:
+        name += self._NOTIFY_SIGNAL_SUFFIX
         if isinstance(signal := getattr(self, name, None), Signal):
             return signal
         raise ValueError

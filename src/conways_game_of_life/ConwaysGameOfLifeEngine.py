@@ -218,10 +218,10 @@ class ConwaysGameOfLifeEngine(QObject, IMySerializable, IMyPropertySignalAccesso
     def savable_properties_names(cls) -> List[str]:
         return cls._SAVABLE_PROPERTIES
 
-    _SIGNAL_SUFFIX = "_changed"
+    _NOTIFY_SIGNAL_SUFFIX = "_changed"
 
-    def get_property_changed_signal(self, name: str) -> Signal:
-        name += self._SIGNAL_SUFFIX
+    def get_property_notify_signal(self, name: str) -> Signal:
+        name += self._NOTIFY_SIGNAL_SUFFIX
         if isinstance(signal := getattr(self, name, None), Signal):
             return signal
         raise ValueError

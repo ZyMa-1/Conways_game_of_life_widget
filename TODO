@@ -1,5 +1,4 @@
 - Zoom in/Zoom out (idk) (QGraphicsView's job)
-- Make class for Pattern or naah
 - Border annoys
 - Fix unittest tempfiles not creating at all
 - v0.6
@@ -8,3 +7,5 @@
 - mypy type checks
 - consider temporary stuff like avg performance
 - consider Graphics framework to boost paint performance and user interaction delay
+- consider adding PatternSchema typing in MainWindow or actually create a model class for pattern
+- consider enum for cell_alive/cell_dead???

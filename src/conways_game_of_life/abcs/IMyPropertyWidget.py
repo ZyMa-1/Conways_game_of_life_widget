@@ -10,5 +10,5 @@ class IMyPropertyWidget(ABC):
 
     @abstractmethod
     def to_property_value(self):
-        """Returns value passed to property's slot last time"""
+        """Converts current widget state to property value"""
         pass

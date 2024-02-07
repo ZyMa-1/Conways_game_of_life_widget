@@ -21,8 +21,6 @@ class MainWindowUtils(QObject):
         self.warning_msg_box.setWindowTitle("Warning")
         self.warning_msg_box.setIcon(QMessageBox.Icon.Warning)
 
-        self._slot_factories = []
-
     def save_widget_to_png(self, widget: QWidget) -> Optional[str]:
         file_dialog = QFileDialog(self.main_window)
         file_dialog.setDefaultSuffix('png')
