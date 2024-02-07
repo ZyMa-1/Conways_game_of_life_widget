@@ -33,7 +33,7 @@ class MainWindow(QMainWindow):
         # Create ConfigManager
         self.config_manager = ConwaysGameOfLifeConfigManager(
             self.ui.conways_game_of_life_widget,
-            parent=self)
+            parent_widget=self)
 
         # Create PropertiesManager
         self.properties_manager = ConwaysGameOfLifePropertiesManager(parent=self)
