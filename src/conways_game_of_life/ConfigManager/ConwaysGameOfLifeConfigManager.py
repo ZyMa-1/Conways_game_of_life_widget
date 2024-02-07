@@ -1,7 +1,7 @@
 import json
 import pathlib
 from json import JSONDecodeError
-from typing import Optional
+from typing import Optional, Dict, Any
 
 from PySide6.QtCore import QObject
 from PySide6.QtWidgets import QFileDialog
@@ -24,7 +24,7 @@ class ConwaysGameOfLifeConfigManager(QObject):
 
         self.conways_game_of_life_widget = conways_game_of_life_widget
         self._parent = parent
-        self._property_dict = {}
+        self._property_dict: Dict[str, Dict[str, Any]] = {}  # 'widget': {}, 'engine': {}
 
     def save_config(self) -> Optional[str]:
         """
