@@ -94,9 +94,9 @@ class MainWindow(QMainWindow):
 
         # Create thread pool and start patterns loader thread
         self.thread_pool = QThreadPool.globalInstance()
-        self.pattern_data_loader = PatternsDataLoader()
-        self.pattern_data_loader.signals.data_generated.connect(self.handle_patterns_data_generated)
-        self.thread_pool.start(self.pattern_data_loader)
+        self.patterns_data_loader = PatternsDataLoader()
+        self.patterns_data_loader.signals.data_generated.connect(self.handle_patterns_data_generated)
+        self.thread_pool.start(self.patterns_data_loader)
 
         # Init UI (more like create things Qt-designer cannot handle)
         self.init_ui()
