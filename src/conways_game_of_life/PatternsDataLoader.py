@@ -2,6 +2,7 @@ import json
 import os
 import pathlib
 from json import JSONDecodeError
+from typing import List, Tuple
 
 from PySide6.QtCore import QRunnable, QObject, Signal, Slot, Qt, QRect, QPoint
 from PySide6.QtGui import QPainter, QPixmap
@@ -10,6 +11,7 @@ from jsonschema.exceptions import ValidationError
 
 from src.backend.PathManager import PathManager
 from src.conways_game_of_life.ConwaysGameOfLife import ConwaysGameOfLife
+from src.conways_game_of_life.utils import PatternSchema
 
 pattern_json_schema = {
     "type": "object",
@@ -33,8 +35,8 @@ class PatternsDataLoader(QRunnable):
     def __init__(self):
         super().__init__()
 
-        self.json_file_paths = []
-        self.result_data = []
+        self.json_file_paths: List[pathlib.Path] = []
+        self.result_data: List[Tuple[PatternSchema, QPixmap]] = []
         # QRunnable cannot have signals, so doing that
         self.signals = _PatternDataLoaderSignals()
 
@@ -45,7 +47,7 @@ class PatternsDataLoader(QRunnable):
                 with open(file_path, "r") as json_file:
                     data = json.load(json_file)
                     validators.validate(data, pattern_json_schema)
-                    parsed_data = data  # Type casting handled by json schema
+                    parsed_data: PatternSchema = data  # Type casting handled by json schema
                     if self.validate_data_on_widget(parsed_data):
                         self.result_data.append((parsed_data, self.generate_pixmap(parsed_data)))
             except (JSONDecodeError, ValidationError):
