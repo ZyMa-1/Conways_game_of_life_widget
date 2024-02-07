@@ -4,7 +4,7 @@ from json import JSONDecodeError
 from typing import Optional, Dict, Any
 
 from PySide6.QtCore import QObject
-from PySide6.QtWidgets import QFileDialog
+from PySide6.QtWidgets import QFileDialog, QWidget
 
 from src.backend.PathManager import PathManager
 from src.conways_game_of_life.ConwaysGameOfLife import ConwaysGameOfLife  # type: ignore
@@ -19,11 +19,11 @@ class ConwaysGameOfLifeConfigManager(QObject):
     Class for saving and loading widget properties using '.json' format.
     """
 
-    def __init__(self, conways_game_of_life_widget: ConwaysGameOfLife, parent=None):
-        super().__init__(parent)
+    def __init__(self, conways_game_of_life_widget: ConwaysGameOfLife, parent_widget: QWidget = None):
+        super().__init__(parent_widget)
 
         self.conways_game_of_life_widget = conways_game_of_life_widget
-        self._parent = parent
+        self._parent_widget = parent_widget
         self._property_dict: Dict[str, Dict[str, Any]] = {}  # 'widget': {}, 'engine': {}
 
     def save_config(self) -> Optional[str]:
@@ -31,7 +31,7 @@ class ConwaysGameOfLifeConfigManager(QObject):
         Saves widget properties to '.json' file.
         Returns filename if operation was completed, None otherwise.
         """
-        file_dialog = QFileDialog(self._parent)
+        file_dialog = QFileDialog(self._parent_widget)
         file_dialog.setDefaultSuffix('json')
         file_dialog.setDirectory(str(PathManager.CONFIGS_DIR))
         file_dialog.setFileMode(QFileDialog.FileMode.AnyFile)
@@ -55,7 +55,7 @@ class ConwaysGameOfLifeConfigManager(QObject):
         Loads widget properties from '.json' file.
         Returns filename if operation was completed, None otherwise.
         """
-        file_dialog = QFileDialog(self._parent)
+        file_dialog = QFileDialog(self._parent_widget)
         file_dialog.setDefaultSuffix('json')
         file_dialog.setFileMode(QFileDialog.FileMode.ExistingFile)
         file_dialog.setDirectory(str(PathManager.CONFIGS_DIR))
