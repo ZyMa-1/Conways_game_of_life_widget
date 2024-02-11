@@ -1,7 +1,7 @@
 from PySide6.QtCore import Qt, Slot, QPoint
 from PySide6.QtWidgets import QDialog
 
-from src.ui.Ui_InstructionsDialog import Ui_InstructionsDialog
+from ui.Ui_InstructionsDialog import Ui_InstructionsDialog
 
 
 class InstructionsDialog(QDialog):

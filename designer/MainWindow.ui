@@ -142,58 +142,12 @@
        </layout>
       </item>
       <item>
-       <widget class="ConwaysGameOfLife" name="conways_game_of_life_widget" native="true">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
+       <widget class="GameView" name="game_view">
         <property name="minimumSize">
          <size>
           <width>264</width>
           <height>264</height>
          </size>
-        </property>
-        <property name="maximumSize">
-         <size>
-          <width>16777215</width>
-          <height>16777215</height>
-         </size>
-        </property>
-        <property name="sizeIncrement">
-         <size>
-          <width>0</width>
-          <height>0</height>
-         </size>
-        </property>
-        <property name="focusPolicy">
-         <enum>Qt::StrongFocus</enum>
-        </property>
-        <property name="statusTip">
-         <string>Conway's game of life widget</string>
-        </property>
-        <property name="whatsThis">
-         <string/>
-        </property>
-        <property name="cols" stdset="0">
-         <number>10</number>
-        </property>
-        <property name="rows" stdset="0">
-         <number>10</number>
-        </property>
-        <property name="turn_duration" stdset="0">
-         <number>1500</number>
-        </property>
-        <property name="border_thickness" stdset="0">
-         <number>2</number>
-        </property>
-        <property name="cell_dead_color" stdset="0">
-         <color>
-          <red>255</red>
-          <green>255</green>
-          <blue>255</blue>
-         </color>
         </property>
        </widget>
       </item>
@@ -1131,35 +1085,34 @@ position</string>
  </widget>
  <customwidgets>
   <customwidget>
-   <class>ConwaysGameOfLife</class>
-   <extends>QWidget</extends>
-   <header>src/conways_game_of_life/ConwaysGameOfLife</header>
-   <container>1</container>
-  </customwidget>
-  <customwidget>
    <class>LabelColor</class>
    <extends>QLabel</extends>
-   <header>src/conways_game_of_life/PropertiesManager/widgets/LabelColor</header>
+   <header>conways_game_of_life/PropertiesManager/promoted_widgets/LabelColor</header>
   </customwidget>
   <customwidget>
    <class>LabelGameRunning</class>
    <extends>QLabel</extends>
-   <header>src/conways_game_of_life/PropertiesManager/widgets/LabelGameRunning</header>
+   <header>conways_game_of_life/PropertiesManager/promoted_widgets/LabelGameRunning</header>
   </customwidget>
   <customwidget>
    <class>LabelInt</class>
    <extends>QLabel</extends>
-   <header>src/conways_game_of_life/PropertiesManager/widgets/LabelInt</header>
+   <header>conways_game_of_life/PropertiesManager/promoted_widgets/LabelInt</header>
   </customwidget>
   <customwidget>
    <class>SpinBoxInt</class>
    <extends>QSpinBox</extends>
-   <header>src/conways_game_of_life/PropertiesManager/widgets/SpinBoxInt</header>
+   <header>src/conways_game_of_life/PropertiesManager/promoted_widgets/SpinBoxInt</header>
   </customwidget>
   <customwidget>
    <class>ChooseColorPushButton</class>
    <extends>QPushButton</extends>
    <header>src/widgets/promoted/ChooseColorPushButton</header>
+  </customwidget>
+  <customwidget>
+   <class>GameView</class>
+   <extends>QGraphicsView</extends>
+   <header>conways_game_of_life/core/graphics_view/GameView</header>
   </customwidget>
  </customwidgets>
  <tabstops>

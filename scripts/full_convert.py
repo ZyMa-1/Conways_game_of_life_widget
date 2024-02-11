@@ -74,7 +74,7 @@ if __name__ == "__main__":
 
     ################## LOCALIZATION UPDATE ######################################
 
-    main_py = PROJECT_ROOT / "main.py"
+    main_py = src / "main.py"
     py_paths_1 = [main_py, designer, src]
 
     output_path_1 = translations / "main_gui_ru.ts"

@@ -4,7 +4,7 @@ from PySide6.QtCore import Signal, Slot
 from PySide6.QtGui import QColor
 from PySide6.QtWidgets import QPushButton, QColorDialog
 
-from src.conways_game_of_life.PropertiesManager.promoted_widgets import LabelColor
+from conways_game_of_life.PropertiesManager.promoted_widgets import LabelColor
 
 
 class ChooseColorPushButton(QPushButton):

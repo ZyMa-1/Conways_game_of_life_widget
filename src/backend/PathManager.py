@@ -2,6 +2,9 @@ import pathlib
 
 
 class PathManager:
+    """
+    Class for managing the paths of the project.
+    """
     PROJECT_ROOT: pathlib.Path
     CONFIGS_DIR: pathlib.Path
     EXPORTS_DIR: pathlib.Path

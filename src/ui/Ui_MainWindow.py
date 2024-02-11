@@ -22,10 +22,10 @@ from PySide6.QtWidgets import (QApplication, QButtonGroup, QCheckBox, QComboBox,
     QPushButton, QSizePolicy, QSpacerItem, QStatusBar,
     QToolButton, QVBoxLayout, QWidget)
 
-from src.conways_game_of_life.ConwaysGameOfLife import ConwaysGameOfLife
-from src.conways_game_of_life.PropertiesManager.promoted_widgets.LabelColor import LabelColor
-from src.conways_game_of_life.PropertiesManager.promoted_widgets.LabelGameRunning import LabelGameRunning
-from src.conways_game_of_life.PropertiesManager.promoted_widgets.LabelInt import LabelInt
+from conways_game_of_life.PropertiesManager.promoted_widgets.LabelColor import LabelColor
+from conways_game_of_life.PropertiesManager.promoted_widgets.LabelGameRunning import LabelGameRunning
+from conways_game_of_life.PropertiesManager.promoted_widgets.LabelInt import LabelInt
+from conways_game_of_life.core.graphics_view.GameView import GameView
 from src.conways_game_of_life.PropertiesManager.promoted_widgets.SpinBoxInt import SpinBoxInt
 from src.widgets.promoted.ChooseColorPushButton import ChooseColorPushButton
 import src.resources.rc_resources
@@ -137,24 +137,11 @@ class Ui_MainWindow(object):
 
         self.verticalLayout.addLayout(self.horizontalLayout_2)
 
-        self.conways_game_of_life_widget = ConwaysGameOfLife(self.centralwidget)
-        self.conways_game_of_life_widget.setObjectName(u"conways_game_of_life_widget")
-        sizePolicy2 = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
-        sizePolicy2.setHorizontalStretch(0)
-        sizePolicy2.setVerticalStretch(0)
-        sizePolicy2.setHeightForWidth(self.conways_game_of_life_widget.sizePolicy().hasHeightForWidth())
-        self.conways_game_of_life_widget.setSizePolicy(sizePolicy2)
-        self.conways_game_of_life_widget.setMinimumSize(QSize(264, 264))
-        self.conways_game_of_life_widget.setMaximumSize(QSize(16777215, 16777215))
-        self.conways_game_of_life_widget.setSizeIncrement(QSize(0, 0))
-        self.conways_game_of_life_widget.setFocusPolicy(Qt.StrongFocus)
-        self.conways_game_of_life_widget.setProperty("cols", 10)
-        self.conways_game_of_life_widget.setProperty("rows", 10)
-        self.conways_game_of_life_widget.setProperty("turn_duration", 1500)
-        self.conways_game_of_life_widget.setProperty("border_thickness", 2)
-        self.conways_game_of_life_widget.setProperty("cell_dead_color", QColor(255, 255, 255))
+        self.game_view = GameView(self.centralwidget)
+        self.game_view.setObjectName(u"game_view")
+        self.game_view.setMinimumSize(QSize(264, 264))
 
-        self.verticalLayout.addWidget(self.conways_game_of_life_widget)
+        self.verticalLayout.addWidget(self.game_view)
 
         self.layout_buttons = QHBoxLayout()
         self.layout_buttons.setObjectName(u"layout_buttons")
@@ -244,11 +231,11 @@ class Ui_MainWindow(object):
 
         self.border_color_label = LabelColor(self.dockWidgetContents_2)
         self.border_color_label.setObjectName(u"border_color_label")
-        sizePolicy3 = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
-        sizePolicy3.setHorizontalStretch(2)
-        sizePolicy3.setVerticalStretch(2)
-        sizePolicy3.setHeightForWidth(self.border_color_label.sizePolicy().hasHeightForWidth())
-        self.border_color_label.setSizePolicy(sizePolicy3)
+        sizePolicy2 = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
+        sizePolicy2.setHorizontalStretch(2)
+        sizePolicy2.setVerticalStretch(2)
+        sizePolicy2.setHeightForWidth(self.border_color_label.sizePolicy().hasHeightForWidth())
+        self.border_color_label.setSizePolicy(sizePolicy2)
         self.border_color_label.setMinimumSize(QSize(20, 20))
         self.border_color_label.setMaximumSize(QSize(16777215, 16777215))
         self.border_color_label.setSizeIncrement(QSize(0, 0))
@@ -287,8 +274,8 @@ class Ui_MainWindow(object):
 
         self.cell_dead_color_label = LabelColor(self.dockWidgetContents_2)
         self.cell_dead_color_label.setObjectName(u"cell_dead_color_label")
-        sizePolicy3.setHeightForWidth(self.cell_dead_color_label.sizePolicy().hasHeightForWidth())
-        self.cell_dead_color_label.setSizePolicy(sizePolicy3)
+        sizePolicy2.setHeightForWidth(self.cell_dead_color_label.sizePolicy().hasHeightForWidth())
+        self.cell_dead_color_label.setSizePolicy(sizePolicy2)
         self.cell_dead_color_label.setMinimumSize(QSize(20, 20))
 
         self.layout_settings.addWidget(self.cell_dead_color_label, 9, 2, 1, 1)
@@ -352,8 +339,8 @@ class Ui_MainWindow(object):
 
         self.cell_alive_color_label = LabelColor(self.dockWidgetContents_2)
         self.cell_alive_color_label.setObjectName(u"cell_alive_color_label")
-        sizePolicy3.setHeightForWidth(self.cell_alive_color_label.sizePolicy().hasHeightForWidth())
-        self.cell_alive_color_label.setSizePolicy(sizePolicy3)
+        sizePolicy2.setHeightForWidth(self.cell_alive_color_label.sizePolicy().hasHeightForWidth())
+        self.cell_alive_color_label.setSizePolicy(sizePolicy2)
         self.cell_alive_color_label.setMinimumSize(QSize(20, 20))
 
         self.layout_settings.addWidget(self.cell_alive_color_label, 8, 2, 1, 1)
@@ -381,11 +368,11 @@ class Ui_MainWindow(object):
         self.verticalLayout_3.setObjectName(u"verticalLayout_3")
         self.default_mode_tool_button = QToolButton(self.dockWidgetContents_3)
         self.default_mode_tool_button.setObjectName(u"default_mode_tool_button")
-        sizePolicy4 = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Minimum)
-        sizePolicy4.setHorizontalStretch(0)
-        sizePolicy4.setVerticalStretch(0)
-        sizePolicy4.setHeightForWidth(self.default_mode_tool_button.sizePolicy().hasHeightForWidth())
-        self.default_mode_tool_button.setSizePolicy(sizePolicy4)
+        sizePolicy3 = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Minimum)
+        sizePolicy3.setHorizontalStretch(0)
+        sizePolicy3.setVerticalStretch(0)
+        sizePolicy3.setHeightForWidth(self.default_mode_tool_button.sizePolicy().hasHeightForWidth())
+        self.default_mode_tool_button.setSizePolicy(sizePolicy3)
         self.default_mode_tool_button.setMinimumSize(QSize(0, 30))
         self.default_mode_tool_button.setCheckable(True)
         self.default_mode_tool_button.setChecked(True)
@@ -399,8 +386,8 @@ class Ui_MainWindow(object):
         self.tool_button_group.setObjectName(u"tool_button_group")
         self.tool_button_group.addButton(self.paint_mode_tool_button)
         self.paint_mode_tool_button.setObjectName(u"paint_mode_tool_button")
-        sizePolicy4.setHeightForWidth(self.paint_mode_tool_button.sizePolicy().hasHeightForWidth())
-        self.paint_mode_tool_button.setSizePolicy(sizePolicy4)
+        sizePolicy3.setHeightForWidth(self.paint_mode_tool_button.sizePolicy().hasHeightForWidth())
+        self.paint_mode_tool_button.setSizePolicy(sizePolicy3)
         self.paint_mode_tool_button.setMinimumSize(QSize(0, 30))
         self.paint_mode_tool_button.setCheckable(True)
         self.paint_mode_tool_button.setAutoExclusive(True)
@@ -410,8 +397,8 @@ class Ui_MainWindow(object):
         self.erase_mode_tool_button = QToolButton(self.dockWidgetContents_3)
         self.tool_button_group.addButton(self.erase_mode_tool_button)
         self.erase_mode_tool_button.setObjectName(u"erase_mode_tool_button")
-        sizePolicy4.setHeightForWidth(self.erase_mode_tool_button.sizePolicy().hasHeightForWidth())
-        self.erase_mode_tool_button.setSizePolicy(sizePolicy4)
+        sizePolicy3.setHeightForWidth(self.erase_mode_tool_button.sizePolicy().hasHeightForWidth())
+        self.erase_mode_tool_button.setSizePolicy(sizePolicy3)
         self.erase_mode_tool_button.setMinimumSize(QSize(0, 30))
         self.erase_mode_tool_button.setCheckable(True)
         self.erase_mode_tool_button.setAutoExclusive(True)
@@ -514,11 +501,11 @@ class Ui_MainWindow(object):
         self.verticalLayout_6.setObjectName(u"verticalLayout_6")
         self.square_size_constraint_check_box = QCheckBox(self.dockWidgetContents_5)
         self.square_size_constraint_check_box.setObjectName(u"square_size_constraint_check_box")
-        sizePolicy5 = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
-        sizePolicy5.setHorizontalStretch(0)
-        sizePolicy5.setVerticalStretch(0)
-        sizePolicy5.setHeightForWidth(self.square_size_constraint_check_box.sizePolicy().hasHeightForWidth())
-        self.square_size_constraint_check_box.setSizePolicy(sizePolicy5)
+        sizePolicy4 = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
+        sizePolicy4.setHorizontalStretch(0)
+        sizePolicy4.setVerticalStretch(0)
+        sizePolicy4.setHeightForWidth(self.square_size_constraint_check_box.sizePolicy().hasHeightForWidth())
+        self.square_size_constraint_check_box.setSizePolicy(sizePolicy4)
 
         self.verticalLayout_6.addWidget(self.square_size_constraint_check_box)
 
@@ -604,12 +591,6 @@ class Ui_MainWindow(object):
 #endif // QT_CONFIG(statustip)
         self.is_game_running_label.setText(QCoreApplication.translate("MainWindow", u":)", None))
         self.help_button.setText(QCoreApplication.translate("MainWindow", u"Help (?)", None))
-#if QT_CONFIG(statustip)
-        self.conways_game_of_life_widget.setStatusTip(QCoreApplication.translate("MainWindow", u"Conway's game of life widget", None))
-#endif // QT_CONFIG(statustip)
-#if QT_CONFIG(whatsthis)
-        self.conways_game_of_life_widget.setWhatsThis("")
-#endif // QT_CONFIG(whatsthis)
 #if QT_CONFIG(statustip)
         self.start_button.setStatusTip(QCoreApplication.translate("MainWindow", u"Start game button", None))
 #endif // QT_CONFIG(statustip)

@@ -1,8 +1,7 @@
 from PySide6.QtCore import Slot
 from PySide6.QtWidgets import QLabel
 
-from src.conways_game_of_life.abcs import IMyPropertyWidget
-from src.conways_game_of_life.abcs import QAbcMeta
+from .abcs import IMyPropertyWidget, QAbcMeta
 
 
 class LabelInt(QLabel, IMyPropertyWidget, metaclass=QAbcMeta):

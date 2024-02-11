@@ -2,7 +2,7 @@ from PySide6.QtCore import Slot, Signal
 from PySide6.QtGui import QColor
 from PySide6.QtWidgets import QLabel
 
-from src.conways_game_of_life.abcs import IMyPropertyWidget, QAbcMeta
+from .abcs import IMyPropertyWidget, QAbcMeta
 
 
 class LabelColor(QLabel, IMyPropertyWidget, metaclass=QAbcMeta):

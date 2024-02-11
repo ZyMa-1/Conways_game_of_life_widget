@@ -5,8 +5,8 @@ import sys
 from PySide6.QtCore import QTranslator
 from PySide6.QtWidgets import QApplication
 
-from src.backend.PathManager import PathManager
-from src.backend.UtilsFactory import UtilsFactory
+from backend.PathManager import PathManager
+from backend.UtilsFactory import UtilsFactory
 
 
 # FOR DEBUGGING (to receive dumpObjectInfo output)
@@ -18,7 +18,7 @@ from src.backend.UtilsFactory import UtilsFactory
 
 
 def ensure_if_ok_to_run():
-    PathManager.set_project_root(pathlib.Path(__file__).absolute().parent)
+    PathManager.set_project_root(pathlib.Path(__file__).absolute().parent.parent)
     os.makedirs('configs', exist_ok=True)
     os.makedirs('exports', exist_ok=True)
     os.makedirs('pattern_gallery', exist_ok=True)

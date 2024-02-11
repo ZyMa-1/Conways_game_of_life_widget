@@ -1,34 +1,35 @@
 import json
 import pathlib
 from json import JSONDecodeError
-from typing import Optional, Dict, Any
+from typing import Optional, Any, Iterable
 
 from PySide6.QtCore import QObject
 from PySide6.QtWidgets import QFileDialog, QWidget
 
-from src.backend.PathManager import PathManager
-from src.conways_game_of_life.ConwaysGameOfLife import ConwaysGameOfLife  # type: ignore
-from src.conways_game_of_life.ConwaysGameOfLifeEngine import ConwaysGameOfLifeEngine  # type: ignore
+from backend import PathManager
+from conways_game_of_life.core.dynamic_types import gameWithPropertiesT
 from .json_serialization import ConfigDecoder, ConfigEncoder
 
-_objT = ConwaysGameOfLife | ConwaysGameOfLifeEngine
+_keyT = str
+_valT = dict[str, Any]
 
 
-class ConwaysGameOfLifeConfigManager(QObject):
+class GameConfigManager(QObject):
     """
-    Class for saving and loading widget properties using '.json' format.
+    Class for saving and loading game properties using JSON format.
     """
 
-    def __init__(self, conways_game_of_life_widget: ConwaysGameOfLife, parent_widget: QWidget = None):
+    def __init__(self, game_objects: Iterable[gameWithPropertiesT], parent_widget: QWidget = None):
         super().__init__(parent_widget)
 
-        self.conways_game_of_life_widget = conways_game_of_life_widget
+        self._game_objects = game_objects
         self._parent_widget = parent_widget
-        self._property_dict: Dict[str, Dict[str, Any]] = {}  # 'widget': {}, 'engine': {}
+        # class_name: {properties dict}
+        self._property_dict: dict[_keyT, _valT] = {}
 
     def save_config(self) -> Optional[str]:
         """
-        Saves widget properties to '.json' file.
+        Saves game properties to JSON file.
         Returns filename if operation was completed, None otherwise.
         """
         file_dialog = QFileDialog(self._parent_widget)
@@ -40,8 +41,9 @@ class ConwaysGameOfLifeConfigManager(QObject):
         file_dialog.setWindowTitle("Save Config")
         if file_dialog.exec() == QFileDialog.DialogCode.Accepted:
             self._property_dict.clear()
-            self._save_obj_properties("widget", self.conways_game_of_life_widget)
-            self._save_obj_properties("engine", self.conways_game_of_life_widget.engine())
+            for game_object in self._game_objects:
+                self._save_obj_properties(game_object.__class__.__name__, game_object)
+
             file_path = pathlib.Path(file_dialog.selectedFiles()[0])
             with open(file_path, 'w') as file:
                 json.dump(self._property_dict, file, cls=ConfigEncoder, indent=4)
@@ -52,7 +54,7 @@ class ConwaysGameOfLifeConfigManager(QObject):
 
     def load_config(self) -> Optional[str]:
         """
-        Loads widget properties from '.json' file.
+        Loads game properties from JSON file.
         Returns filename if operation was completed, None otherwise.
         """
         file_dialog = QFileDialog(self._parent_widget)
@@ -69,21 +71,22 @@ class ConwaysGameOfLifeConfigManager(QObject):
             except JSONDecodeError:
                 return None
 
-            widget_properties = self._property_dict["widget"]
-            engine_properties = self._property_dict["engine"]
-            self._load_obj_properties(self.conways_game_of_life_widget, widget_properties)
-            self._load_obj_properties(self.conways_game_of_life_widget.engine(), engine_properties)
+            for game_object in self._game_objects:
+                properties_dict = self._property_dict.get(game_object.__class__.__name__)
+                if properties_dict:
+                    self._load_obj_properties(game_object, properties_dict)
+
             return file_path.name
 
         return None
 
-    def _save_obj_properties(self, key: str, obj: _objT):
+    def _save_obj_properties(self, key: _keyT, obj: gameWithPropertiesT):
         self._property_dict[key] = {}
         for name in obj.savable_properties_names():
             value = obj.property(name)
             self._property_dict[key][name] = value
 
     @staticmethod
-    def _load_obj_properties(obj: _objT, properties: dict):
+    def _load_obj_properties(obj: gameWithPropertiesT, properties: _valT):
         for name, value in properties.items():
             obj.setProperty(name, value)

@@ -1,20 +1,23 @@
+from typing import Iterable
+
 from PySide6.QtCore import QObject, Signal
 
 
 class SignalCollector(QObject):
     """
-    Class for collecting cumulative signal data.
+    Class for collecting cumulative data from the given list of Signals.
     """
 
-    def __init__(self, signal: Signal, parent=None):
+    def __init__(self, signals: Iterable[Signal], parent=None):
         super().__init__(parent)
-        self.signal_cumulative_data = []
-        signal.connect(self._handle_signal)
+        self.signals_cumulative_data = []
+        for signal in signals:
+            signal.connect(self._handle_signal)
 
     def collect_signal_data(self):
-        res = self.signal_cumulative_data.copy()
-        self.signal_cumulative_data.clear()
+        res = self.signals_cumulative_data.copy()
+        self.signals_cumulative_data.clear()
         return res
 
     def _handle_signal(self, *args):
-        self.signal_cumulative_data.append(args)
+        self.signals_cumulative_data.append(args)

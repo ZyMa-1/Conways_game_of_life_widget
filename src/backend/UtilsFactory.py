@@ -1,9 +1,12 @@
 from PySide6.QtCore import QObject, QSettings
 
-from src.backend.PathManager import PathManager
+from backend import PathManager
 
 
 class UtilsFactory(QObject):
+    """
+    Factory for resources of the project.
+    """
     _settings: QSettings
 
     @classmethod

@@ -4,10 +4,14 @@ from typing import Optional
 from PySide6.QtCore import QObject
 from PySide6.QtWidgets import QWidget, QFileDialog, QMainWindow, QMessageBox
 
-from src.backend.PathManager import PathManager
+from backend import PathManager
 
 
 class MainWindowUtils(QObject):
+    """
+    Helper class to create dialogs.
+    """
+
     def __init__(self, main_window: QMainWindow):
         super().__init__(main_window)
         self.main_window = main_window

@@ -1,27 +1,26 @@
 import time
-from typing import List
 
 import numpy as np
 from scipy.signal import convolve2d
 from PySide6.QtCore import Signal, Property, QObject, Slot
 
 from .abcs import IMySerializable, IMyPropertySignalAccessor, QAbcMeta
-from .utils import property_setter_error_handle
+from .private_utils import property_setter_error_handle
 
 DEFAULT_COLS = 10  # px (assigned to attribute)
 DEFAULT_ROWS = 10  # px (assigned to attribute)
 CELL_ALIVE = '*'  # (used)
 CELL_DEAD = '.'  # (used)
 
-StateT = np.ndarray
-StatePropertyT = List[List[str]]
+StateT = np.ndarray[(int, int)]
+StatePropertyT = list[list[str]]
 
 
 def _default_state_array(rows: int, cols: int) -> StateT:
     return np.full((rows, cols), CELL_DEAD)
 
 
-class ConwaysGameOfLifeEngine(QObject, IMySerializable, IMyPropertySignalAccessor, metaclass=QAbcMeta):
+class GameEngine(QObject, IMySerializable, IMyPropertySignalAccessor, metaclass=QAbcMeta):
     """
     Engine class that represents the Conway's Game Of Life 2D board.
     Provides a viable way to interact with the game, encapsulating the logic.
@@ -33,12 +32,12 @@ class ConwaysGameOfLifeEngine(QObject, IMySerializable, IMyPropertySignalAccesso
     board_changed = Signal()
     turn_made = Signal()
     # Emits when invalid value passed to property setter
-    property_setter_error_signal = Signal(str, str)
+    property_setter_error_signal = Signal(str, str)  # 'func_name', 'error'
 
     def __init__(self, parent=None):
         super().__init__(parent)
 
-        # Create engine parameters
+        # Create engine attributes
         self._turn_number = 0
         self._cols = DEFAULT_COLS
         self._rows = DEFAULT_ROWS
@@ -52,9 +51,12 @@ class ConwaysGameOfLifeEngine(QObject, IMySerializable, IMyPropertySignalAccesso
 
     @Slot(int)
     def handle_alive_cells_changed(self, val: int):
+        """
+        Links the 'alive_cells_changed' Signal to 'dead_cells_changed' Signal.
+        """
         self.dead_cells_changed.emit(self._rows * self._cols - val)
 
-    # Properties
+    # Qt-Properties
     def get_turn_number(self):
         return self._turn_number
 
@@ -63,9 +65,6 @@ class ConwaysGameOfLifeEngine(QObject, IMySerializable, IMyPropertySignalAccesso
 
     def get_dead_cells(self):
         return self._rows * self._cols - self._alive_cells
-
-    def get_avg_turn_performance(self):
-        return self._sum_turn_performance / self._turn_number
 
     def get_cols(self):
         return self._cols
@@ -108,7 +107,10 @@ class ConwaysGameOfLifeEngine(QObject, IMySerializable, IMyPropertySignalAccesso
         self.alive_cells_changed.emit(self._alive_cells)
         self.board_changed.emit()
 
-    # API functionality to interact with the game
+    # Public API functionality to interact with the game
+    def get_avg_turn_performance(self):
+        return self._sum_turn_performance / self._turn_number
+
     def reset_to_defaults(self):
         self._turn_number = 0
         self._cols = DEFAULT_COLS
@@ -159,7 +161,9 @@ class ConwaysGameOfLifeEngine(QObject, IMySerializable, IMyPropertySignalAccesso
 
     # Inner logic
     def _adjust_state(self):
-        """Adjusts state when number of rows or cols changes"""
+        """
+        Adjusts state when number of rows or cols changes.
+        """
         new_state = _default_state_array(self._rows, self._cols)
         new_state[:min(self._rows, self._state.shape[0]), :min(self._cols, self._state.shape[1])] \
             = self._state[:min(self._rows, self._state.shape[0]), :min(self._cols, self._state.shape[1])]
@@ -215,7 +219,7 @@ class ConwaysGameOfLifeEngine(QObject, IMySerializable, IMyPropertySignalAccesso
          "state"]
 
     @classmethod
-    def savable_properties_names(cls) -> List[str]:
+    def savable_properties_names(cls) -> list[str]:
         return cls._SAVABLE_PROPERTIES
 
     _NOTIFY_SIGNAL_SUFFIX = "_changed"

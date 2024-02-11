@@ -1,7 +1,7 @@
 from PySide6.QtCore import Qt
 from PySide6.QtWidgets import QDialog, QApplication
 
-from src.ui.Ui_AboutDialog import Ui_AboutDialog
+from ui.Ui_AboutDialog import Ui_AboutDialog
 
 
 class AboutDialog(QDialog):

@@ -9,3 +9,4 @@
 - consider Graphics framework to boost paint performance and user interaction delay
 - consider adding PatternSchema typing in MainWindow or actually create a model class for pattern
 - consider enum for cell_alive/cell_dead???
+- move enums

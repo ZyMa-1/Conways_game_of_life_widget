@@ -4,18 +4,16 @@ from PySide6.QtCore import Slot, QThreadPool, Qt
 from PySide6.QtGui import QActionGroup, QPixmap, QIcon
 from PySide6.QtWidgets import QMainWindow, QButtonGroup
 
-from src.backend.MainWindowUtils import MainWindowUtils
-from src.backend.SignalCollector import SignalCollector
-from src.backend.UtilsFactory import UtilsFactory
-from src.conways_game_of_life.ConfigManager.ConwaysGameOfLifeConfigManager import ConwaysGameOfLifeConfigManager
-from src.conways_game_of_life.ConwaysGameOfLife import ConwaysGameOfLife
-from src.conways_game_of_life.InstructionsDialog import InstructionsDialog
-from src.conways_game_of_life.PropertiesManager.ConwaysGameOfLifePropertiesManager import \
-    ConwaysGameOfLifePropertiesManager
-from src.conways_game_of_life.PatternsDataLoader import PatternsDataLoader
-from src.ui.Ui_MainWindow import Ui_MainWindow
-from src.widgets.AboutDialog import AboutDialog
-from src.widgets.helpers import DockWidgetActionBinder
+from backend import MainWindowUtils, SignalCollector, UtilsFactory
+from conways_game_of_life.ConfigManager import GameConfigManager
+from conways_game_of_life.core import GameScene, GameEngine
+from conways_game_of_life.InstructionsDialog import InstructionsDialog
+from conways_game_of_life.PropertiesManager import GamePropertiesManager
+from conways_game_of_life.PatternsDataLoader import PatternsDataLoader
+from conways_game_of_life.core.enums import CellEditMode
+from ui.Ui_MainWindow import Ui_MainWindow
+from widgets.AboutDialog import AboutDialog
+from widgets.helpers import DockWidgetActionBinder
 
 
 class MainWindow(QMainWindow):
@@ -30,13 +28,18 @@ class MainWindow(QMainWindow):
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
 
+        # Set up the game from components
+        self._game_engine = GameEngine(parent=self)
+        self._game_scene = GameScene(self._game_engine, parent=self)
+        self._game_view = self.ui.game_view
+
         # Create ConfigManager
-        self.config_manager = ConwaysGameOfLifeConfigManager(
-            self.ui.conways_game_of_life_widget,
+        self.config_manager = GameConfigManager(
+            game_objects=(self._game_engine, self._game_scene),
             parent_widget=self)
 
         # Create PropertiesManager
-        self.properties_manager = ConwaysGameOfLifePropertiesManager(parent=self)
+        self.properties_manager = GamePropertiesManager(parent=self)
 
         # Create MainWindowUtils
         self.main_window_utils = MainWindowUtils(self)
@@ -44,45 +47,45 @@ class MainWindow(QMainWindow):
         # Link widgets and game properties
         _connect_prop = self.properties_manager.connect_widget_and_obj_property
         _connect_prop(self.ui.is_game_running_label,
-                      self.ui.conways_game_of_life_widget,
+                      self._game_scene,
                       "is_game_running",
                       property_has_signal=True,
                       property_read_only=True)
         _connect_prop(self.ui.turn_duration_spin_box,
-                      self.ui.conways_game_of_life_widget,
+                      self._game_scene,
                       "turn_duration")
         _connect_prop(self.ui.border_thickness_spin_box,
-                      self.ui.conways_game_of_life_widget,
+                      self._game_scene,
                       "border_thickness")
         _connect_prop(self.ui.border_color_label,
-                      self.ui.conways_game_of_life_widget,
+                      self._game_scene,
                       "border_color")
         _connect_prop(self.ui.cell_alive_color_label,
-                      self.ui.conways_game_of_life_widget,
+                      self._game_scene,
                       "cell_alive_color")
         _connect_prop(self.ui.cell_dead_color_label,
-                      self.ui.conways_game_of_life_widget,
+                      self._game_scene,
                       "cell_dead_color")
         _connect_prop(self.ui.turn_number_label,
-                      self.ui.conways_game_of_life_widget.engine(),
+                      self._game_engine,
                       "turn_number",
                       property_has_signal=True,
                       property_read_only=True)
         _connect_prop(self.ui.alive_cells_label,
-                      self.ui.conways_game_of_life_widget.engine(),
+                      self._game_engine,
                       "alive_cells",
                       property_has_signal=True,
                       property_read_only=True)
         _connect_prop(self.ui.dead_cells_label,
-                      self.ui.conways_game_of_life_widget.engine(),
+                      self._game_engine,
                       "dead_cells",
                       property_has_signal=True,
                       property_read_only=True)
         _connect_prop(self.ui.rows_spin_box,
-                      self.ui.conways_game_of_life_widget.engine(),
+                      self._game_engine,
                       "rows")
         _connect_prop(self.ui.cols_spin_box,
-                      self.ui.conways_game_of_life_widget.engine(),
+                      self._game_engine,
                       "cols")
 
         # Get settings from UtilsFactory
@@ -90,7 +93,9 @@ class MainWindow(QMainWindow):
 
         # Create property setter signal collector
         self.property_setter_signal_collector = SignalCollector(
-            self.ui.conways_game_of_life_widget.property_setter_error_signal, parent=self)
+            signals=(self._game_scene.property_setter_error_signal,
+                     self._game_engine.property_setter_error_signal),
+            parent=self)
 
         # Create thread pool and start patterns loader thread
         self.thread_pool = QThreadPool.globalInstance()
@@ -104,8 +109,8 @@ class MainWindow(QMainWindow):
         # Connect signals to slots
         self.connect_signals_to_slots()
         # extra signal stuff
-        self.ui.conways_game_of_life_widget.engine().turn_made.connect(self.handle_turn_made)
-        self.ui.conways_game_of_life_widget.painted.connect(self.handle_game_painted)
+        self._game_engine.turn_made.connect(self.handle_turn_made)
+        self._game_scene.painted.connect(self.handle_game_painted)
 
     # Outer Handlers
     @Slot(list)
@@ -121,24 +126,24 @@ class MainWindow(QMainWindow):
     @Slot()
     def handle_turn_made(self):
         self.ui.avg_turn_performance_label.setText(
-            f"{round(self.ui.conways_game_of_life_widget.engine().get_avg_turn_performance() * 1000, 2)} ms")
+            f"{round(self._game_engine.get_avg_turn_performance() * 1000, 2)} ms")
 
     @Slot()
     def handle_game_painted(self):
         self.ui.avg_paint_performance_label.setText(
-            f"{round(self.ui.conways_game_of_life_widget.get_avg_paint_performance() * 1000, 2)} ms")
+            f"{round(self._game_view.get_avg_paint_performance() * 1000, 2)} ms")
 
     @Slot()
     def handle_start_button_clicked(self):
-        self.ui.conways_game_of_life_widget.start_game()
+        self._game_scene.start_game()
 
     @Slot()
     def handle_stop_button_clicked(self):
-        self.ui.conways_game_of_life_widget.stop_game()
+        self._game_scene.stop_game()
 
     @Slot()
     def handle_clear_board_button_clicked(self):
-        self.ui.conways_game_of_life_widget.clear_state()
+        self._game_scene.clear_state()
 
     @Slot()
     def handle_apply_button_clicked(self):
@@ -147,7 +152,7 @@ class MainWindow(QMainWindow):
 
     @Slot()
     def handle_reset_to_default_button_clicked(self):
-        self.ui.conways_game_of_life_widget.reset_to_default()
+        self._game_scene.reset_to_default()
 
     @Slot()
     def handle_action_about_triggered(self):
@@ -157,7 +162,7 @@ class MainWindow(QMainWindow):
 
     @Slot()
     def handle_action_export_to_image_triggered(self):
-        filename = self.main_window_utils.save_widget_to_png(self.ui.conways_game_of_life_widget)
+        filename = self.main_window_utils.save_widget_to_png(self._game_view)
         if filename:
             msg = f"File saved as {filename}"
             message_box = self.main_window_utils.create_info_msg_box(msg)
@@ -187,37 +192,37 @@ class MainWindow(QMainWindow):
         if not is_checked:
             return
 
+        lang = "en"
         if "ru" in sender.objectName().lower():
-            self.settings.setValue("Language", "ru")
-            msg = "Language changed to 'ru'. Restart the app to see the changes."
-            message_box = self.main_window_utils.create_info_msg_box(msg)
-            message_box.exec()
+            lang = "ru"
         elif "en" in sender.objectName().lower():
-            self.settings.setValue("Language", "en")
-            msg = "Language changed to 'en'. Restart the app to see the changes."
-            message_box = self.main_window_utils.create_info_msg_box(msg)
-            message_box.exec()
+            lang = "en"
+
+        self.settings.setValue("Language", "ru")
+        msg = f"Language changed to '{lang}'. Restart the app to see the changes."
+        message_box = self.main_window_utils.create_info_msg_box(msg)
+        message_box.exec()
 
     @Slot(bool)
     def handle_default_mode_tool_button_toggled(self, is_checked: bool):
         if not is_checked:
             return
 
-        self.ui.conways_game_of_life_widget.set_edit_mode(ConwaysGameOfLife.EditMode.DEFAULT)
+        self._game_scene.set_cell_edit_mode(CellEditMode.DEFAULT)
 
     @Slot(bool)
     def handle_paint_mode_tool_button_toggled(self, is_checked: bool):
         if not is_checked:
             return
 
-        self.ui.conways_game_of_life_widget.set_edit_mode(ConwaysGameOfLife.EditMode.PAINT)
+        self._game_scene.set_cell_edit_mode(CellEditMode.PAINT)
 
     @Slot(bool)
     def handle_erase_mode_tool_button_toggled(self, is_checked: bool):
         if not is_checked:
             return
 
-        self.ui.conways_game_of_life_widget.set_edit_mode(ConwaysGameOfLife.EditMode.ERASE)
+        self._game_scene.set_edit_mode(GameScene.EditMode.ERASE)
 
     @Slot()
     def handle_insert_pattern_button_clicked(self):
@@ -226,7 +231,7 @@ class MainWindow(QMainWindow):
             return
 
         pattern_data = self.ui.patterns_combo_box.itemData(selected_index)
-        self.ui.conways_game_of_life_widget.insert_pattern(pattern_data)
+        self._game_scene.insert_pattern(pattern_data)
 
     @Slot()
     def handle_help_button_clicked(self):
@@ -240,12 +245,12 @@ class MainWindow(QMainWindow):
     @Slot(bool)
     def handle_square_size_constraint_check_box_state_changed(self, state):
         val = (state == Qt.CheckState.Checked.value)
-        self.ui.conways_game_of_life_widget.set_square_size_constraint(val)
+        self._game_view.set_square_size_constraint(val)
 
     @Slot(bool)
     def handle_perfect_size_constraint_check_box_state_changed(self, state):
         val = (state == Qt.CheckState.Checked.value)
-        self.ui.conways_game_of_life_widget.set_perfect_size_constraint(val)
+        self._game_view.set_perfect_size_constraint(val)
 
     # Errors collector
     def show_property_signal_collector_errors(self):
