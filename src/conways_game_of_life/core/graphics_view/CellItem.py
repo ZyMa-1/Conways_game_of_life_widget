@@ -44,9 +44,6 @@ class CellItem(QGraphicsRectItem):
         self._scene_cell_type = value
 
     def paint(self, painter, option, widget=None):
-        """
-        In the paint method logic of the Engine and Scene merges together.
-        """
         super().paint(painter, option, None)
         color = self._color_map[self._scene_cell_type]
         painter.fillRect(self.rect(), color)
