@@ -52,7 +52,7 @@ class PatternsDataLoader(QRunnable):
 
     Responsible for retrieving JSON files in a directory,
     validate them and try to render them on the game widget to generate the QPixmap for each pattern.
-    Emits the 'finished' and 'data_generated' Signals when it was done.
+    Emits the 'finished' and 'data_generated' Signals when it has done the job.
     """
 
     def __init__(self):
