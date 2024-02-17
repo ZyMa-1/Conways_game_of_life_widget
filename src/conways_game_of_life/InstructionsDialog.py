@@ -5,6 +5,9 @@ from ui.Ui_InstructionsDialog import Ui_InstructionsDialog
 
 
 class InstructionsDialog(QDialog):
+    """
+    Dialog for displaying instructions to the user on how to control the game.
+    """
     def __init__(self, parent=None):
         super().__init__(parent)
 

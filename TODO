@@ -1,12 +1,7 @@
 - Zoom in/Zoom out (idk) (QGraphicsView's job)
-- Border annoys
 - Fix unittest tempfiles not creating at all
-- v0.6
-- Remove SlotFactory approaches completely
-- Create the PropertyView widgets subclassed from QSpinBox, QLabel, etc with desired slots.
 - mypy type checks
-- consider temporary stuff like avg performance
-- consider Graphics framework to boost paint performance and user interaction delay
-- consider adding PatternSchema typing in MainWindow or actually create a model class for pattern
 - consider enum for cell_alive/cell_dead???
-- move enums
+- Write doc strings for Qt-Properties
+- Improve speed of painting even more by using 'state' property
+- WHY IS BORDER CANNOT JUST DISAPPEAR IS THICKNESS IS SET TO 0

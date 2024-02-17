@@ -7,5 +7,7 @@ class IMySerializable(ABC):
     """
     @abstractmethod
     def savable_properties_names(self) -> list[str]:
-        """Returns list of savable properties associated specifically with the widget"""
+        """
+        Returns list of savable properties associated specifically with the widget.
+        """
         pass

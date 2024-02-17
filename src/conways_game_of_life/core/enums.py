@@ -3,7 +3,7 @@ from enum import IntEnum
 
 class CellEditMode(IntEnum):
     """
-    Enum representing different edit modes for the cell.
+    Enum representing different edit modes user can perform on the cell.
     """
     DEFAULT = 0
     PAINT = 1

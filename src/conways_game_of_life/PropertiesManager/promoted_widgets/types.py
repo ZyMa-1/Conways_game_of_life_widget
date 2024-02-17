@@ -1,3 +1,3 @@
 from . import *
 
-propertyWidgetT = LabelColor | LabelInt | LabelGameRunning | SpinBoxInt
+propertyWidgetT = LabelColor | LabelInt | LabelGameRunning | SpinBoxInt | DoubleSpinBoxFloat

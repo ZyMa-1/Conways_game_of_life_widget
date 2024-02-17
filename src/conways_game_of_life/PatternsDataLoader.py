@@ -5,7 +5,7 @@ from contextlib import contextmanager
 from json import JSONDecodeError
 from typing import ContextManager
 
-from PySide6.QtCore import QRunnable, QObject, Signal, Slot, Qt, QRect, QPoint
+from PySide6.QtCore import QRunnable, QObject, Signal, Slot, Qt
 from PySide6.QtGui import QPainter, QPixmap
 from jsonschema import validators
 from jsonschema.exceptions import ValidationError
@@ -36,20 +36,21 @@ pattern_json_schema = {
 def _temp_game_context() -> ContextManager[tuple[GameEngine, GameScene, GameView]]:
     game_engine = GameEngine()
     game_scene = GameScene(game_engine)
-    game_widget = GameView()
+    game_view = GameView()
+    game_view.setScene(game_scene)
     try:
-        yield game_engine, game_scene, game_widget
+        yield game_engine, game_scene, game_view
     finally:
-        del game_widget
+        del game_view
         del game_scene
         del game_engine
 
 
 class PatternsDataLoader(QRunnable):
     """
-    QRunnable that processes the '.json' pattern data according to defined schema.
+    QRunnable that processes the JSON pattern data according to defined schema.
 
-    Responsible for retrieving '.json' files in a directory,
+    Responsible for retrieving JSON files in a directory,
     validate them and try to render them on the game widget to generate the QPixmap for each pattern.
     Emits the 'finished' and 'data_generated' Signals when it was done.
     """
@@ -88,8 +89,8 @@ class PatternsDataLoader(QRunnable):
             is_valid = False
 
         with _temp_game_context() as game_components:
-            engine, scene, widget = game_components
-            scene.property_setter_error_signal.connect(_error_catch_slot)
+            engine, scene, view = game_components
+            engine.property_setter_error_signal.connect(_error_catch_slot)
             engine.setProperty('rows', parsed_data["rows"])
             engine.setProperty('cols', parsed_data["cols"])
             engine.setProperty('state', parsed_data["state"])
@@ -99,16 +100,16 @@ class PatternsDataLoader(QRunnable):
     @staticmethod
     def generate_pixmap(parsed_data: PatternSchema) -> QPixmap:
         with _temp_game_context() as game_components:
-            engine, scene, widget = game_components
+            engine, scene, view = game_components
             engine.setProperty('rows', parsed_data["rows"])
             engine.setProperty('cols', parsed_data["cols"])
             engine.setProperty('state', parsed_data["state"])
             scene.setProperty('border_thickness', 0)
 
-            pixmap = QPixmap(widget.size())
+            pixmap = QPixmap(view.viewport().size())
 
             with QPainter(pixmap) as painter:
-                widget.render(painter, QPoint(0, 0), QRect(QPoint(0, 0), widget.size()))
+                view.render(painter)
 
                 result_width = 32
                 aspect_ratio = pixmap.width() / pixmap.height()

@@ -1,17 +1,20 @@
-from typing import Optional, Final, Literal
+from typing import Optional, Final, Literal, Tuple
 
 from PySide6.QtCore import QTimer, Signal, QPoint, QPointF, QRectF, QSizeF, Property, Slot, Qt, QLineF
 from PySide6.QtGui import QColor
 from PySide6.QtWidgets import QGraphicsScene
 
-from ..GameEngine import GameEngine, CELL_ALIVE
+from ..GameEngine import GameEngine, CELL_ALIVE, CELL_DEAD
+from ..abcs import IMySerializable, IMyPropertySignalAccessor, QAbcMeta
 from ..private_utils import property_setter_error_handle
 from ..static_types import PatternSchema
 from .BorderItem import BorderItem
 from .CellItem import CellItem
 from ..enums import CellEditMode, SceneCellType
 
-DEFAULT_BORDER_THICKNESS: Final[int] = 2  # (assigned to attribute)
+DEFAULT_SIZE: Final[Tuple[int, int]] = (1536, 1536)
+
+DEFAULT_BORDER_THICKNESS: Final[float] = 1  # (assigned to attribute)
 DEFAULT_TURN_DURATION: Final[int] = 1500  # ms (assigned to attribute)
 DEFAULT_CELL_DEAD_COLOR: Final[QColor] = QColor(255, 255, 255)  # (assigned to attribute)
 DEFAULT_CELL_ALIVE_COLOR: Final[QColor] = QColor(173, 216, 230)  # (assigned to attribute)
@@ -22,7 +25,7 @@ _cellKT = tuple[int, int]
 _borderKT = tuple[int, Literal['Row', 'Col']]
 
 
-class GameScene(QGraphicsScene):
+class GameScene(QGraphicsScene, IMySerializable, IMyPropertySignalAccessor, metaclass=QAbcMeta):
     """
     Class representing the Main Scene of the Game.
 
@@ -33,6 +36,7 @@ class GameScene(QGraphicsScene):
 
     def __init__(self, engine: GameEngine, parent=None):
         super().__init__(parent)
+        self.setSceneRect(QRectF(0, 0, DEFAULT_SIZE[0], DEFAULT_SIZE[1]))
 
         self._engine = engine
         self._cell_item_map: dict[_cellKT, CellItem] = {}
@@ -56,32 +60,33 @@ class GameScene(QGraphicsScene):
         # Turn timer
         self._timer = QTimer(self)
 
-
         # Connect timer
         self._timer.timeout.connect(self._make_turn)
+
         # Connect engine signals
         self._engine.board_changed.connect(self._handle_board_changed)
 
     # Scene/Item methods
     def _create_border_item(self, val: _borderKT) -> BorderItem:
         coord, literal = val
-        thickness_half = self._border_thickness // 2
         if literal == 'Row':
             cell_point = self._cell_top_left_point(coord, 0)
             return BorderItem(
-                QLineF(0, cell_point.y() - thickness_half,
+                QLineF(0, cell_point.y(),
                        self.width(),
-                       cell_point.y() - thickness_half),
+                       cell_point.y()),
                 color=self.get_border_color(),
-                thickness=self.get_border_thickness())
+                thickness_percentage=self.get_border_thickness(),
+                scene_width=self.sceneRect().width())
         elif literal == 'Col':
             cell_point = self._cell_top_left_point(0, coord)
             return BorderItem(
-                QLineF(cell_point.x() - thickness_half,
-                       0, cell_point.x() - thickness_half,
+                QLineF(cell_point.x(),
+                       0, cell_point.x(),
                        self.height()),
                 color=self.get_border_color(),
-                thickness=self.get_border_thickness())
+                thickness_percentage=self.get_border_thickness(),
+                scene_width=self.sceneRect().width())
 
     def _create_cell_item(self, val: _cellKT) -> CellItem:
         row, col = val
@@ -92,10 +97,8 @@ class GameScene(QGraphicsScene):
             SceneCellType.ALIVE: self.get_cell_alive_color()
         }
         return CellItem(row, col, cell_rect,
-                        engine=self._engine,
                         scene_cell_type=self._get_scene_cell_type_at(row, col),
-                        color_map=color_map,
-                        edit_mode=self.get_edit_mode())
+                        color_map=color_map)
 
     def _create_scene(self):
         """
@@ -191,13 +194,13 @@ class GameScene(QGraphicsScene):
         return self._border_thickness
 
     @property_setter_error_handle
-    def set_border_thickness(self, value: int):
-        if value < 0 or value > 10:
-            raise ValueError("Border thickness must be an integer in the following range [0, 10]")
+    def set_border_thickness(self, value: float):
+        if value < 0 or value > 100:
+            raise ValueError("Border thickness must be an percentage float number in the following range [0, 100]")
         self._border_thickness = value
         for border_item in self._border_item_map.values():
-            border_item.set_thickness(value)
-            border_item.update()
+            border_item.set_thickness_percentage(value, scene_width=self.sceneRect().width())
+        self.update()
 
     def get_border_color(self):
         return self._border_color
@@ -207,7 +210,7 @@ class GameScene(QGraphicsScene):
         self._border_color = value
         for border_item in self._border_item_map.values():
             border_item.set_color(value)
-            border_item.update()
+        self.update()
 
     def get_cell_dead_color(self):
         return self._cell_dead_color
@@ -217,7 +220,7 @@ class GameScene(QGraphicsScene):
         self._cell_dead_color = value
         for cell_item in self._cell_item_map.values():
             cell_item.update_color_map(SceneCellType.DEAD, value)
-            cell_item.update()
+        self.update()
 
     def get_cell_alive_color(self):
         return self._cell_alive_color
@@ -227,7 +230,7 @@ class GameScene(QGraphicsScene):
         self._cell_alive_color = value
         for cell_item in self._cell_item_map.values():
             cell_item.update_color_map(SceneCellType.ALIVE, value)
-            cell_item.update()
+        self.update()
 
     # Public API
     def get_edit_mode(self):
@@ -235,9 +238,6 @@ class GameScene(QGraphicsScene):
 
     def set_cell_edit_mode(self, value: CellEditMode):
         self._cell_edit_mode = value
-        for cell_item in self._cell_item_map.values():
-            cell_item.set_edit_mode(value)
-            cell_item.update()
 
     def insert_pattern(self, pattern_data: PatternSchema):
         if self._is_game_running:
@@ -282,25 +282,37 @@ class GameScene(QGraphicsScene):
     # Event handlers
     def mousePressEvent(self, event):
         super().mousePressEvent(event)
-        if self._is_game_running:
+        if self._is_game_running or event.buttons() != Qt.MouseButton.LeftButton:
             return
 
         res = self._cell_coordinates_from_point(event.scenePos())
         if res is not None:
             row, col = res
-            cell_item = self._cell_item_map[(row, col)]
-            cell_item.mousePressEvent(event)  # propagating event to the item
+            match self._cell_edit_mode:
+                case CellEditMode.DEFAULT:
+                    self._engine.change_cell_state_to_opposite(row, col)
+                case CellEditMode.PAINT:
+                    self._engine.change_cell_state_at(row, col, CELL_ALIVE)
+                case CellEditMode.ERASE:
+                    self._engine.change_cell_state_at(row, col, CELL_DEAD)
+
+            self._update_cell_item_type(row, col)
 
     def mouseMoveEvent(self, event):
         super().mouseMoveEvent(event)
-        if self._is_game_running:
+        if self._is_game_running or event.buttons() != Qt.MouseButton.LeftButton:
             return
 
         res = self._cell_coordinates_from_point(event.scenePos())
         if res is not None:
             row, col = res
-            cell_item = self._cell_item_map[(row, col)]
-            cell_item.mouseMoveEvent(event)  # propagating event to the item
+            match self._cell_edit_mode:
+                case CellEditMode.PAINT:
+                    self._engine.change_cell_state_at(row, col, CELL_ALIVE)
+                    self._update_cell_item_type(row, col)
+                case CellEditMode.ERASE:
+                    self._engine.change_cell_state_at(row, col, CELL_DEAD)
+                    self._update_cell_item_type(row, col)
 
     def keyPressEvent(self, event):
         super().keyPressEvent(event)
@@ -326,10 +338,11 @@ class GameScene(QGraphicsScene):
     def _handle_arrow_key(self, row_delta: int, col_delta: int):
         new_row = self._active_cell[0] + row_delta
         new_col = self._active_cell[1] + col_delta
+        old_active_cell = self._active_cell
         if 0 <= new_row < self._engine.rows and 0 <= new_col < self._engine.cols:
-            self._update_cell_item_type(*self._active_cell)
-            self._update_cell_item_type(new_row, new_col)
             self._active_cell = (new_row, new_col)
+            self._update_cell_item_type(*old_active_cell)
+            self._update_cell_item_type(new_row, new_col)
 
     # Geometry methods
     def _cell_coordinates_from_point(self, point: QPoint | QPointF) -> Optional[tuple[int, int]]:
@@ -377,26 +390,24 @@ class GameScene(QGraphicsScene):
         """
         Handles 'board_changed' signal of an engine.
         """
-        if self._active_cell is None:
-            return
-
-        if self._active_cell[0] >= self._engine.rows:
-            self._active_cell = (self._engine.rows - 1, self._active_cell[1])
-        if self._active_cell[1] >= self._engine.cols:
-            self._active_cell = (self._active_cell[0], self._engine.cols - 1)
+        # Update the active cell, so it does not go off board
+        if self._active_cell is not None:
+            if self._active_cell[0] >= self._engine.rows:
+                self._active_cell = (self._engine.rows, self._active_cell[1])
+            if self._active_cell[1] >= self._engine.cols:
+                self._active_cell = (self._active_cell[0], self._engine.cols - 1)
 
         self._update_scene_items()
 
     @Slot()
     def _make_turn(self):
         self._engine.make_turn()
+        self._update_cell_item_types()
 
     # Signals.
 
     # Emits when invalid value passed to Qt-Property setter
     property_setter_error_signal = Signal(str, str)
-    # Emits after paintEvent method is done
-    painted = Signal()
 
     # Properties signals.
 
@@ -404,7 +415,7 @@ class GameScene(QGraphicsScene):
     is_game_running_changed = Signal(bool)
     # Qt-Properties (notify is not 'automatic'):
     turn_duration = Property(int, get_turn_duration, set_turn_duration)
-    border_thickness = Property(int, get_border_thickness, set_border_thickness)
+    border_thickness = Property(float, get_border_thickness, set_border_thickness)
     border_color = Property(QColor, get_border_color, set_border_color)
     cell_dead_color = Property(QColor, get_cell_dead_color, set_cell_dead_color)
     cell_alive_color = Property(QColor, get_cell_alive_color, set_cell_alive_color)

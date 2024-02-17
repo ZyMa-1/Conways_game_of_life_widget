@@ -1,7 +1,5 @@
 from functools import wraps
 
-from PySide6.QtGui import QColor
-
 
 def property_setter_error_handle(func):
     """

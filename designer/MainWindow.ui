@@ -554,22 +554,6 @@
          </property>
         </widget>
        </item>
-       <item row="6" column="1" colspan="2">
-        <widget class="SpinBoxInt" name="border_thickness_spin_box">
-         <property name="focusPolicy">
-          <enum>Qt::ClickFocus</enum>
-         </property>
-         <property name="statusTip">
-          <string>Border thickness spin box</string>
-         </property>
-         <property name="suffix">
-          <string> px</string>
-         </property>
-         <property name="minimum">
-          <number>-100</number>
-         </property>
-        </widget>
-       </item>
        <item row="7" column="1">
         <widget class="ChooseColorPushButton" name="border_color_button">
          <property name="minimumSize">
@@ -624,6 +608,22 @@
          </property>
          <property name="text">
           <string>Sync</string>
+         </property>
+        </widget>
+       </item>
+       <item row="6" column="1">
+        <widget class="DoubleSpinBoxFloat" name="border_thickness_double_spin_box">
+         <property name="suffix">
+          <string> %</string>
+         </property>
+         <property name="minimum">
+          <double>-100.000000000000000</double>
+         </property>
+         <property name="maximum">
+          <double>100.000000000000000</double>
+         </property>
+         <property name="singleStep">
+          <double>0.100000000000000</double>
          </property>
         </widget>
        </item>
@@ -936,7 +936,7 @@ position</string>
    <widget class="QWidget" name="dockWidgetContents_5">
     <layout class="QVBoxLayout" name="verticalLayout_6">
      <item>
-      <widget class="QCheckBox" name="square_size_constraint_check_box">
+      <widget class="QCheckBox" name="keep_aspect_ratio_constraint_check_box">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
          <horstretch>0</horstretch>
@@ -947,17 +947,7 @@ position</string>
         <string>Square size constraint check box</string>
        </property>
        <property name="text">
-        <string>Square size constraint</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QCheckBox" name="perfect_size_constraint_check_box">
-       <property name="statusTip">
-        <string>Perfect size constraint check box</string>
-       </property>
-       <property name="text">
-        <string>Perfect size constraint</string>
+        <string>Keep aspect ratio constraint</string>
        </property>
       </widget>
      </item>
@@ -1114,11 +1104,15 @@ position</string>
    <extends>QGraphicsView</extends>
    <header>conways_game_of_life/core/graphics_view/GameView</header>
   </customwidget>
+  <customwidget>
+   <class>DoubleSpinBoxFloat</class>
+   <extends>QDoubleSpinBox</extends>
+   <header>conways_game_of_life/PropertiesManager/promoted_widgets/DoubleSpinBoxFloat</header>
+  </customwidget>
  </customwidgets>
  <tabstops>
   <tabstop>rows_spin_box</tabstop>
   <tabstop>cols_spin_box</tabstop>
-  <tabstop>border_thickness_spin_box</tabstop>
   <tabstop>cell_alive_color_button</tabstop>
   <tabstop>border_color_button</tabstop>
   <tabstop>cell_dead_color_button</tabstop>

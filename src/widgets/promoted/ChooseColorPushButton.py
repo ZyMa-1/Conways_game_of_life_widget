@@ -16,8 +16,8 @@ class ChooseColorPushButton(QPushButton):
         self._selected_color: Optional[QColor] = None
 
     def open_color_dialog(self):
-        if self.get_selected_color():
-            color = QColorDialog.getColor(initial=self.get_selected_color(), parent=self.parentWidget())
+        if self._selected_color:
+            color = QColorDialog.getColor(initial=self._selected_color, parent=self.parentWidget())
         else:
             color = QColorDialog.getColor(parent=self.parentWidget())
         if color.isValid():

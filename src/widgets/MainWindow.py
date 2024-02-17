@@ -1,5 +1,3 @@
-from typing import List, Tuple, Dict
-
 from PySide6.QtCore import Slot, QThreadPool, Qt
 from PySide6.QtGui import QActionGroup, QPixmap, QIcon
 from PySide6.QtWidgets import QMainWindow, QButtonGroup
@@ -11,6 +9,7 @@ from conways_game_of_life.InstructionsDialog import InstructionsDialog
 from conways_game_of_life.PropertiesManager import GamePropertiesManager
 from conways_game_of_life.PatternsDataLoader import PatternsDataLoader
 from conways_game_of_life.core.enums import CellEditMode
+from conways_game_of_life.core.static_types import PatternSchema
 from ui.Ui_MainWindow import Ui_MainWindow
 from widgets.AboutDialog import AboutDialog
 from widgets.helpers import DockWidgetActionBinder
@@ -18,7 +17,7 @@ from widgets.helpers import DockWidgetActionBinder
 
 class MainWindow(QMainWindow):
     """
-    Main window of an application
+    Main window of an application.
     """
 
     def __init__(self):
@@ -32,6 +31,7 @@ class MainWindow(QMainWindow):
         self._game_engine = GameEngine(parent=self)
         self._game_scene = GameScene(self._game_engine, parent=self)
         self._game_view = self.ui.game_view
+        self._game_view.setScene(self._game_scene)
 
         # Create ConfigManager
         self.config_manager = GameConfigManager(
@@ -54,7 +54,7 @@ class MainWindow(QMainWindow):
         _connect_prop(self.ui.turn_duration_spin_box,
                       self._game_scene,
                       "turn_duration")
-        _connect_prop(self.ui.border_thickness_spin_box,
+        _connect_prop(self.ui.border_thickness_double_spin_box,
                       self._game_scene,
                       "border_thickness")
         _connect_prop(self.ui.border_color_label,
@@ -110,11 +110,11 @@ class MainWindow(QMainWindow):
         self.connect_signals_to_slots()
         # extra signal stuff
         self._game_engine.turn_made.connect(self.handle_turn_made)
-        self._game_scene.painted.connect(self.handle_game_painted)
+        self._game_view.painted.connect(self.handle_game_painted)
 
-    # Outer Handlers
+    # Outer Signal Handlers
     @Slot(list)
-    def handle_patterns_data_generated(self, patterns_data: List[Tuple[Dict, QPixmap]]):
+    def handle_patterns_data_generated(self, patterns_data: list[tuple[PatternSchema, QPixmap]]):
         self.ui.patterns_combo_box.setEnabled(True)
         self.ui.insert_pattern_button.setEnabled(True)
         self.ui.patterns_combo_box.clear()
@@ -122,7 +122,6 @@ class MainWindow(QMainWindow):
             self.ui.patterns_combo_box.addItem(QIcon(pattern_data[1]), pattern_data[0]["pattern_name"],
                                                userData=pattern_data[0])
 
-    # Inner handlers
     @Slot()
     def handle_turn_made(self):
         self.ui.avg_turn_performance_label.setText(
@@ -133,6 +132,7 @@ class MainWindow(QMainWindow):
         self.ui.avg_paint_performance_label.setText(
             f"{round(self._game_view.get_avg_paint_performance() * 1000, 2)} ms")
 
+    # Inner Signal Handlers
     @Slot()
     def handle_start_button_clicked(self):
         self._game_scene.start_game()
@@ -222,7 +222,7 @@ class MainWindow(QMainWindow):
         if not is_checked:
             return
 
-        self._game_scene.set_edit_mode(GameScene.EditMode.ERASE)
+        self._game_scene.set_cell_edit_mode(CellEditMode.ERASE)
 
     @Slot()
     def handle_insert_pattern_button_clicked(self):
@@ -243,14 +243,9 @@ class MainWindow(QMainWindow):
         self.properties_manager.assign_properties_values_to_widgets()
 
     @Slot(bool)
-    def handle_square_size_constraint_check_box_state_changed(self, state):
+    def handle_keep_aspect_ratio_constraint_check_box_state_changed(self, state):
         val = (state == Qt.CheckState.Checked.value)
-        self._game_view.set_square_size_constraint(val)
-
-    @Slot(bool)
-    def handle_perfect_size_constraint_check_box_state_changed(self, state):
-        val = (state == Qt.CheckState.Checked.value)
-        self._game_view.set_perfect_size_constraint(val)
+        self._game_view.set_keep_aspect_ratio_constraint(val)
 
     # Errors collector
     def show_property_signal_collector_errors(self):
@@ -319,10 +314,8 @@ class MainWindow(QMainWindow):
         self.ui.erase_mode_tool_button.toggled.connect(self.handle_erase_mode_tool_button_toggled)
         self.ui.help_button.clicked.connect(self.handle_help_button_clicked)
         self.ui.sync_button.clicked.connect(self.handle_sync_button_clicked)
-        self.ui.square_size_constraint_check_box.stateChanged.connect(
-            self.handle_square_size_constraint_check_box_state_changed)
-        self.ui.perfect_size_constraint_check_box.stateChanged.connect(
-            self.handle_perfect_size_constraint_check_box_state_changed)
+        self.ui.keep_aspect_ratio_constraint_check_box.stateChanged.connect(
+            self.handle_keep_aspect_ratio_constraint_check_box_state_changed)
 
         # ChooseColor buttons and LabelColors
         self.ui.border_color_button.connect_label(self.ui.border_color_label)

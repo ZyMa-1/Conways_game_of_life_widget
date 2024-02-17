@@ -10,21 +10,21 @@ class BorderItem(QGraphicsLineItem):
     Receives information from the Scene via setters.
     """
 
-    def __init__(self, line: QLineF, *, color: QColor, thickness: int):
+    def __init__(self, line: QLineF, *, color: QColor, thickness_percentage: float, scene_width: float):
         super().__init__(line)
         self.setZValue(1)
+        self.setAcceptDrops(False)  # Disables automatic mouse events handling
 
         self.set_color(color)
-        self.set_thickness(thickness)
+        self.set_thickness_percentage(thickness_percentage, scene_width=scene_width)
 
     def set_color(self, value: QColor):
-        self.pen().setColor(value)
+        pen = self.pen()
+        pen.setColor(value)
+        self.setPen(pen)
 
-    def set_thickness(self, value: int):
-        self.pen().setWidth(value)
-
-    # def paint(self, painter, option, widget=None):
-    #     pen = self.pen()
-    #     pen.setColor(self._color)
-    #     pen.setWidth(self._thickness)
-    #     super().paint(painter, option, widget)
+    def set_thickness_percentage(self, value: float, *, scene_width: float):
+        pen = self.pen()
+        true_value = scene_width / 100 * value
+        pen.setWidthF(true_value)
+        self.setPen(pen)

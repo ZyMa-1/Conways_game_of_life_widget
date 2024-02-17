@@ -9,7 +9,7 @@ from backend import PathManager
 
 class MainWindowUtils(QObject):
     """
-    Helper class to create dialogs.
+    Helper class to create dialogs and message boxes.
     """
 
     def __init__(self, main_window: QMainWindow):

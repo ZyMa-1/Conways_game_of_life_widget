@@ -22,6 +22,7 @@ from PySide6.QtWidgets import (QApplication, QButtonGroup, QCheckBox, QComboBox,
     QPushButton, QSizePolicy, QSpacerItem, QStatusBar,
     QToolButton, QVBoxLayout, QWidget)
 
+from conways_game_of_life.PropertiesManager.promoted_widgets.DoubleSpinBoxFloat import DoubleSpinBoxFloat
 from conways_game_of_life.PropertiesManager.promoted_widgets.LabelColor import LabelColor
 from conways_game_of_life.PropertiesManager.promoted_widgets.LabelGameRunning import LabelGameRunning
 from conways_game_of_life.PropertiesManager.promoted_widgets.LabelInt import LabelInt
@@ -323,13 +324,6 @@ class Ui_MainWindow(object):
 
         self.layout_settings.addWidget(self.label_4, 4, 0, 1, 1)
 
-        self.border_thickness_spin_box = SpinBoxInt(self.dockWidgetContents_2)
-        self.border_thickness_spin_box.setObjectName(u"border_thickness_spin_box")
-        self.border_thickness_spin_box.setFocusPolicy(Qt.ClickFocus)
-        self.border_thickness_spin_box.setMinimum(-100)
-
-        self.layout_settings.addWidget(self.border_thickness_spin_box, 6, 1, 1, 2)
-
         self.border_color_button = ChooseColorPushButton(self.dockWidgetContents_2)
         self.border_color_button.setObjectName(u"border_color_button")
         self.border_color_button.setMinimumSize(QSize(0, 0))
@@ -350,6 +344,14 @@ class Ui_MainWindow(object):
         self.sync_button.setMinimumSize(QSize(0, 40))
 
         self.layout_settings.addWidget(self.sync_button, 11, 1, 1, 2)
+
+        self.border_thickness_double_spin_box = DoubleSpinBoxFloat(self.dockWidgetContents_2)
+        self.border_thickness_double_spin_box.setObjectName(u"border_thickness_double_spin_box")
+        self.border_thickness_double_spin_box.setMinimum(-100.000000000000000)
+        self.border_thickness_double_spin_box.setMaximum(100.000000000000000)
+        self.border_thickness_double_spin_box.setSingleStep(0.100000000000000)
+
+        self.layout_settings.addWidget(self.border_thickness_double_spin_box, 6, 1, 1, 1)
 
 
         self.verticalLayout_2.addLayout(self.layout_settings)
@@ -499,26 +501,20 @@ class Ui_MainWindow(object):
         self.dockWidgetContents_5.setObjectName(u"dockWidgetContents_5")
         self.verticalLayout_6 = QVBoxLayout(self.dockWidgetContents_5)
         self.verticalLayout_6.setObjectName(u"verticalLayout_6")
-        self.square_size_constraint_check_box = QCheckBox(self.dockWidgetContents_5)
-        self.square_size_constraint_check_box.setObjectName(u"square_size_constraint_check_box")
+        self.keep_aspect_ratio_constraint_check_box = QCheckBox(self.dockWidgetContents_5)
+        self.keep_aspect_ratio_constraint_check_box.setObjectName(u"keep_aspect_ratio_constraint_check_box")
         sizePolicy4 = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
         sizePolicy4.setHorizontalStretch(0)
         sizePolicy4.setVerticalStretch(0)
-        sizePolicy4.setHeightForWidth(self.square_size_constraint_check_box.sizePolicy().hasHeightForWidth())
-        self.square_size_constraint_check_box.setSizePolicy(sizePolicy4)
+        sizePolicy4.setHeightForWidth(self.keep_aspect_ratio_constraint_check_box.sizePolicy().hasHeightForWidth())
+        self.keep_aspect_ratio_constraint_check_box.setSizePolicy(sizePolicy4)
 
-        self.verticalLayout_6.addWidget(self.square_size_constraint_check_box)
-
-        self.perfect_size_constraint_check_box = QCheckBox(self.dockWidgetContents_5)
-        self.perfect_size_constraint_check_box.setObjectName(u"perfect_size_constraint_check_box")
-
-        self.verticalLayout_6.addWidget(self.perfect_size_constraint_check_box)
+        self.verticalLayout_6.addWidget(self.keep_aspect_ratio_constraint_check_box)
 
         self.game_size_constraints_dock_widget.setWidget(self.dockWidgetContents_5)
         MainWindow.addDockWidget(Qt.RightDockWidgetArea, self.game_size_constraints_dock_widget)
         QWidget.setTabOrder(self.rows_spin_box, self.cols_spin_box)
-        QWidget.setTabOrder(self.cols_spin_box, self.border_thickness_spin_box)
-        QWidget.setTabOrder(self.border_thickness_spin_box, self.cell_alive_color_button)
+        QWidget.setTabOrder(self.cols_spin_box, self.cell_alive_color_button)
         QWidget.setTabOrder(self.cell_alive_color_button, self.border_color_button)
         QWidget.setTabOrder(self.border_color_button, self.cell_dead_color_button)
         QWidget.setTabOrder(self.cell_dead_color_button, self.turn_duration_spin_box)
@@ -655,10 +651,6 @@ class Ui_MainWindow(object):
         self.turn_duration_spin_box.setSuffix(QCoreApplication.translate("MainWindow", u" ms", None))
         self.label_4.setText(QCoreApplication.translate("MainWindow", u"Column count:", None))
 #if QT_CONFIG(statustip)
-        self.border_thickness_spin_box.setStatusTip(QCoreApplication.translate("MainWindow", u"Border thickness spin box", None))
-#endif // QT_CONFIG(statustip)
-        self.border_thickness_spin_box.setSuffix(QCoreApplication.translate("MainWindow", u" px", None))
-#if QT_CONFIG(statustip)
         self.border_color_button.setStatusTip(QCoreApplication.translate("MainWindow", u"Border color button", None))
 #endif // QT_CONFIG(statustip)
         self.border_color_button.setText(QCoreApplication.translate("MainWindow", u"Choose color...", None))
@@ -670,6 +662,7 @@ class Ui_MainWindow(object):
         self.sync_button.setStatusTip(QCoreApplication.translate("MainWindow", u"Sync button", None))
 #endif // QT_CONFIG(statustip)
         self.sync_button.setText(QCoreApplication.translate("MainWindow", u"Sync", None))
+        self.border_thickness_double_spin_box.setSuffix(QCoreApplication.translate("MainWindow", u" %", None))
 #if QT_CONFIG(statustip)
         self.edit_tools_dock_widget.setStatusTip(QCoreApplication.translate("MainWindow", u"Edit tools dock widget", None))
 #endif // QT_CONFIG(statustip)
@@ -727,12 +720,8 @@ class Ui_MainWindow(object):
 #endif // QT_CONFIG(statustip)
         self.game_size_constraints_dock_widget.setWindowTitle(QCoreApplication.translate("MainWindow", u"Game size constraints", None))
 #if QT_CONFIG(statustip)
-        self.square_size_constraint_check_box.setStatusTip(QCoreApplication.translate("MainWindow", u"Square size constraint check box", None))
+        self.keep_aspect_ratio_constraint_check_box.setStatusTip(QCoreApplication.translate("MainWindow", u"Square size constraint check box", None))
 #endif // QT_CONFIG(statustip)
-        self.square_size_constraint_check_box.setText(QCoreApplication.translate("MainWindow", u"Square size constraint", None))
-#if QT_CONFIG(statustip)
-        self.perfect_size_constraint_check_box.setStatusTip(QCoreApplication.translate("MainWindow", u"Perfect size constraint check box", None))
-#endif // QT_CONFIG(statustip)
-        self.perfect_size_constraint_check_box.setText(QCoreApplication.translate("MainWindow", u"Perfect size constraint", None))
+        self.keep_aspect_ratio_constraint_check_box.setText(QCoreApplication.translate("MainWindow", u"Keep aspect ratio constraint", None))
     # retranslateUi
 

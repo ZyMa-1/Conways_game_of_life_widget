@@ -6,7 +6,7 @@ from ui.Ui_AboutDialog import Ui_AboutDialog
 
 class AboutDialog(QDialog):
     """
-    Dialog to display info about app
+    Dialog to display info about app.
     """
 
     def __init__(self, parent=None):

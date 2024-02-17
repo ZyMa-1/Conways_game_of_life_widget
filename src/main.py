@@ -37,7 +37,7 @@ def init_language_settings():
 if __name__ == '__main__':
     ensure_if_ok_to_run()
 
-    from src.widgets.MainWindow import MainWindow
+    from widgets.MainWindow import MainWindow
     app = QApplication(sys.argv)
     app.setProperty("author_name", "Mikhail Ponomaryov")
 
