@@ -12,7 +12,7 @@ from .BorderItem import BorderItem
 from .CellItem import CellItem
 from ..enums import CellEditMode, SceneCellType
 
-DEFAULT_SIZE: Final[Tuple[int, int]] = (1536, 1536)
+DEFAULT_SIZE: Final[Tuple[int, int]] = (1536, 1536)  # default size of the scene
 
 DEFAULT_BORDER_THICKNESS: Final[float] = 1  # (assigned to attribute)
 DEFAULT_TURN_DURATION: Final[int] = 1500  # ms (assigned to attribute)
@@ -57,7 +57,7 @@ class GameScene(QGraphicsScene, IMySerializable, IMyPropertySignalAccessor, meta
         # Create the scene
         self._create_scene()
 
-        # Turn timer
+        # Create turn timer
         self._timer = QTimer(self)
 
         # Connect timer

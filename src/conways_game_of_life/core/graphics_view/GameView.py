@@ -25,8 +25,6 @@ class GameView(QGraphicsView):
     def __init__(self, parent_widget: QWidget = None):
         super().__init__(parent_widget)
 
-        self._engine: Optional[GameEngine] = None
-
         self.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
         self.setVerticalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
         self.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
@@ -51,7 +49,7 @@ class GameView(QGraphicsView):
 
     def set_keep_aspect_ratio_constraint(self, value: bool):
         """
-        Sets whether the widget should keep the aspect ratio constraint.
+        Sets whether the view should keep the aspect ratio constraint of the scene.
         """
         if value:
             self._aspect_ratio_mode = Qt.AspectRatioMode.KeepAspectRatio

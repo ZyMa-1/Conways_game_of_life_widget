@@ -1,5 +1,3 @@
-from typing import Optional
-
 from PySide6.QtCore import QRectF
 from PySide6.QtGui import QColor
 from PySide6.QtWidgets import QGraphicsRectItem
@@ -32,7 +30,8 @@ class CellItem(QGraphicsRectItem):
                  color_map: dict[SceneCellType, QColor]):
         super().__init__(rect)
         self.setZValue(0)
-        self.setAcceptDrops(False)  # Disables automatic mouse events handling
+        self.setAcceptDrops(False)  # Disables receiving mouse events bypassing scene
+
         self._row = row
         self._col = col
         self._scene_cell_type = scene_cell_type
