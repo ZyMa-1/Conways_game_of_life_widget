@@ -111,8 +111,13 @@ class MainWindow(QMainWindow):
         # extra signal stuff
         self._game_engine.turn_made.connect(self.handle_turn_made)
         self._game_view.painted.connect(self.handle_game_painted)
+        self._game_engine.board_changed.connect(self.handle_game_board_changed)
 
     # Outer Signal Handlers
+    @Slot()
+    def handle_game_board_changed(self):
+        self._game_view.reset_avg_paint_performance()
+
     @Slot(list)
     def handle_patterns_data_generated(self, patterns_data: list[tuple[PatternSchema, QPixmap]]):
         self.ui.patterns_combo_box.setEnabled(True)
@@ -164,7 +169,7 @@ class MainWindow(QMainWindow):
     def handle_action_export_to_image_triggered(self):
         filename = self.main_window_utils.save_widget_to_png(self._game_view)
         if filename:
-            msg = f"File saved as {filename}"
+            msg = f"File saved as \"{filename}\""
             message_box = self.main_window_utils.create_info_msg_box(msg)
             message_box.exec()
 
@@ -172,7 +177,7 @@ class MainWindow(QMainWindow):
     def handle_action_save_config_triggered(self):
         filename = self.config_manager.save_config()
         if filename:
-            msg = f"Config saved as {filename}"
+            msg = f"Config saved as \"{filename}\""
             message_box = self.main_window_utils.create_info_msg_box(msg)
             message_box.exec()
 
@@ -180,7 +185,7 @@ class MainWindow(QMainWindow):
     def handle_action_load_config_triggered(self):
         filename = self.config_manager.load_config()
         if filename:
-            msg = f"Config loaded from {filename}"
+            msg = f"Config loaded from \"{filename}\""
             message_box = self.main_window_utils.create_info_msg_box(msg)
             message_box.exec()
             self.show_property_signal_collector_errors()
@@ -198,7 +203,7 @@ class MainWindow(QMainWindow):
         elif "en" in sender.objectName().lower():
             lang = "en"
 
-        self.settings.setValue("Language", "ru")
+        self.settings.setValue("Language", lang)
         msg = f"Language changed to '{lang}'. Restart the app to see the changes."
         message_box = self.main_window_utils.create_info_msg_box(msg)
         message_box.exec()

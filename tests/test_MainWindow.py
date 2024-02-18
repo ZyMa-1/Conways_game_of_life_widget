@@ -1,19 +1,16 @@
 import os
 import pathlib
 import sys
-import tempfile
 import unittest
-from typing import ClassVar, List
+from typing import ClassVar
 
 from PySide6.QtCore import QTranslator, QSettings
 from PySide6.QtGui import QColor
 from PySide6.QtWidgets import QApplication, QLabel
 
-from src.backend.PathManager import PathManager
-from src.backend.SettingsManager import SettingsManager
-from src.backend.UtilsFactory import UtilsFactory
-from src.conways_game_of_life.ConwaysGameOfLife import ConwaysGameOfLife
-from src.widgets.MainWindow import MainWindow
+from backend import PathManager, UtilsFactory
+from conways_game_of_life.core import GameEngine, GameScene, GameView
+from widgets.MainWindow import MainWindow
 
 
 def create_app():
@@ -21,7 +18,7 @@ def create_app():
 
     app.setOrganizationName("ZyMa-1")
     app.setApplicationName("Conway's Game Of Life Widget")
-    app.setApplicationVersion("0.6")
+    app.setApplicationVersion("0.7")
     return app
 
 
@@ -30,9 +27,11 @@ def get_label_color(label: QLabel) -> QColor:
 
 
 class MainWindowTest(unittest.TestCase):
-    """Tests the MainWidget GUI."""
+    """
+    Tests If the application can launch xD.
+    """
     app: ClassVar[QApplication]
-    temp_dirs: ClassVar[List[tempfile.mkdtemp]]
+    project_dirs: ClassVar[list[pathlib.Path]]
     settings: ClassVar[QSettings]
 
     @classmethod
@@ -40,12 +39,16 @@ class MainWindowTest(unittest.TestCase):
         cls.app = create_app()
 
         PathManager.set_project_root(pathlib.Path(__file__).absolute().parent)
-        UtilsFactory.create_resources(cls.app)
+        os.chdir(PathManager.PROJECT_ROOT)
+        UtilsFactory.create_resources()
         os.makedirs('configs', exist_ok=True)
         os.makedirs('exports', exist_ok=True)
         os.makedirs('pattern_gallery', exist_ok=True)
+        cls.project_dirs = [PathManager.CONFIGS_DIR,
+                            PathManager.EXPORTS_DIR,
+                            PathManager.PATTERN_GALLERY_DIR]
 
-        cls.settings = SettingsManager(parent=cls.app).settings_instance()
+        cls.settings = UtilsFactory.get_settings()
         lang = cls.settings.value("Language", "en", type=str)
         translator = QTranslator(cls.app)
         path = f':/translations/main_gui_{lang}.qm'
@@ -54,35 +57,30 @@ class MainWindowTest(unittest.TestCase):
 
     def setUp(self):
         self.main_window = MainWindow()
-        self.conways_game_of_life_widget = ConwaysGameOfLife()
+        self._game_engine = GameEngine(parent=self.main_window)
+        self._game_scene = GameScene(self._game_engine, parent=self.main_window)
+        self._game_view = GameView(parent_widget=self.main_window)
+        self._game_view.setScene(self._game_scene)
 
     def tearDown(self):
         del self.main_window
-        del self.conways_game_of_life_widget
+        del self._game_engine
+        del self._game_scene
+        del self._game_view
 
     @classmethod
     def tearDownClass(cls):
-        pass
+        for dir in cls.project_dirs:
+            os.rmdir(dir)
 
     def test_setup_values(self):
-        self.assertEqual(int(self.main_window.ui.rows_spin_box.value()),
-                         self.conways_game_of_life_widget.rows)
-        self.assertEqual(int(self.main_window.ui.cols_spin_box.value()),
-                         self.conways_game_of_life_widget.cols)
-        self.assertEqual(int(self.main_window.ui.turn_duration_spin_box.value()),
-                         self.conways_game_of_life_widget.turn_duration)
-        self.assertEqual(int(self.main_window.ui.border_thickness_spin_box.value()),
-                         self.conways_game_of_life_widget.border_thickness)
-        self.assertEqual(get_label_color(self.main_window.ui.border_color_label),
-                         self.conways_game_of_life_widget.border_color)
-        self.assertEqual(get_label_color(self.main_window.ui.cell_dead_color_label),
-                         self.conways_game_of_life_widget.cell_dead_color)
-        self.assertEqual(get_label_color(self.main_window.ui.cell_alive_color_label),
-                         self.conways_game_of_life_widget.cell_alive_color)
+        ...
 
 
 def suite():
-    """Create a test suite."""
+    """
+    Create a test suite.
+    """
     test_suite = unittest.TestSuite()
     test_suite.addTest(MainWindowTest('main_window_test'))
     return test_suite

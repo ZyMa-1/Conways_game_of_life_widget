@@ -5,6 +5,9 @@ from .abcs import IMyPropertyWidget, QAbcMeta
 
 
 class LabelGameRunning(QLabel, IMyPropertyWidget, metaclass=QAbcMeta):
+    """
+    'Boolean Qt-Property' <-> 'QLabel'
+    """
     def __init__(self, parent=None):
         super().__init__(parent)
 

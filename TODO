@@ -1,7 +1,6 @@
 - Zoom in/Zoom out (idk) (QGraphicsView's job)
-- Fix unittest tempfiles not creating at all
 - mypy type checks
 - consider enum for cell_alive/cell_dead???
-- Write doc strings for Qt-Properties
-- Improve speed of painting even more by using 'state' property
 - WHY IS BORDER CANNOT JUST DISAPPEAR IS THICKNESS IS SET TO 0
+- IDK about paint performance anymore (view cell-item paint method docs)
+- Why MainWindow Utils complains about importing PathManager the normal way?

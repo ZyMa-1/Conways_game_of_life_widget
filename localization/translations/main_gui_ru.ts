@@ -348,7 +348,7 @@ current active cell position</source>
     <message>
         <location filename="../../designer/MainWindow.ui" line="617"/>
         <source> %</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../../designer/MainWindow.ui" line="637"/>
@@ -444,7 +444,7 @@ position</source>
     <message>
         <location filename="../../designer/MainWindow.ui" line="950"/>
         <source>Keep aspect ratio constraint</source>
-        <translation type="unfinished"></translation>
+        <translation>Сохранять ограничение соотношения сторон</translation>
     </message>
     <message>
         <location filename="../../designer/MainWindow.ui" line="859"/>

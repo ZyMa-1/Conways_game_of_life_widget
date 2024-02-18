@@ -5,6 +5,9 @@ from .abcs import IMyPropertyWidget, QAbcMeta
 
 
 class SpinBoxInt(QSpinBox, IMyPropertyWidget, metaclass=QAbcMeta):
+    """
+    'Integer Qt-Property' <-> 'QSpinBox'
+    """
     def __init__(self, parent=None):
         super().__init__(parent)
 

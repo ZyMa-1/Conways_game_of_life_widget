@@ -5,7 +5,7 @@ from contextlib import contextmanager
 from json import JSONDecodeError
 from typing import ContextManager
 
-from PySide6.QtCore import QRunnable, QObject, Signal, Slot, Qt
+from PySide6.QtCore import QRunnable, QObject, Signal, Slot, Qt, QRectF
 from PySide6.QtGui import QPainter, QPixmap
 from jsonschema import validators
 from jsonschema.exceptions import ValidationError
@@ -99,6 +99,10 @@ class PatternsDataLoader(QRunnable):
 
     @staticmethod
     def generate_pixmap(parsed_data: PatternSchema) -> QPixmap:
+        """
+        Renders Scene on the QPixMap.
+        Return QPixMap with target width 32 and the same aspect ratio as the Scene.
+        """
         with _temp_game_context() as game_components:
             engine, scene, view = game_components
             engine.setProperty('rows', parsed_data["rows"])
@@ -106,17 +110,19 @@ class PatternsDataLoader(QRunnable):
             engine.setProperty('state', parsed_data["state"])
             scene.setProperty('border_thickness', 0)
 
-            pixmap = QPixmap(view.viewport().size())
+            target_width = 32
+            original_rect = scene.sceneRect()
+            original_width = original_rect.width()
+            original_height = original_rect.height()
+            aspect_ratio = original_width / original_height
+            target_height = int(target_width / aspect_ratio)
+
+            pixmap = QPixmap(target_width, target_height)
+            pixmap.fill(Qt.transparent)
 
             with QPainter(pixmap) as painter:
-                view.render(painter)
-
-                result_width = 32
-                aspect_ratio = pixmap.width() / pixmap.height()
-                result_height = int(result_width / aspect_ratio)
-                resized_pixmap = pixmap.scaled(result_width, result_height, Qt.AspectRatioMode.KeepAspectRatio)
-
-                return resized_pixmap
+                scene.render(painter, QRectF(pixmap.rect()))
+            return pixmap
 
     def load_file_paths(self):
         json_file_paths = []

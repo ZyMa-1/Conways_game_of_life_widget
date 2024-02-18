@@ -6,6 +6,9 @@ from .abcs import IMyPropertyWidget, QAbcMeta
 
 
 class LabelColor(QLabel, IMyPropertyWidget, metaclass=QAbcMeta):
+    """
+    'QColor Qt-Property' <-> 'QLabel'
+    """
     bg_color_changed = Signal(QColor)
 
     def __init__(self, parent=None):

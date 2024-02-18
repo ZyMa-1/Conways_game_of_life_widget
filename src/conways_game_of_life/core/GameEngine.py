@@ -204,13 +204,19 @@ class GameEngine(QObject, IMySerializable, IMyPropertySignalAccessor, metaclass=
     dead_cells_changed = Signal(int)
 
     # Pyqt properties (notify is not 'automatic'):
-    state = Property(list, get_state, set_state)  # Does not work in Qt-Designer
-    cols = Property(int, get_cols, set_cols)
-    rows = Property(int, get_rows, set_rows)
+    state = Property(list, get_state, set_state,
+                     doc=f"2D array consisting of {CELL_ALIVE} and {CELL_DEAD}")  # Does not work in Qt-Designer
+    cols = Property(int, get_cols, set_cols,
+                    doc="Number of column in the 2D board")
+    rows = Property(int, get_rows, set_rows,
+                    doc="Number of rows in the 2D board")
     # read_only
-    turn_number = Property(int, get_turn_number, notify=turn_number_changed)
-    alive_cells = Property(int, get_alive_cells, notify=alive_cells_changed)
-    dead_cells = Property(int, get_dead_cells, notify=dead_cells_changed)
+    turn_number = Property(int, get_turn_number, notify=turn_number_changed,
+                           doc="Current turn number of the game")
+    alive_cells = Property(int, get_alive_cells, notify=alive_cells_changed,
+                           doc="Number of alive cells on the board")
+    dead_cells = Property(int, get_dead_cells, notify=dead_cells_changed,
+                          doc="Number of dead cells on the board")
 
     # Abstract methods implementation
     _SAVABLE_PROPERTIES = \

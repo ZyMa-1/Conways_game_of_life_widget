@@ -1,3 +1,5 @@
+from typing import Optional
+
 from PySide6.QtCore import QRectF
 from PySide6.QtGui import QColor
 from PySide6.QtWidgets import QGraphicsRectItem
@@ -31,11 +33,11 @@ class CellItem(QGraphicsRectItem):
         super().__init__(rect)
         self.setZValue(0)
         self.setAcceptDrops(False)  # Disables automatic mouse events handling
-
         self._row = row
         self._col = col
         self._scene_cell_type = scene_cell_type
         self._color_map = color_map
+        self._last_data: Optional[dict] = None  # The key for optimizing paint method
 
     def update_color_map(self, key: SceneCellType, color: QColor):
         self._color_map[key] = color
@@ -45,8 +47,24 @@ class CellItem(QGraphicsRectItem):
 
     def paint(self, painter, option, widget=None):
         """
-        In the paint method logic of the Engine and Scene merges together.
+        tl;dr
+        Somehow upon updating item with row=x, col=y,
+        adjacent items are being updated too, and their paint method invokes too.
+        Upon inspecting the issue found out that
+        "self.boundingRect()" is not completely equal to "self.rect()".
+        The values of their x, y, w, h differ between each other from around 0.5 to 1.0 pixels.
+        That fucking sucks.
+
+        Tried to apply margin to the board, since the cell(0, 0) have (-0.5, -0.5) top left point,
+        but it seems that the problem with item coordinates, but not the margins.
+
+        On the other hand I do not think that optimization of limiting cell redraws
+        would impact performance so much,
+        since the Qt should already perform such optimization.
+        But nevertheless I think that my optimization would impact the performance anyway in some
+        or another way.
         """
+        # print(self._row, self._col, self.boundingRect(), self.rect())
         super().paint(painter, option, None)
         color = self._color_map[self._scene_cell_type]
         painter.fillRect(self.rect(), color)

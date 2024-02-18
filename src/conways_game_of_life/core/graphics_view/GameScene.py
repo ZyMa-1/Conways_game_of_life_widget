@@ -149,8 +149,8 @@ class GameScene(QGraphicsScene, IMySerializable, IMyPropertySignalAccessor, meta
         self._turn_duration = DEFAULT_TURN_DURATION
         self._active_cell = (0, 0)
 
-        self._update_scene_items()
         self._engine.reset_to_defaults()
+        self._update_scene_items()
 
     def _update_cell_item_type(self, row: int, col: int):
         """
@@ -164,8 +164,19 @@ class GameScene(QGraphicsScene, IMySerializable, IMyPropertySignalAccessor, meta
         """
         Updates all cell item types.
         """
+        # Speeding up the process by retrieving the whole state at once
+        engine_state = self._engine.state
         for (row, col), cell_item in self._cell_item_map.items():
-            cell_item.set_scene_cell_type(self._get_scene_cell_type_at(row, col))
+            if engine_state[row][col] == CELL_ALIVE:
+                scene_cell_type = SceneCellType.ALIVE
+            else:
+                scene_cell_type = SceneCellType.DEAD
+            cell_item.set_scene_cell_type(scene_cell_type)
+            cell_item.update()
+
+        if self._active_cell:
+            cell_item = self._cell_item_map[self._active_cell]
+            cell_item.set_scene_cell_type(SceneCellType.ACTIVE)
             cell_item.update()
 
     # Helper methods
@@ -345,26 +356,13 @@ class GameScene(QGraphicsScene, IMySerializable, IMyPropertySignalAccessor, meta
             self._update_cell_item_type(new_row, new_col)
 
     # Geometry methods
-    def _cell_coordinates_from_point(self, point: QPoint | QPointF) -> Optional[tuple[int, int]]:
-        """
-        Maps Scene point to the cell coordinates.
-        """
-        cell_size = self._cell_size()
-        row = int(point.y() / cell_size.height())
-        col = int(point.x() / cell_size.width())
-        h_margin = row * cell_size.height()
-        w_margin = col * cell_size.width()
-        pos = QPointF(w_margin, h_margin)
-        cell = QRectF(pos, cell_size)
-        if cell.contains(point) and 0 <= row < self._engine.rows and 0 <= col < self._engine.cols:
-            return row, col
-        return None
+    # _BOARD_MARGIN = 2.0  # px NOT HELPFUL
 
     def _cell_width(self) -> float:
-        return self.width() / self._engine.cols
+        return (self.width()) / self._engine.cols
 
     def _cell_height(self) -> float:
-        return self.height() / self._engine.rows
+        return (self.height()) / self._engine.rows
 
     def _cell_size(self) -> QSizeF:
         return QSizeF(self._cell_width(), self._cell_height())
@@ -379,10 +377,20 @@ class GameScene(QGraphicsScene, IMySerializable, IMyPropertySignalAccessor, meta
         Bound rect for the cell.
         """
         cell_size = self._cell_size()
-        h_margin = row * cell_size.height()
-        w_margin = col * cell_size.width()
-        pos = QPointF(w_margin, h_margin)
+        pos = self._cell_top_left_point(row, col)
         return QRectF(pos, cell_size)
+
+    def _cell_coordinates_from_point(self, point: QPoint | QPointF) -> Optional[tuple[int, int]]:
+        """
+        Maps Scene point to the cell coordinates.
+        """
+        cell_size = self._cell_size()
+        row = int((point.y()) / cell_size.height())
+        col = int((point.x()) / cell_size.width())
+        cell = self._cell_rect(row, col)
+        if cell.contains(point) and 0 <= row < self._engine.rows and 0 <= col < self._engine.cols:
+            return row, col
+        return None
 
     # Slots
     @Slot()
@@ -414,13 +422,19 @@ class GameScene(QGraphicsScene, IMySerializable, IMyPropertySignalAccessor, meta
     # Must have '_NOTIFY_SIGNAL_SUFFIX' suffix.
     is_game_running_changed = Signal(bool)
     # Qt-Properties (notify is not 'automatic'):
-    turn_duration = Property(int, get_turn_duration, set_turn_duration)
-    border_thickness = Property(float, get_border_thickness, set_border_thickness)
-    border_color = Property(QColor, get_border_color, set_border_color)
-    cell_dead_color = Property(QColor, get_cell_dead_color, set_cell_dead_color)
-    cell_alive_color = Property(QColor, get_cell_alive_color, set_cell_alive_color)
+    turn_duration = Property(int, get_turn_duration, set_turn_duration,
+                             doc="Turn duration in ms")
+    border_thickness = Property(float, get_border_thickness, set_border_thickness,
+                                doc="Border thickness in percentage")
+    border_color = Property(QColor, get_border_color, set_border_color,
+                            doc="Border color")
+    cell_dead_color = Property(QColor, get_cell_dead_color, set_cell_dead_color,
+                               doc="Cell dead color")
+    cell_alive_color = Property(QColor, get_cell_alive_color, set_cell_alive_color,
+                                doc="Cell alive color")
     # Read only
-    is_game_running = Property(bool, get_is_game_running, notify=is_game_running_changed)
+    is_game_running = Property(bool, get_is_game_running, notify=is_game_running_changed,
+                               doc="Is game running boolean property")
 
     # Abstract methods implementation
     _SAVABLE_PROPERTIES = \

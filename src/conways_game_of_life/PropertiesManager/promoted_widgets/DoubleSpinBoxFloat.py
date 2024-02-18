@@ -1,11 +1,13 @@
 from PySide6.QtCore import Slot
 from PySide6.QtWidgets import QDoubleSpinBox
 
-from conways_game_of_life.PropertiesManager.promoted_widgets.abcs import IMyPropertyWidget
-from conways_game_of_life.core.abcs import QAbcMeta
+from .abcs import QAbcMeta, IMyPropertyWidget
 
 
 class DoubleSpinBoxFloat(QDoubleSpinBox, IMyPropertyWidget, metaclass=QAbcMeta):
+    """
+    'Float Qt-Property' <-> 'QDoubleSpinBox'
+    """
     def __init__(self, parent=None):
         super().__init__(parent)
 

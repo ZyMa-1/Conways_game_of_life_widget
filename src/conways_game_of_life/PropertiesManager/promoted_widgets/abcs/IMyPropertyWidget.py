@@ -11,10 +11,14 @@ class IMyPropertyWidget(ABC):
 
     @abstractmethod
     def property_slot(self, value):
-        """Slot for the property's notify signal"""
+        """
+        Slot for the property's notify signal.
+        """
         pass
 
     @abstractmethod
     def to_property_value(self):
-        """Converts current widget state to property value"""
+        """
+        Converts current widget state to property value.
+        """
         pass

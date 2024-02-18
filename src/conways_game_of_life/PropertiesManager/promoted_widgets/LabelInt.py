@@ -5,6 +5,9 @@ from .abcs import IMyPropertyWidget, QAbcMeta
 
 
 class LabelInt(QLabel, IMyPropertyWidget, metaclass=QAbcMeta):
+    """
+    'Integer Qt-Property' <-> 'QLabel'
+    """
     def __init__(self, parent=None):
         super().__init__(parent)
 

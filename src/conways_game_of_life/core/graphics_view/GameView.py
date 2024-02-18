@@ -39,6 +39,10 @@ class GameView(QGraphicsView):
         self._sum_paint_performance: float = 0
         self._paint_count: int = 0
 
+    def reset_avg_paint_performance(self):
+        self._sum_paint_performance: float = 0
+        self._paint_count: int = 0
+
     def get_avg_paint_performance(self) -> float:
         """
         Returns avg paint performance in seconds.

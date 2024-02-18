@@ -5,8 +5,8 @@ import sys
 from PySide6.QtCore import QTranslator
 from PySide6.QtWidgets import QApplication
 
-from backend.PathManager import PathManager
-from backend.UtilsFactory import UtilsFactory
+from backend import PathManager
+from backend import UtilsFactory
 
 
 # FOR DEBUGGING (to receive dumpObjectInfo output)
@@ -19,6 +19,7 @@ from backend.UtilsFactory import UtilsFactory
 
 def ensure_if_ok_to_run():
     PathManager.set_project_root(pathlib.Path(__file__).absolute().parent.parent)
+    os.chdir(PathManager.PROJECT_ROOT)
     os.makedirs('configs', exist_ok=True)
     os.makedirs('exports', exist_ok=True)
     os.makedirs('pattern_gallery', exist_ok=True)
@@ -43,7 +44,7 @@ if __name__ == '__main__':
 
     app.setOrganizationName("ZyMa-1")
     app.setApplicationName("Conway's Game Of Life Widget")
-    app.setApplicationVersion("0.6")
+    app.setApplicationVersion("0.7")
 
     # Retrieving language value from settings
     init_language_settings()

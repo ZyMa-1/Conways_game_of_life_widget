@@ -4,7 +4,7 @@ from typing import Optional
 from PySide6.QtCore import QObject
 from PySide6.QtWidgets import QWidget, QFileDialog, QMainWindow, QMessageBox
 
-from backend import PathManager
+from .PathManager import PathManager
 
 
 class MainWindowUtils(QObject):
@@ -26,6 +26,10 @@ class MainWindowUtils(QObject):
         self.warning_msg_box.setIcon(QMessageBox.Icon.Warning)
 
     def save_widget_to_png(self, widget: QWidget) -> Optional[str]:
+        """
+        Saves given widget into a PNG file.
+        Returns filename if operation was completed, None otherwise.
+        """
         file_dialog = QFileDialog(self.main_window)
         file_dialog.setDefaultSuffix('png')
         file_dialog.setDirectory(str(PathManager.EXPORTS_DIR))
