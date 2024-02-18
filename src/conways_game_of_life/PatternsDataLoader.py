@@ -51,7 +51,7 @@ class PatternsDataLoader(QRunnable):
     QRunnable that processes the JSON pattern data according to defined schema.
 
     Responsible for retrieving JSON files in a directory,
-    validating and rendering them on the game widget to generate QPixmap for each pattern.
+    validating, and rendering them on the game widget to generate QPixmap for each pattern.
     Emits the 'finished' and 'data_generated' Signals when it has done the job.
     """
 
