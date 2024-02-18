@@ -57,7 +57,7 @@ class GameScene(QGraphicsScene, IMySerializable, IMyPropertySignalAccessor, meta
         # Create the scene
         self._create_scene()
 
-        # Turn timer
+        # Create turn timer
         self._timer = QTimer(self)
 
         # Connect timer
