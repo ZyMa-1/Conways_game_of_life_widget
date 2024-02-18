@@ -22,7 +22,7 @@ class GameView(QGraphicsView):
     # Emits after paintEvent method is done
     painted = Signal()
 
-    def __init__(self, parent_widget: QWidget = None):
+    def __init__(self, parent_widget: Optional[QWidget] = None):
         super().__init__(parent_widget)
 
         self.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)

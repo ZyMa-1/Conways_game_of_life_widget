@@ -19,7 +19,7 @@ class GameConfigManager(QObject):
     Class for saving and loading game properties using JSON format.
     """
 
-    def __init__(self, game_objects: Iterable[gameWithPropertiesT], parent_widget: QWidget = None):
+    def __init__(self, game_objects: Iterable[gameWithPropertiesT], parent_widget: Optional[QWidget] = None):
         super().__init__(parent_widget)
 
         self._game_objects = game_objects

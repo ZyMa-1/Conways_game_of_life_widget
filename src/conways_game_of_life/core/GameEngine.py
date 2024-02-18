@@ -1,4 +1,5 @@
 import time
+from typing import Any
 
 import numpy as np
 from scipy.signal import convolve2d
@@ -12,7 +13,7 @@ DEFAULT_ROWS = 10  # px (assigned to attribute)
 CELL_ALIVE = '*'  # (used)
 CELL_DEAD = '.'  # (used)
 
-StateT = np.ndarray[(int, int)]
+StateT = np.ndarray[Any, np.dtype[Any]]
 StatePropertyT = list[list[str]]
 
 

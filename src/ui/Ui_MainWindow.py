@@ -26,9 +26,9 @@ from conways_game_of_life.PropertiesManager.promoted_widgets.DoubleSpinBoxFloat 
 from conways_game_of_life.PropertiesManager.promoted_widgets.LabelColor import LabelColor
 from conways_game_of_life.PropertiesManager.promoted_widgets.LabelGameRunning import LabelGameRunning
 from conways_game_of_life.PropertiesManager.promoted_widgets.LabelInt import LabelInt
+from conways_game_of_life.PropertiesManager.promoted_widgets.SpinBoxInt import SpinBoxInt
 from conways_game_of_life.core.graphics_view.GameView import GameView
-from src.conways_game_of_life.PropertiesManager.promoted_widgets.SpinBoxInt import SpinBoxInt
-from src.widgets.promoted.ChooseColorPushButton import ChooseColorPushButton
+from widgets.promoted.ChooseColorPushButton import ChooseColorPushButton
 import src.resources.rc_resources
 
 class Ui_MainWindow(object):

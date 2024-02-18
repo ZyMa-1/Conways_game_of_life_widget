@@ -1092,12 +1092,12 @@ position</string>
   <customwidget>
    <class>SpinBoxInt</class>
    <extends>QSpinBox</extends>
-   <header>src/conways_game_of_life/PropertiesManager/promoted_widgets/SpinBoxInt</header>
+   <header>conways_game_of_life/PropertiesManager/promoted_widgets/SpinBoxInt</header>
   </customwidget>
   <customwidget>
    <class>ChooseColorPushButton</class>
    <extends>QPushButton</extends>
-   <header>src/widgets/promoted/ChooseColorPushButton</header>
+   <header>widgets/promoted/ChooseColorPushButton</header>
   </customwidget>
   <customwidget>
    <class>GameView</class>

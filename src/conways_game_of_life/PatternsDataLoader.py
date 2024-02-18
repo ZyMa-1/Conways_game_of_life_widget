@@ -118,7 +118,7 @@ class PatternsDataLoader(QRunnable):
             target_height = int(target_width / aspect_ratio)
 
             pixmap = QPixmap(target_width, target_height)
-            pixmap.fill(Qt.transparent)
+            pixmap.fill(Qt.GlobalColor.transparent)
 
             with QPainter(pixmap) as painter:
                 scene.render(painter, QRectF(pixmap.rect()))
