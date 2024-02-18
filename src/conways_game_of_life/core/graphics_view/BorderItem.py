@@ -13,7 +13,7 @@ class BorderItem(QGraphicsLineItem):
     def __init__(self, line: QLineF, *, color: QColor, thickness_percentage: float, scene_width: float):
         super().__init__(line)
         self.setZValue(1)
-        self.setAcceptDrops(False)  # Disables automatic mouse events handling
+        self.setAcceptDrops(False)  # Disables receiving mouse events bypassing scene
 
         self.set_color(color)
         self.set_thickness_percentage(thickness_percentage, scene_width=scene_width)
