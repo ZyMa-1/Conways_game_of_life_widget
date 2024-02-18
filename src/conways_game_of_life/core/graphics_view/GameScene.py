@@ -401,7 +401,7 @@ class GameScene(QGraphicsScene, IMySerializable, IMyPropertySignalAccessor, meta
         # Update the active cell, so it does not go off board
         if self._active_cell is not None:
             if self._active_cell[0] >= self._engine.rows:
-                self._active_cell = (self._engine.rows, self._active_cell[1])
+                self._active_cell = (self._engine.rows - 1, self._active_cell[1])
             if self._active_cell[1] >= self._engine.cols:
                 self._active_cell = (self._active_cell[0], self._engine.cols - 1)
 
