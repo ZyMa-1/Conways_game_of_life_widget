@@ -24,6 +24,7 @@ class GameView(QGraphicsView):
 
     def __init__(self, parent_widget: QWidget = None):
         super().__init__(parent_widget)
+
         self.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
         self.setVerticalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
         self.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
