@@ -1,16 +1,13 @@
-import os
 import pathlib
 import sys
 import unittest
 from typing import ClassVar
 
-from PySide6.QtCore import QTranslator, QSettings
+from PySide6.QtCore import QSettings
 from PySide6.QtGui import QColor
 from PySide6.QtWidgets import QApplication, QLabel
 
-from backend import PathManager, UtilsFactory
-from conways_game_of_life.core import GameEngine, GameScene, GameView
-from widgets.MainWindow import MainWindow
+from src.conways_game_of_life.core import GameEngine, GameScene, GameView
 
 
 def create_app():
@@ -38,40 +35,20 @@ class MainWindowTest(unittest.TestCase):
     def setUpClass(cls):
         cls.app = create_app()
 
-        PathManager.set_project_root(pathlib.Path(__file__).absolute().parent)
-        os.chdir(PathManager.PROJECT_ROOT)
-        UtilsFactory.create_resources()
-        os.makedirs('configs', exist_ok=True)
-        os.makedirs('exports', exist_ok=True)
-        os.makedirs('pattern_gallery', exist_ok=True)
-        cls.project_dirs = [PathManager.CONFIGS_DIR,
-                            PathManager.EXPORTS_DIR,
-                            PathManager.PATTERN_GALLERY_DIR]
-
-        cls.settings = UtilsFactory.get_settings()
-        lang = cls.settings.value("Language", "en", type=str)
-        translator = QTranslator(cls.app)
-        path = f':/translations/main_gui_{lang}.qm'
-        if translator.load(path):
-            cls.app.installTranslator(translator)
-
     def setUp(self):
-        self.main_window = MainWindow()
-        self._game_engine = GameEngine(parent=self.main_window)
-        self._game_scene = GameScene(self._game_engine, parent=self.main_window)
-        self._game_view = GameView(parent_widget=self.main_window)
+        self._game_engine = GameEngine()
+        self._game_scene = GameScene(self._game_engine)
+        self._game_view = GameView()
         self._game_view.setScene(self._game_scene)
 
     def tearDown(self):
-        del self.main_window
         del self._game_engine
         del self._game_scene
         del self._game_view
 
     @classmethod
     def tearDownClass(cls):
-        for dir in cls.project_dirs:
-            os.rmdir(dir)
+        pass
 
     def test_setup_values(self):
         ...
