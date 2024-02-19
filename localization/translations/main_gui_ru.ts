@@ -455,12 +455,12 @@ position</source>
     <message>
         <location filename="../../designer/MainWindow.ui" line="996"/>
         <source>On</source>
-        <translation>Выкл.</translation>
+        <translation>Вкл.</translation>
     </message>
     <message>
         <location filename="../../designer/MainWindow.ui" line="1003"/>
         <source>Off</source>
-        <translation>Вкл.</translation>
+        <translation>Выкл.</translation>
     </message>
     <message>
         <location filename="../../designer/MainWindow.ui" line="869"/>
