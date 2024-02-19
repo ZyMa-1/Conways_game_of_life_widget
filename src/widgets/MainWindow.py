@@ -1,5 +1,6 @@
 from PySide6.QtCore import Slot, QThreadPool, Qt
 from PySide6.QtGui import QActionGroup, QPixmap, QIcon
+from PySide6.QtMultimedia import QMediaPlayer, QAudioOutput
 from PySide6.QtWidgets import QMainWindow, QButtonGroup
 
 from backend import MainWindowUtils, SignalCollector, UtilsFactory
@@ -102,6 +103,12 @@ class MainWindow(QMainWindow):
         self.patterns_data_loader = PatternsDataLoader()
         self.patterns_data_loader.signals.data_generated.connect(self.handle_patterns_data_generated)
         self.thread_pool.start(self.patterns_data_loader)
+
+        # Create media player
+        self.media_player = QMediaPlayer()
+        self.media_audio_output = QAudioOutput()
+        self.media_player.setAudioOutput(self.media_audio_output)
+        # self.media_player.setSource(QMediaContent(QUrl.fromLocalFile('background_music.mp3')))
 
         # Init UI (more like create things Qt-designer cannot handle)
         self.init_ui()
@@ -210,24 +217,18 @@ class MainWindow(QMainWindow):
 
     @Slot(bool)
     def handle_default_mode_tool_button_toggled(self, is_checked: bool):
-        if not is_checked:
-            return
-
-        self._game_scene.set_cell_edit_mode(CellEditMode.DEFAULT)
+        if is_checked:
+            self._game_scene.set_cell_edit_mode(CellEditMode.DEFAULT)
 
     @Slot(bool)
     def handle_paint_mode_tool_button_toggled(self, is_checked: bool):
-        if not is_checked:
-            return
-
-        self._game_scene.set_cell_edit_mode(CellEditMode.PAINT)
+        if is_checked:
+            self._game_scene.set_cell_edit_mode(CellEditMode.PAINT)
 
     @Slot(bool)
     def handle_erase_mode_tool_button_toggled(self, is_checked: bool):
-        if not is_checked:
-            return
-
-        self._game_scene.set_cell_edit_mode(CellEditMode.ERASE)
+        if is_checked:
+            self._game_scene.set_cell_edit_mode(CellEditMode.ERASE)
 
     @Slot()
     def handle_insert_pattern_button_clicked(self):
@@ -251,6 +252,18 @@ class MainWindow(QMainWindow):
     def handle_keep_aspect_ratio_constraint_check_box_state_changed(self, state):
         val = (state == Qt.CheckState.Checked.value)
         self._game_view.set_keep_aspect_ratio_constraint(val)
+
+    @Slot()
+    def handle_on_radio_button_clicked(self):
+        self.media_player.play()
+
+    @Slot()
+    def handle_off_radio_button_clicked(self):
+        self.media_player.stop()
+
+    @Slot(int)
+    def handle_volume_horizontal_slider_value_changed(self, value: int):
+        self.media_audio_output.setVolume(value)
 
     # Errors collector
     def show_property_signal_collector_errors(self):
@@ -277,6 +290,11 @@ class MainWindow(QMainWindow):
         _tools_action_group.addButton(self.ui.default_mode_tool_button)
         _tools_action_group.addButton(self.ui.paint_mode_tool_button)
         _tools_action_group.addButton(self.ui.erase_mode_tool_button)
+
+        _radio_button_group = QButtonGroup(self)
+        _radio_button_group.setExclusive(True)
+        _radio_button_group.addButton(self.ui.on_radio_button)
+        _radio_button_group.addButton(self.ui.off_radio_button)
 
         # Dock widget visibility - Checkable actions
         _binder1 = DockWidgetActionBinder(self,
@@ -314,7 +332,7 @@ class MainWindow(QMainWindow):
         self.ui.action_english_US.changed.connect(self.handle_language_changed)
         self.ui.action_russian_RU.changed.connect(self.handle_language_changed)
 
-        # Buttons/Toggles
+        # Buttons/Toggles/Sliders
         self.ui.start_button.clicked.connect(self.handle_start_button_clicked)
         self.ui.stop_button.clicked.connect(self.handle_stop_button_clicked)
         self.ui.clear_board_button.clicked.connect(self.handle_clear_board_button_clicked)
@@ -328,6 +346,9 @@ class MainWindow(QMainWindow):
         self.ui.sync_button.clicked.connect(self.handle_sync_button_clicked)
         self.ui.keep_aspect_ratio_constraint_check_box.stateChanged.connect(
             self.handle_keep_aspect_ratio_constraint_check_box_state_changed)
+        self.ui.on_radio_button.clicked.connect(self.handle_on_radio_button_clicked)
+        self.ui.off_radio_button.clicked.connect(self.handle_off_radio_button_clicked)
+        self.ui.volume_horizontal_slider.valueChanged.connect(self.handle_volume_horizontal_slider_value_changed)
 
         # ChooseColor buttons and LabelColors
         self.ui.border_color_button.connect_label(self.ui.border_color_label)

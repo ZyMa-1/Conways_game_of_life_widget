@@ -197,8 +197,8 @@ class GameScene(QGraphicsScene, IMySerializable, IMyPropertySignalAccessor, meta
 
     @property_setter_error_handle
     def set_turn_duration(self, value: int):
-        if value < 100:
-            raise ValueError("Turn duration must be greater than or equal to 100")
+        if value < 10:
+            raise ValueError("Turn duration must be greater than or equal to 10")
         self._turn_duration = value
 
     def get_border_thickness(self):

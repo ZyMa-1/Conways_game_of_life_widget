@@ -966,7 +966,7 @@ position</string>
   </widget>
   <widget class="QDockWidget" name="audio_dock_widget">
    <property name="enabled">
-    <bool>false</bool>
+    <bool>true</bool>
    </property>
    <property name="maximumSize">
     <size>
@@ -1002,12 +1002,21 @@ position</string>
          <property name="text">
           <string>Off</string>
          </property>
+         <property name="checked">
+          <bool>true</bool>
+         </property>
         </widget>
        </item>
       </layout>
      </item>
      <item>
       <widget class="QSlider" name="volume_horizontal_slider">
+       <property name="maximum">
+        <number>100</number>
+       </property>
+       <property name="value">
+        <number>100</number>
+       </property>
        <property name="orientation">
         <enum>Qt::Horizontal</enum>
        </property>
