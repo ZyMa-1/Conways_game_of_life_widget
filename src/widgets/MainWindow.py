@@ -262,6 +262,10 @@ class MainWindow(QMainWindow):
 
     # Init methods
     def init_ui(self):
+        # Hide audio dock widget and adjust size of the main window after it
+        self.ui.audio_dock_widget.setVisible(False)
+        self.adjustSize()
+
         # Create groups
         _lang_action_group = QActionGroup(self)
         _lang_action_group.setExclusive(True)
@@ -290,6 +294,9 @@ class MainWindow(QMainWindow):
         _binder5 = DockWidgetActionBinder(self,
                                           self.ui.action_view_game_size_constraints,
                                           self.ui.game_size_constraints_dock_widget)
+        _binder6 = DockWidgetActionBinder(self,
+                                          self.ui.action_view_audio,
+                                          self.ui.audio_dock_widget)
 
         # Change language check box
         lang = self.settings.value("Language", "en", type=str)

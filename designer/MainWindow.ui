@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>690</width>
-    <height>467</height>
+    <height>526</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -110,6 +110,9 @@
       </item>
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout_2">
+        <property name="sizeConstraint">
+         <enum>QLayout::SetMinimumSize</enum>
+        </property>
         <property name="topMargin">
          <number>0</number>
         </property>
@@ -143,6 +146,12 @@
       </item>
       <item>
        <widget class="GameView" name="game_view">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
         <property name="minimumSize">
          <size>
           <width>264</width>
@@ -272,6 +281,7 @@
     <addaction name="action_view_pattern_gallery"/>
     <addaction name="action_view_game_statistics"/>
     <addaction name="action_view_game_size_constraints"/>
+    <addaction name="action_view_audio"/>
    </widget>
    <widget class="QMenu" name="menuLanguage">
     <property name="title">
@@ -954,6 +964,58 @@ position</string>
     </layout>
    </widget>
   </widget>
+  <widget class="QDockWidget" name="audio_dock_widget">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="maximumSize">
+    <size>
+     <width>228</width>
+     <height>85</height>
+    </size>
+   </property>
+   <property name="floating">
+    <bool>false</bool>
+   </property>
+   <property name="windowTitle">
+    <string>Audio</string>
+   </property>
+   <attribute name="dockWidgetArea">
+    <number>2</number>
+   </attribute>
+   <widget class="QWidget" name="dockWidgetContents_7">
+    <layout class="QVBoxLayout" name="verticalLayout_7">
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_4">
+       <property name="topMargin">
+        <number>0</number>
+       </property>
+       <item>
+        <widget class="QRadioButton" name="on_radio_button">
+         <property name="text">
+          <string>On</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QRadioButton" name="off_radio_button">
+         <property name="text">
+          <string>Off</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <widget class="QSlider" name="volume_horizontal_slider">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+  </widget>
   <action name="action_about">
    <property name="text">
     <string>About</string>
@@ -1070,6 +1132,14 @@ position</string>
    </property>
    <property name="text">
     <string>Game size constraints</string>
+   </property>
+  </action>
+  <action name="action_view_audio">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Audio</string>
    </property>
   </action>
  </widget>

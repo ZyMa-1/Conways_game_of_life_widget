@@ -5,8 +5,6 @@ from PySide6.QtCore import Qt, QSize, Signal
 from PySide6.QtGui import QPainter
 from PySide6.QtWidgets import QGraphicsView, QSizePolicy, QWidget
 
-from ..GameEngine import GameEngine
-
 MINIMUM_SIZE: Final[tuple[int, int]] = (264, 264)
 
 
@@ -27,7 +25,7 @@ class GameView(QGraphicsView):
 
         self.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
         self.setVerticalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
-        self.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
+        self.setSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Preferred)
         self.setRenderHint(QPainter.RenderHint.Antialiasing)
         self.setFocusPolicy(Qt.FocusPolicy.StrongFocus)
         self.setMouseTracking(True)
@@ -72,4 +70,7 @@ class GameView(QGraphicsView):
         self.painted.emit()
 
     def minimumSizeHint(self):
+        return QSize(*MINIMUM_SIZE)
+
+    def sizeHint(self):
         return QSize(*MINIMUM_SIZE)

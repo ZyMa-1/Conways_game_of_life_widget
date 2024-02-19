@@ -19,8 +19,9 @@ from PySide6.QtGui import (QAction, QBrush, QColor, QConicalGradient,
 from PySide6.QtWidgets import (QApplication, QButtonGroup, QCheckBox, QComboBox,
     QDockWidget, QGridLayout, QHBoxLayout, QLabel,
     QLayout, QMainWindow, QMenu, QMenuBar,
-    QPushButton, QSizePolicy, QSpacerItem, QStatusBar,
-    QToolButton, QVBoxLayout, QWidget)
+    QPushButton, QRadioButton, QSizePolicy, QSlider,
+    QSpacerItem, QStatusBar, QToolButton, QVBoxLayout,
+    QWidget)
 
 from conways_game_of_life.PropertiesManager.promoted_widgets.DoubleSpinBoxFloat import DoubleSpinBoxFloat
 from conways_game_of_life.PropertiesManager.promoted_widgets.LabelColor import LabelColor
@@ -35,7 +36,7 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
-        MainWindow.resize(690, 467)
+        MainWindow.resize(690, 526)
         sizePolicy = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -77,6 +78,9 @@ class Ui_MainWindow(object):
         self.action_view_game_size_constraints.setObjectName(u"action_view_game_size_constraints")
         self.action_view_game_size_constraints.setCheckable(True)
         self.action_view_game_size_constraints.setChecked(True)
+        self.action_view_audio = QAction(MainWindow)
+        self.action_view_audio.setObjectName(u"action_view_audio")
+        self.action_view_audio.setCheckable(True)
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
         self.horizontalLayout = QHBoxLayout(self.centralwidget)
@@ -124,6 +128,7 @@ class Ui_MainWindow(object):
 
         self.horizontalLayout_2 = QHBoxLayout()
         self.horizontalLayout_2.setObjectName(u"horizontalLayout_2")
+        self.horizontalLayout_2.setSizeConstraint(QLayout.SetMinimumSize)
         self.horizontalLayout_2.setContentsMargins(-1, 0, -1, -1)
         self.horizontalSpacer = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
 
@@ -140,6 +145,11 @@ class Ui_MainWindow(object):
 
         self.game_view = GameView(self.centralwidget)
         self.game_view.setObjectName(u"game_view")
+        sizePolicy2 = QSizePolicy(QSizePolicy.Minimum, QSizePolicy.Minimum)
+        sizePolicy2.setHorizontalStretch(0)
+        sizePolicy2.setVerticalStretch(0)
+        sizePolicy2.setHeightForWidth(self.game_view.sizePolicy().hasHeightForWidth())
+        self.game_view.setSizePolicy(sizePolicy2)
         self.game_view.setMinimumSize(QSize(264, 264))
 
         self.verticalLayout.addWidget(self.game_view)
@@ -232,11 +242,11 @@ class Ui_MainWindow(object):
 
         self.border_color_label = LabelColor(self.dockWidgetContents_2)
         self.border_color_label.setObjectName(u"border_color_label")
-        sizePolicy2 = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
-        sizePolicy2.setHorizontalStretch(2)
-        sizePolicy2.setVerticalStretch(2)
-        sizePolicy2.setHeightForWidth(self.border_color_label.sizePolicy().hasHeightForWidth())
-        self.border_color_label.setSizePolicy(sizePolicy2)
+        sizePolicy3 = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
+        sizePolicy3.setHorizontalStretch(2)
+        sizePolicy3.setVerticalStretch(2)
+        sizePolicy3.setHeightForWidth(self.border_color_label.sizePolicy().hasHeightForWidth())
+        self.border_color_label.setSizePolicy(sizePolicy3)
         self.border_color_label.setMinimumSize(QSize(20, 20))
         self.border_color_label.setMaximumSize(QSize(16777215, 16777215))
         self.border_color_label.setSizeIncrement(QSize(0, 0))
@@ -275,8 +285,8 @@ class Ui_MainWindow(object):
 
         self.cell_dead_color_label = LabelColor(self.dockWidgetContents_2)
         self.cell_dead_color_label.setObjectName(u"cell_dead_color_label")
-        sizePolicy2.setHeightForWidth(self.cell_dead_color_label.sizePolicy().hasHeightForWidth())
-        self.cell_dead_color_label.setSizePolicy(sizePolicy2)
+        sizePolicy3.setHeightForWidth(self.cell_dead_color_label.sizePolicy().hasHeightForWidth())
+        self.cell_dead_color_label.setSizePolicy(sizePolicy3)
         self.cell_dead_color_label.setMinimumSize(QSize(20, 20))
 
         self.layout_settings.addWidget(self.cell_dead_color_label, 9, 2, 1, 1)
@@ -333,8 +343,8 @@ class Ui_MainWindow(object):
 
         self.cell_alive_color_label = LabelColor(self.dockWidgetContents_2)
         self.cell_alive_color_label.setObjectName(u"cell_alive_color_label")
-        sizePolicy2.setHeightForWidth(self.cell_alive_color_label.sizePolicy().hasHeightForWidth())
-        self.cell_alive_color_label.setSizePolicy(sizePolicy2)
+        sizePolicy3.setHeightForWidth(self.cell_alive_color_label.sizePolicy().hasHeightForWidth())
+        self.cell_alive_color_label.setSizePolicy(sizePolicy3)
         self.cell_alive_color_label.setMinimumSize(QSize(20, 20))
 
         self.layout_settings.addWidget(self.cell_alive_color_label, 8, 2, 1, 1)
@@ -370,11 +380,11 @@ class Ui_MainWindow(object):
         self.verticalLayout_3.setObjectName(u"verticalLayout_3")
         self.default_mode_tool_button = QToolButton(self.dockWidgetContents_3)
         self.default_mode_tool_button.setObjectName(u"default_mode_tool_button")
-        sizePolicy3 = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Minimum)
-        sizePolicy3.setHorizontalStretch(0)
-        sizePolicy3.setVerticalStretch(0)
-        sizePolicy3.setHeightForWidth(self.default_mode_tool_button.sizePolicy().hasHeightForWidth())
-        self.default_mode_tool_button.setSizePolicy(sizePolicy3)
+        sizePolicy4 = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Minimum)
+        sizePolicy4.setHorizontalStretch(0)
+        sizePolicy4.setVerticalStretch(0)
+        sizePolicy4.setHeightForWidth(self.default_mode_tool_button.sizePolicy().hasHeightForWidth())
+        self.default_mode_tool_button.setSizePolicy(sizePolicy4)
         self.default_mode_tool_button.setMinimumSize(QSize(0, 30))
         self.default_mode_tool_button.setCheckable(True)
         self.default_mode_tool_button.setChecked(True)
@@ -388,8 +398,8 @@ class Ui_MainWindow(object):
         self.tool_button_group.setObjectName(u"tool_button_group")
         self.tool_button_group.addButton(self.paint_mode_tool_button)
         self.paint_mode_tool_button.setObjectName(u"paint_mode_tool_button")
-        sizePolicy3.setHeightForWidth(self.paint_mode_tool_button.sizePolicy().hasHeightForWidth())
-        self.paint_mode_tool_button.setSizePolicy(sizePolicy3)
+        sizePolicy4.setHeightForWidth(self.paint_mode_tool_button.sizePolicy().hasHeightForWidth())
+        self.paint_mode_tool_button.setSizePolicy(sizePolicy4)
         self.paint_mode_tool_button.setMinimumSize(QSize(0, 30))
         self.paint_mode_tool_button.setCheckable(True)
         self.paint_mode_tool_button.setAutoExclusive(True)
@@ -399,8 +409,8 @@ class Ui_MainWindow(object):
         self.erase_mode_tool_button = QToolButton(self.dockWidgetContents_3)
         self.tool_button_group.addButton(self.erase_mode_tool_button)
         self.erase_mode_tool_button.setObjectName(u"erase_mode_tool_button")
-        sizePolicy3.setHeightForWidth(self.erase_mode_tool_button.sizePolicy().hasHeightForWidth())
-        self.erase_mode_tool_button.setSizePolicy(sizePolicy3)
+        sizePolicy4.setHeightForWidth(self.erase_mode_tool_button.sizePolicy().hasHeightForWidth())
+        self.erase_mode_tool_button.setSizePolicy(sizePolicy4)
         self.erase_mode_tool_button.setMinimumSize(QSize(0, 30))
         self.erase_mode_tool_button.setCheckable(True)
         self.erase_mode_tool_button.setAutoExclusive(True)
@@ -503,16 +513,49 @@ class Ui_MainWindow(object):
         self.verticalLayout_6.setObjectName(u"verticalLayout_6")
         self.keep_aspect_ratio_constraint_check_box = QCheckBox(self.dockWidgetContents_5)
         self.keep_aspect_ratio_constraint_check_box.setObjectName(u"keep_aspect_ratio_constraint_check_box")
-        sizePolicy4 = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
-        sizePolicy4.setHorizontalStretch(0)
-        sizePolicy4.setVerticalStretch(0)
-        sizePolicy4.setHeightForWidth(self.keep_aspect_ratio_constraint_check_box.sizePolicy().hasHeightForWidth())
-        self.keep_aspect_ratio_constraint_check_box.setSizePolicy(sizePolicy4)
+        sizePolicy5 = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
+        sizePolicy5.setHorizontalStretch(0)
+        sizePolicy5.setVerticalStretch(0)
+        sizePolicy5.setHeightForWidth(self.keep_aspect_ratio_constraint_check_box.sizePolicy().hasHeightForWidth())
+        self.keep_aspect_ratio_constraint_check_box.setSizePolicy(sizePolicy5)
 
         self.verticalLayout_6.addWidget(self.keep_aspect_ratio_constraint_check_box)
 
         self.game_size_constraints_dock_widget.setWidget(self.dockWidgetContents_5)
         MainWindow.addDockWidget(Qt.RightDockWidgetArea, self.game_size_constraints_dock_widget)
+        self.audio_dock_widget = QDockWidget(MainWindow)
+        self.audio_dock_widget.setObjectName(u"audio_dock_widget")
+        self.audio_dock_widget.setEnabled(False)
+        self.audio_dock_widget.setMaximumSize(QSize(228, 85))
+        self.audio_dock_widget.setFloating(False)
+        self.dockWidgetContents_7 = QWidget()
+        self.dockWidgetContents_7.setObjectName(u"dockWidgetContents_7")
+        self.verticalLayout_7 = QVBoxLayout(self.dockWidgetContents_7)
+        self.verticalLayout_7.setObjectName(u"verticalLayout_7")
+        self.horizontalLayout_4 = QHBoxLayout()
+        self.horizontalLayout_4.setObjectName(u"horizontalLayout_4")
+        self.horizontalLayout_4.setContentsMargins(-1, 0, -1, -1)
+        self.on_radio_button = QRadioButton(self.dockWidgetContents_7)
+        self.on_radio_button.setObjectName(u"on_radio_button")
+
+        self.horizontalLayout_4.addWidget(self.on_radio_button)
+
+        self.off_radio_button = QRadioButton(self.dockWidgetContents_7)
+        self.off_radio_button.setObjectName(u"off_radio_button")
+
+        self.horizontalLayout_4.addWidget(self.off_radio_button)
+
+
+        self.verticalLayout_7.addLayout(self.horizontalLayout_4)
+
+        self.volume_horizontal_slider = QSlider(self.dockWidgetContents_7)
+        self.volume_horizontal_slider.setObjectName(u"volume_horizontal_slider")
+        self.volume_horizontal_slider.setOrientation(Qt.Horizontal)
+
+        self.verticalLayout_7.addWidget(self.volume_horizontal_slider)
+
+        self.audio_dock_widget.setWidget(self.dockWidgetContents_7)
+        MainWindow.addDockWidget(Qt.RightDockWidgetArea, self.audio_dock_widget)
         QWidget.setTabOrder(self.rows_spin_box, self.cols_spin_box)
         QWidget.setTabOrder(self.cols_spin_box, self.cell_alive_color_button)
         QWidget.setTabOrder(self.cell_alive_color_button, self.border_color_button)
@@ -534,6 +577,7 @@ class Ui_MainWindow(object):
         self.menuView.addAction(self.action_view_pattern_gallery)
         self.menuView.addAction(self.action_view_game_statistics)
         self.menuView.addAction(self.action_view_game_size_constraints)
+        self.menuView.addAction(self.action_view_audio)
         self.menuLanguage.addAction(self.action_english_US)
         self.menuLanguage.addAction(self.action_russian_RU)
 
@@ -577,6 +621,7 @@ class Ui_MainWindow(object):
         self.action_view_pattern_gallery.setText(QCoreApplication.translate("MainWindow", u"Pattern gallery", None))
         self.action_view_game_statistics.setText(QCoreApplication.translate("MainWindow", u"Game Statistics", None))
         self.action_view_game_size_constraints.setText(QCoreApplication.translate("MainWindow", u"Game size constraints", None))
+        self.action_view_audio.setText(QCoreApplication.translate("MainWindow", u"Audio", None))
         self.label.setText(QCoreApplication.translate("MainWindow", u"Turn number:", None))
 #if QT_CONFIG(statustip)
         self.turn_number_label.setStatusTip(QCoreApplication.translate("MainWindow", u"Turn number label", None))
@@ -723,5 +768,8 @@ class Ui_MainWindow(object):
         self.keep_aspect_ratio_constraint_check_box.setStatusTip(QCoreApplication.translate("MainWindow", u"Square size constraint check box", None))
 #endif // QT_CONFIG(statustip)
         self.keep_aspect_ratio_constraint_check_box.setText(QCoreApplication.translate("MainWindow", u"Keep aspect ratio constraint", None))
+        self.audio_dock_widget.setWindowTitle(QCoreApplication.translate("MainWindow", u"Audio", None))
+        self.on_radio_button.setText(QCoreApplication.translate("MainWindow", u"On", None))
+        self.off_radio_button.setText(QCoreApplication.translate("MainWindow", u"Off", None))
     # retranslateUi
 
