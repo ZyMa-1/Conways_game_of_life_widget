@@ -4,7 +4,7 @@ from typing import Optional
 from PySide6.QtCore import QObject
 from PySide6.QtWidgets import QWidget, QFileDialog, QMainWindow, QMessageBox
 
-from . import PathManager
+from .PathManager import PathManager
 
 
 class MainWindowUtils(QObject):
