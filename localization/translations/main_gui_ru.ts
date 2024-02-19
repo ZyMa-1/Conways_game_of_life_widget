@@ -450,17 +450,17 @@ position</source>
         <location filename="../../designer/MainWindow.ui" line="981"/>
         <location filename="../../designer/MainWindow.ui" line="1151"/>
         <source>Audio</source>
-        <translation type="unfinished"></translation>
+        <translation>Аудио</translation>
     </message>
     <message>
         <location filename="../../designer/MainWindow.ui" line="996"/>
         <source>On</source>
-        <translation type="unfinished"></translation>
+        <translation>Выкл.</translation>
     </message>
     <message>
         <location filename="../../designer/MainWindow.ui" line="1003"/>
         <source>Off</source>
-        <translation type="unfinished"></translation>
+        <translation>Вкл.</translation>
     </message>
     <message>
         <location filename="../../designer/MainWindow.ui" line="869"/>
