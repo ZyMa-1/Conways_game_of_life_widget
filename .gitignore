@@ -3,6 +3,7 @@
 venv/
 exports/
 configs/
+assets/
 pattern_gallery/
 **/__pycache__/
 main.*/

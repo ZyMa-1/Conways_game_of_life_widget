@@ -46,6 +46,7 @@ class GameEngine(QObject, IMySerializable, IMyPropertySignalAccessor, metaclass=
         self._alive_cells = 0
         # Performance of the 'make_turn' in ms
         self._sum_turn_performance = 0
+        self._changed_cells: list[tuple[int, int]] = []
 
         # Connect signals to slots
         self.alive_cells_changed.connect(self.handle_alive_cells_changed)
@@ -111,6 +112,9 @@ class GameEngine(QObject, IMySerializable, IMyPropertySignalAccessor, metaclass=
     # Public API functionality to interact with the game
     def get_avg_turn_performance(self):
         return self._sum_turn_performance / self._turn_number
+
+    def get_changed_cells(self):
+        return self._changed_cells
 
     def reset_to_defaults(self):
         self._turn_number = 0
@@ -189,6 +193,10 @@ class GameEngine(QObject, IMySerializable, IMyPropertySignalAccessor, metaclass=
 
         # Convert grid back to the CELL_DEAD/CELL_ALIVE format
         new_state = np.where(new_grid == 0, CELL_DEAD, CELL_ALIVE)
+
+        # Calculate list of coordinates of changed cells (that is the optimization for the Scene)
+        changed_indices = np.where(new_state != np.array(self._state))
+        self._changed_cells = list(zip(changed_indices[0], changed_indices[1]))
 
         self._state = new_state
         self._alive_cells = np.sum(new_state == CELL_ALIVE)

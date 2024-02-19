@@ -179,6 +179,25 @@ class GameScene(QGraphicsScene, IMySerializable, IMyPropertySignalAccessor, meta
             cell_item.set_scene_cell_type(SceneCellType.ACTIVE)
             cell_item.update()
 
+    def _update_cell_item_types_at(self, coordinates: list[tuple[int, int]]):
+        """
+        Updates cell item types at given list of coordinates.
+        """
+        engine_state = self._engine.state
+        for row, col in coordinates:
+            cell_item = self._cell_item_map[(row, col)]
+            if engine_state[row][col] == CELL_ALIVE:
+                scene_cell_type = SceneCellType.ALIVE
+            else:
+                scene_cell_type = SceneCellType.DEAD
+            cell_item.set_scene_cell_type(scene_cell_type)
+            cell_item.update()
+
+        if self._active_cell:
+            cell_item = self._cell_item_map[self._active_cell]
+            cell_item.set_scene_cell_type(SceneCellType.ACTIVE)
+            cell_item.update()
+
     # Helper methods
     def _get_scene_cell_type_at(self, row: int, col: int) -> SceneCellType:
         if self._active_cell == (row, col):
@@ -410,7 +429,9 @@ class GameScene(QGraphicsScene, IMySerializable, IMyPropertySignalAccessor, meta
     @Slot()
     def _make_turn(self):
         self._engine.make_turn()
-        self._update_cell_item_types()
+        # Retrieve calculated coordinates from the engine.
+        # It is working very good for large boards with few amount of alive cells.
+        self._update_cell_item_types_at(self._engine.get_changed_cells())
 
     # Signals.
 

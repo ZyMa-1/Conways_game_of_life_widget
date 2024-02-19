@@ -145,7 +145,7 @@ class Ui_MainWindow(object):
 
         self.game_view = GameView(self.centralwidget)
         self.game_view.setObjectName(u"game_view")
-        sizePolicy2 = QSizePolicy(QSizePolicy.Minimum, QSizePolicy.Minimum)
+        sizePolicy2 = QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
         sizePolicy2.setHorizontalStretch(0)
         sizePolicy2.setVerticalStretch(0)
         sizePolicy2.setHeightForWidth(self.game_view.sizePolicy().hasHeightForWidth())
@@ -525,7 +525,7 @@ class Ui_MainWindow(object):
         MainWindow.addDockWidget(Qt.RightDockWidgetArea, self.game_size_constraints_dock_widget)
         self.audio_dock_widget = QDockWidget(MainWindow)
         self.audio_dock_widget.setObjectName(u"audio_dock_widget")
-        self.audio_dock_widget.setEnabled(False)
+        self.audio_dock_widget.setEnabled(True)
         self.audio_dock_widget.setMaximumSize(QSize(228, 85))
         self.audio_dock_widget.setFloating(False)
         self.dockWidgetContents_7 = QWidget()
@@ -542,6 +542,7 @@ class Ui_MainWindow(object):
 
         self.off_radio_button = QRadioButton(self.dockWidgetContents_7)
         self.off_radio_button.setObjectName(u"off_radio_button")
+        self.off_radio_button.setChecked(True)
 
         self.horizontalLayout_4.addWidget(self.off_radio_button)
 
@@ -550,6 +551,8 @@ class Ui_MainWindow(object):
 
         self.volume_horizontal_slider = QSlider(self.dockWidgetContents_7)
         self.volume_horizontal_slider.setObjectName(u"volume_horizontal_slider")
+        self.volume_horizontal_slider.setMaximum(100)
+        self.volume_horizontal_slider.setValue(100)
         self.volume_horizontal_slider.setOrientation(Qt.Horizontal)
 
         self.verticalLayout_7.addWidget(self.volume_horizontal_slider)

@@ -1,9 +1,9 @@
-from PySide6.QtCore import Slot, QThreadPool, Qt
+from PySide6.QtCore import Slot, QThreadPool, Qt, QUrl
 from PySide6.QtGui import QActionGroup, QPixmap, QIcon
 from PySide6.QtMultimedia import QMediaPlayer, QAudioOutput
 from PySide6.QtWidgets import QMainWindow, QButtonGroup
 
-from backend import MainWindowUtils, SignalCollector, UtilsFactory
+from backend import MainWindowUtils, SignalCollector, UtilsFactory, PathManager
 from conways_game_of_life.ConfigManager import GameConfigManager
 from conways_game_of_life.core import GameScene, GameEngine
 from conways_game_of_life.InstructionsDialog import InstructionsDialog
@@ -108,7 +108,8 @@ class MainWindow(QMainWindow):
         self.media_player = QMediaPlayer()
         self.media_audio_output = QAudioOutput()
         self.media_player.setAudioOutput(self.media_audio_output)
-        # self.media_player.setSource(QMediaContent(QUrl.fromLocalFile('background_music.mp3')))
+        self.media_player.setSource(
+            QUrl.fromLocalFile(PathManager.ASSETS_DIR / "scott-buckley-moonlight.mp3"))
 
         # Init UI (more like create things Qt-designer cannot handle)
         self.init_ui()
@@ -263,7 +264,7 @@ class MainWindow(QMainWindow):
 
     @Slot(int)
     def handle_volume_horizontal_slider_value_changed(self, value: int):
-        self.media_audio_output.setVolume(value)
+        self.media_audio_output.setVolume(value / 100)
 
     # Errors collector
     def show_property_signal_collector_errors(self):
