@@ -21,6 +21,7 @@ Goal of the project was to learn how to build scalable and manageble application
 - [Localization.md](/info/Localization.md)
 - [Resources.md](/info/Resources.md)
 - [About.md](/info/About.md)
+- [Presentation explaining the project in details](https://docs.google.com/presentation/d/1x4ZROUNIufM81VK3wRJzXpF5lFBikbbr/edit?usp=drive_link&ouid=106823657801268020410&rtpof=true&sd=true)
 
 # Showcase  
   
